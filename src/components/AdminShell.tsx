@@ -39,7 +39,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen bg-slate-50 md:flex">
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 md:h-screen md:w-56 md:shrink-0 md:border-b-0 md:border-r md:flex md:flex-col">
         <div className="px-4 py-4 border-b border-slate-100">
-          <p className="text-xs font-bold text-indigo-600 uppercase tracking-wide">管理画面</p>
+          <p className="text-xs font-bold text-blue-900 uppercase tracking-wide">管理画面</p>
           <p className="text-xs text-slate-500 mt-0.5">合同会社絆</p>
         </div>
 
@@ -52,7 +52,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                 href={href}
                 className={`flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors ${
                   active
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-blue-900 text-white shadow-sm"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
                 }`}
               >
