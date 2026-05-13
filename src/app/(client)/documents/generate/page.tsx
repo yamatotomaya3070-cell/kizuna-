@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * 帳票自動生成画面：クライアントのExcelテンプレート（業務日報 / 個別支援計画 / モニタリング）
+ * の項目構造に合わせてフォームを用意し、フォーム送信で .xlsx を直接ダウンロードする。
+ */
+
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
@@ -9,235 +14,232 @@ import {
   Download,
   User,
   ClipboardList,
-  BarChart3,
   CalendarDays,
   Sparkles,
   CheckCircle2,
   UserPlus,
 } from "lucide-react";
 
-type DocType = "support_plan" | "monitoring_report" | "service_record";
+type DocType = "diary" | "support_plan" | "monitoring";
 
 const DOC_TYPES: {
   id: DocType;
   label: string;
   sub: string;
   icon: React.ElementType;
-  color: string;
 }[] = [
+  {
+    id: "diary",
+    label: "業務日報",
+    sub: "1日分・利用者全員を1ページにまとめた業務日誌Excel",
+    icon: CalendarDays,
+  },
   {
     id: "support_plan",
     label: "個別支援計画書",
-    sub: "半年ごとに作成する支援計画書",
+    sub: "半年単位で作成する支援計画書Excel",
     icon: ClipboardList,
-    color: "blue",
   },
   {
-    id: "monitoring_report",
-    label: "モニタリング報告書",
-    sub: "AI生成の評価を正式帳票化",
+    id: "monitoring",
+    label: "モニタリング・評価記録表",
+    sub: "個別支援計画とセットで評価するモニタリングExcel",
     icon: Sparkles,
-    color: "indigo",
-  },
-  {
-    id: "service_record",
-    label: "サービス提供実績記録票",
-    sub: "月次の出欠・サービス記録",
-    icon: CalendarDays,
-    color: "emerald",
   },
 ];
 
-const COLOR = {
-  blue: {
-    card: "border-blue-200 bg-white",
-    active: "border-blue-900 bg-white ring-2 ring-blue-300",
-    icon: "text-blue-900",
-    btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-slate-100 text-blue-900",
-  },
-  indigo: {
-    card: "border-blue-200 bg-white",
-    active: "border-blue-900 bg-white ring-2 ring-blue-300",
-    icon: "text-blue-900",
-    btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-slate-100 text-blue-900",
-  },
-  emerald: {
-    card: "border-blue-200 bg-white",
-    active: "border-blue-900 bg-white ring-2 ring-blue-300",
-    icon: "text-blue-900",
-    btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-slate-100 text-blue-900",
-  },
-};
-
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-      {children}
-    </label>
-  );
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+function addMonthsISO(iso: string, months: number) {
+  const d = new Date(iso + "T00:00:00");
+  d.setMonth(d.getMonth() + months);
+  return d.toISOString().slice(0, 10);
 }
 
+function Label({ children }: { children: React.ReactNode }) {
+  return <label className="block text-xs font-semibold text-slate-700 mb-1.5">{children}</label>;
+}
 function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className={`w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent bg-white ${props.className ?? ""}`}
+      className={`w-full px-3 py-2 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-blue-900 bg-white ${props.className ?? ""}`}
     />
   );
 }
-
 function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}
-      className={`w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent bg-white resize-none ${props.className ?? ""}`}
+      className={`w-full px-3 py-2 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-blue-900 bg-white resize-none ${props.className ?? ""}`}
     />
   );
 }
 
-function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return (
-    <select
-      {...props}
-      className={`w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white ${props.className ?? ""}`}
-    />
-  );
-}
+type Goal = {
+  priority: number;
+  specific_goal: string;
+  user_role: string;
+  support_content: string;
+  support_duration: string;
+};
+
+type Eval = {
+  user_hope: string;
+  user_role: string;
+  support_content: string;
+  remaining_issue: string;
+  evaluation: "A" | "B" | "C" | "";
+};
 
 export default function GenerateDocumentPage() {
   const supabase = createClient();
 
-  const [facilityId, setFacilityId] = useState<string>("");
   const [clients, setClients] = useState<string[]>([]);
   const [selectedClient, setSelectedClient] = useState<string>("");
-  const [docType, setDocType] = useState<DocType>("support_plan");
+  const [docType, setDocType] = useState<DocType>("diary");
   const [generating, setGenerating] = useState(false);
   const [toast, setToast] = useState("");
 
-  const [periodStart, setPeriodStart] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
-  const [periodEnd, setPeriodEnd] = useState(() => {
-    const d = new Date();
-    d.setMonth(d.getMonth() + 6);
-    return d.toISOString().slice(0, 10);
-  });
+  // ── 業務日報用
+  const [diaryDate, setDiaryDate] = useState<string>(todayISO());
 
-  const [wish, setWish] = useState("");
+  // ── 個別支援計画用（Excelのヘッダ・3目標表に対応）
+  const [planStart, setPlanStart] = useState<string>(todayISO());
+  const [planEnd, setPlanEnd] = useState<string>(addMonthsISO(todayISO(), 6));
+  const [authorName, setAuthorName] = useState("");
+  const [serviceManagerName, setServiceManagerName] = useState("");
+  const [createdDate, setCreatedDate] = useState<string>(todayISO());
+  const [attainmentGoal, setAttainmentGoal] = useState("");
+  const [overallPolicy, setOverallPolicy] = useState("");
   const [longTermGoal, setLongTermGoal] = useState("");
-  const [shortTermGoals, setShortTermGoals] = useState(["", "", ""]);
-  const [supportContent, setSupportContent] = useState("");
-  const [achievementCriteria, setAchievementCriteria] = useState("");
-  const [creatorName, setCreatorName] = useState("");
-  const [managerName, setManagerName] = useState("");
+  const [shortTermGoal, setShortTermGoal] = useState("");
+  const [goals, setGoals] = useState<Goal[]>([
+    { priority: 1, specific_goal: "", user_role: "", support_content: "", support_duration: "6か月\n開所日" },
+    { priority: 2, specific_goal: "", user_role: "", support_content: "", support_duration: "6か月\n開所日" },
+    { priority: 3, specific_goal: "", user_role: "", support_content: "", support_duration: "6か月\n通所日" },
+  ]);
 
-  const today = new Date();
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth() + 1);
+  // ── モニタリング用（個別支援計画の各目標に対する評価）
+  const [monUserHope, setMonUserHope] = useState("");
+  const [monLongTerm, setMonLongTerm] = useState("");
+  const [monShortTerm, setMonShortTerm] = useState("");
+  const [evals, setEvals] = useState<Eval[]>([
+    { user_hope: "", user_role: "", support_content: "", remaining_issue: "", evaluation: "" },
+    { user_hope: "", user_role: "", support_content: "", remaining_issue: "", evaluation: "" },
+    { user_hope: "", user_role: "", support_content: "", remaining_issue: "", evaluation: "" },
+  ]);
 
   useEffect(() => {
     const init = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("facility_id")
-        .eq("id", user.id)
-        .single();
+      const { data: profile } = await supabase.from("profiles").select("facility_id").eq("id", user.id).single();
       const fid = profile?.facility_id ?? "";
-      setFacilityId(fid);
       const { data } = await supabase
         .from("clients")
-        .select("name")
+        .select("name, status")
         .eq("facility_id", fid)
-        .eq("status", "active")
         .order("name");
-      const names = data?.map((c) => c.name) ?? [];
+      const names = (data ?? []).filter((c) => (c.status ?? "active") !== "left").map((c) => c.name);
       setClients(names);
       if (names.length > 0) setSelectedClient(names[0]);
     };
     init();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // 計画書の3目標を入力したらモニタリングフォームに自動コピー（編集可）
+  useEffect(() => {
+    setEvals((prev) =>
+      prev.map((e, i) => ({
+        ...e,
+        user_hope: goals[i]?.specific_goal ?? e.user_hope,
+        user_role: goals[i]?.user_role ?? e.user_role,
+        support_content: goals[i]?.support_content ?? e.support_content,
+      })),
+    );
+  }, [goals]);
+  // 計画書の希望・長期・短期もモニタリングへコピー
+  useEffect(() => { setMonUserHope(attainmentGoal); }, [attainmentGoal]);
+  useEffect(() => { setMonLongTerm(longTermGoal); }, [longTermGoal]);
+  useEffect(() => { setMonShortTerm(shortTermGoal); }, [shortTermGoal]);
 
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(""), 4000);
   };
 
+  const downloadBlob = (blob: Blob, fallbackName: string, contentDisposition: string | null) => {
+    const filenameMatch = (contentDisposition ?? "").match(/filename\*=UTF-8''(.+)/);
+    const filename = filenameMatch ? decodeURIComponent(filenameMatch[1]) : fallbackName;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleGenerate = async () => {
-    if (!selectedClient) {
+    if (docType !== "diary" && !selectedClient) {
       showToast("利用者を選択してください");
       return;
     }
     setGenerating(true);
-
-    let body: Record<string, unknown>;
-
-    if (docType === "support_plan") {
-      body = {
-        type: "support_plan",
-        clientName: selectedClient,
-        facilityId,
-        periodStart,
-        periodEnd,
-        additionalData: {
-          wish,
-          longTermGoal,
-          shortTermGoals: shortTermGoals.filter(Boolean),
-          supportContent,
-          achievementCriteria,
-          creatorName,
-        },
-      };
-    } else if (docType === "monitoring_report") {
-      body = {
-        type: "monitoring_report",
-        clientName: selectedClient,
-        facilityId,
-        periodStart,
-        periodEnd,
-        additionalData: { managerName },
-      };
-    } else {
-      body = {
-        type: "service_record",
-        clientName: selectedClient,
-        facilityId,
-        year,
-        month,
-      };
-    }
-
     try {
-      const res = await fetch("/api/generate-document", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      let res: Response;
+      let fallback = "document.xlsx";
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error ?? "生成失敗");
+      if (docType === "diary") {
+        res = await fetch(`/api/export/diary?date=${diaryDate}`);
+        fallback = `業務日報_${diaryDate}.xlsx`;
+      } else if (docType === "support_plan") {
+        res = await fetch("/api/export/support-plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: selectedClient,
+            authorName, serviceManagerName, createdDate,
+            planStartDate: planStart,
+            planEndDate: planEnd,
+            attainmentGoal,
+            overallSupportPolicy: overallPolicy,
+            longTermGoal,
+            shortTermGoal,
+            goals: goals.filter((g) => g.specific_goal.trim() !== ""),
+          }),
+        });
+        fallback = `個別支援計画_${selectedClient}.xlsx`;
+      } else {
+        res = await fetch("/api/export/monitoring", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: selectedClient,
+            userHope: monUserHope,
+            longTermGoal: monLongTerm,
+            shortTermGoal: monShortTerm,
+            supportPlan: {
+              authorName, serviceManagerName, createdDate,
+              planStartDate: planStart, planEndDate: planEnd,
+              attainmentGoal, overallSupportPolicy: overallPolicy,
+              goals,
+            },
+            goalEvaluations: evals.map((e, i) => ({ index: i + 1, ...e })),
+          }),
+        });
+        fallback = `モニタリング_${selectedClient}.xlsx`;
       }
 
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || "生成失敗");
+      }
       const blob = await res.blob();
-      const contentDisposition = res.headers.get("content-disposition") ?? "";
-      const filenameMatch = contentDisposition.match(/filename\*=UTF-8''(.+)/);
-      const filename = filenameMatch
-        ? decodeURIComponent(filenameMatch[1])
-        : `document.pdf`;
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast("PDFを生成しました");
+      downloadBlob(blob, fallback, res.headers.get("content-disposition"));
+      showToast("Excelをダウンロードしました");
     } catch (err) {
       showToast(err instanceof Error ? err.message : "生成に失敗しました");
     } finally {
@@ -245,285 +247,254 @@ export default function GenerateDocumentPage() {
     }
   };
 
-  const active = DOC_TYPES.find((d) => d.id === docType)!;
-  const c = COLOR[active.color as keyof typeof COLOR];
-
   return (
-    <div className="min-h-screen bg-slate-50 pb-12">
-      {/* トースト */}
+    <div className="min-h-screen bg-slate-50 pb-16">
       {toast && (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-slate-800 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg">
-          <CheckCircle2 size={16} className="text-blue-400" />
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-slate-900 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg">
+          <CheckCircle2 size={16} className="text-white" />
           {toast}
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center gap-2">
           <FileText size={20} className="text-blue-900" />
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">帳票自動生成</h1>
-            <p className="text-sm text-slate-500 mt-0.5">利用者マスタの利用中の利用者から帳票を生成します</p>
+            <h1 className="text-2xl font-bold text-slate-900">帳票自動生成</h1>
+            <p className="text-sm text-slate-600 mt-0.5">
+              事業所提供のExcelテンプレートをそのまま使い、入力内容を該当セルに差し込んで出力します。
+            </p>
           </div>
         </div>
-        {/* 利用者選択 */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-            <User size={15} className="text-blue-900" />
-            <h2 className="text-sm font-bold text-slate-700">利用者を選択</h2>
-          </div>
-          <div className="p-5">
-            {clients.length === 0 ? (
-              <div className="text-sm text-slate-400">
-                <p>利用者が登録されていません</p>
-                <Link
-                  href="/clients"
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-900"
-                >
-                  <UserPlus size={14} />
-                  利用者管理から利用者を登録してください
-                </Link>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {clients.map((name) => (
-                  <button
-                    key={name}
-                    onClick={() => setSelectedClient(name)}
-                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                      selectedClient === name
-                        ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
+
+        {/* 帳票タイプ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          {DOC_TYPES.map((d) => {
+            const active = docType === d.id;
+            const Icon = d.icon;
+            return (
+              <button
+                key={d.id}
+                onClick={() => setDocType(d.id)}
+                className={`text-left p-4 rounded-2xl border transition-all ${
+                  active
+                    ? "bg-white border-blue-900 ring-2 ring-blue-200 text-slate-900"
+                    : "bg-white border-slate-200 text-slate-700 hover:border-slate-300"
+                }`}
+              >
+                <Icon size={18} className={active ? "text-blue-900" : "text-slate-500"} />
+                <p className="mt-2 font-bold text-sm">{d.label}</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{d.sub}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 利用者選択（業務日報は不要） */}
+        {docType !== "diary" && (
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="px-5 py-3 border-b border-slate-100 flex items-center gap-2">
+              <User size={15} className="text-blue-900" />
+              <h2 className="text-sm font-bold text-slate-800">利用者</h2>
+            </div>
+            <div className="p-5">
+              {clients.length === 0 ? (
+                <div className="text-sm text-slate-500">
+                  <p>利用者が登録されていません</p>
+                  <Link
+                    href="/settings"
+                    className="mt-2 inline-flex items-center gap-1 text-blue-900 font-semibold text-xs hover:underline"
                   >
-                    {name}
-                  </button>
-                ))}
+                    <UserPlus size={12} />
+                    利用者を追加
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {clients.map((name) => (
+                    <button
+                      key={name}
+                      onClick={() => setSelectedClient(name)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                        selectedClient === name
+                          ? "bg-white text-blue-900 border-blue-900 border-2"
+                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                      }`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* タイプ別フォーム */}
+        {docType === "diary" && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+            <h2 className="text-sm font-bold text-slate-800">業務日報の対象日</h2>
+            <Label>記録日</Label>
+            <Input type="date" value={diaryDate} max={todayISO()} onChange={(e) => setDiaryDate(e.target.value)} />
+            <p className="text-[11px] text-slate-500">
+              指定日の出欠・日報・シフトをまとめて1ページのExcelに出力します（業務日誌テンプレート準拠）。
+            </p>
+          </div>
+        )}
+
+        {(docType === "support_plan" || docType === "monitoring") && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+            <h2 className="text-sm font-bold text-slate-800">基本情報（個別支援計画ヘッダ）</h2>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>作成者名</Label>
+                <Input value={authorName} onChange={(e) => setAuthorName(e.target.value)} placeholder="山崎 真一" />
               </div>
-            )}
-          </div>
-        </div>
-
-        {clients.length > 0 && (
-        <>
-        {/* 帳票種類 */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-            <BarChart3 size={15} className="text-blue-900" />
-            <h2 className="text-sm font-bold text-slate-700">帳票の種類</h2>
-          </div>
-          <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {DOC_TYPES.map((dt) => {
-              const dc = COLOR[dt.color as keyof typeof COLOR];
-              const isActive = docType === dt.id;
-              const Icon = dt.icon;
-              return (
-                <button
-                  key={dt.id}
-                  onClick={() => setDocType(dt.id)}
-                  className={`flex flex-col items-start gap-2 p-4 rounded-xl border text-left transition-all ${
-                    isActive ? dc.active : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                  }`}
-                >
-                  <Icon size={18} className={isActive ? dc.icon : "text-slate-400"} />
-                  <div>
-                    <p className={`text-xs font-bold ${isActive ? "text-slate-800" : "text-slate-600"}`}>
-                      {dt.label}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-0.5 leading-snug">{dt.sub}</p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 入力フォーム */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className={`px-5 py-4 border-b flex items-center gap-2 ${
-            docType === "support_plan"
-              ? "bg-white border-blue-100"
-              : docType === "monitoring_report"
-              ? "bg-white border-blue-100"
-              : "bg-white border-blue-100"
-          }`}>
-            <active.icon size={15} className={c.icon} />
-            <h2 className="text-sm font-bold text-slate-700">{active.label} — 入力項目</h2>
-          </div>
-          <div className="p-5 space-y-5">
-            {/* 共通：対象期間 */}
-            {(docType === "support_plan" || docType === "monitoring_report") && (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>対象期間（開始）</Label>
-                  <Input
-                    type="date"
-                    value={periodStart}
-                    onChange={(e) => setPeriodStart(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label>対象期間（終了）</Label>
-                  <Input
-                    type="date"
-                    value={periodEnd}
-                    onChange={(e) => setPeriodEnd(e.target.value)}
-                  />
-                </div>
+              <div>
+                <Label>サービス管理責任者</Label>
+                <Input value={serviceManagerName} onChange={(e) => setServiceManagerName(e.target.value)} placeholder="室崎 真悟" />
               </div>
-            )}
-
-            {/* 個別支援計画書 */}
-            {docType === "support_plan" && (
-              <>
-                <div>
-                  <Label>本人の希望・ニーズ</Label>
-                  <Textarea
-                    rows={3}
-                    placeholder="例：一般就労を目指したい。人との関わりを増やしたい。"
-                    value={wish}
-                    onChange={(e) => setWish(e.target.value)}
-                  />
-                </div>
+              <div>
+                <Label>作成日</Label>
+                <Input type="date" value={createdDate} onChange={(e) => setCreatedDate(e.target.value)} />
+              </div>
+              <div>
+                <Label>計画期間（開始）</Label>
+                <Input type="date" value={planStart} onChange={(e) => setPlanStart(e.target.value)} />
+              </div>
+              <div>
+                <Label>計画期間（終了）</Label>
+                <Input type="date" value={planEnd} onChange={(e) => setPlanEnd(e.target.value)} />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <div>
+                <Label>到達目標（本人の希望）</Label>
+                <Textarea rows={2} value={attainmentGoal} onChange={(e) => setAttainmentGoal(e.target.value)} />
+              </div>
+              <div>
+                <Label>総合的な支援の方針</Label>
+                <Textarea rows={2} value={overallPolicy} onChange={(e) => setOverallPolicy(e.target.value)} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label>長期目標</Label>
-                  <Textarea
-                    rows={2}
-                    placeholder="例：就労継続支援B型において安定した作業遂行を実現し、一般就労への移行を目指す。"
-                    value={longTermGoal}
-                    onChange={(e) => setLongTermGoal(e.target.value)}
-                  />
+                  <Input value={longTermGoal} onChange={(e) => setLongTermGoal(e.target.value)} placeholder="一人暮らしをする。" />
                 </div>
                 <div>
                   <Label>短期目標</Label>
-                  <div className="space-y-2">
-                    {shortTermGoals.map((g, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <span className="text-sm font-bold text-slate-400 mt-2 w-5 shrink-0">
-                          {["①", "②", "③"][i]}
-                        </span>
-                        <Input
-                          placeholder={`短期目標 ${i + 1}`}
-                          value={g}
-                          onChange={(e) => {
-                            const next = [...shortTermGoals];
-                            next[i] = e.target.value;
-                            setShortTermGoals(next);
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <Label>支援内容</Label>
-                  <Textarea
-                    rows={3}
-                    placeholder="例：作業支援（木工・軽作業）、生活支援、コミュニケーション訓練"
-                    value={supportContent}
-                    onChange={(e) => setSupportContent(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label>達成基準</Label>
-                  <Textarea
-                    rows={2}
-                    placeholder="例：週4日以上安定して通所できること、作業時間が2時間以上継続できること"
-                    value={achievementCriteria}
-                    onChange={(e) => setAchievementCriteria(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label>作成者名（サービス管理責任者）</Label>
-                  <Input
-                    placeholder="例：田中 花子"
-                    value={creatorName}
-                    onChange={(e) => setCreatorName(e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* モニタリング報告書 */}
-            {docType === "monitoring_report" && (
-              <>
-                <div className="rounded-xl bg-white border border-blue-100 p-4 text-sm text-blue-900">
-                  <div className="flex items-center gap-2 font-semibold mb-1">
-                    <Sparkles size={14} />
-                    AI自動生成
-                  </div>
-                  <p className="text-xs text-blue-900">
-                    対象期間内の日報データをもとに、Gemini AIが「達成度・課題・次期目標」を自動生成して帳票に反映します。
-                  </p>
-                </div>
-                <div>
-                  <Label>サービス管理責任者名</Label>
-                  <Input
-                    placeholder="例：田中 花子"
-                    value={managerName}
-                    onChange={(e) => setManagerName(e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* 実績記録票 */}
-            {docType === "service_record" && (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>年</Label>
-                  <Select
-                    value={year}
-                    onChange={(e) => setYear(Number(e.target.value))}
-                  >
-                    {[today.getFullYear() - 1, today.getFullYear(), today.getFullYear() + 1].map((y) => (
-                      <option key={y} value={y}>{y}年</option>
-                    ))}
-                  </Select>
-                </div>
-                <div>
-                  <Label>月</Label>
-                  <Select
-                    value={month}
-                    onChange={(e) => setMonth(Number(e.target.value))}
-                  >
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                      <option key={m} value={m}>{m}月</option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="col-span-2 text-xs text-slate-500 bg-slate-50 rounded-xl p-3">
-                  出欠・昼食・送迎データは出欠入力画面で登録されたデータを自動読み込みします。
+                  <Input value={shortTermGoal} onChange={(e) => setShortTermGoal(e.target.value)} placeholder="朝決めた時間に起きる事が出来る。" />
                 </div>
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* 生成ボタン */}
+            <h3 className="text-sm font-bold text-slate-800 pt-2">具体的な到達目標及び支援計画（最大3項目）</h3>
+            <div className="space-y-3">
+              {goals.map((g, i) => (
+                <div key={i} className="border border-slate-200 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-blue-900">優先順位 {g.priority}</span>
+                  </div>
+                  <div>
+                    <Label>具体的到達目標</Label>
+                    <Textarea
+                      rows={2}
+                      value={g.specific_goal}
+                      onChange={(e) => setGoals((p) => p.map((x, j) => j === i ? { ...x, specific_goal: e.target.value } : x))}
+                    />
+                  </div>
+                  <div>
+                    <Label>本人の役割</Label>
+                    <Textarea
+                      rows={2}
+                      value={g.user_role}
+                      onChange={(e) => setGoals((p) => p.map((x, j) => j === i ? { ...x, user_role: e.target.value } : x))}
+                    />
+                  </div>
+                  <div>
+                    <Label>支援内容（内容・留意点等）</Label>
+                    <Textarea
+                      rows={2}
+                      value={g.support_content}
+                      onChange={(e) => setGoals((p) => p.map((x, j) => j === i ? { ...x, support_content: e.target.value } : x))}
+                    />
+                  </div>
+                  <div>
+                    <Label>支援期間（頻度・時間・期間等）</Label>
+                    <Input
+                      value={g.support_duration}
+                      onChange={(e) => setGoals((p) => p.map((x, j) => j === i ? { ...x, support_duration: e.target.value } : x))}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {docType === "monitoring" && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
+            <h2 className="text-sm font-bold text-slate-800">モニタリング評価（3段階）</h2>
+            <p className="text-[11px] text-slate-500">A: 達成 ／ B: やや達成 ／ C: 未達成。各目標について「今後の課題」と評価を入力します。</p>
+            {evals.map((e, i) => (
+              <div key={i} className="border border-slate-200 rounded-xl p-3 space-y-2">
+                <p className="text-xs font-bold text-blue-900">目標 {i + 1}</p>
+                <div className="text-xs text-slate-600 bg-slate-50 rounded-lg px-2 py-1.5">
+                  本人の希望: {e.user_hope || "（計画書から自動取り込み）"}
+                </div>
+                <div>
+                  <Label>今後の課題</Label>
+                  <Textarea
+                    rows={2}
+                    value={e.remaining_issue}
+                    onChange={(ev) => setEvals((p) => p.map((x, j) => j === i ? { ...x, remaining_issue: ev.target.value } : x))}
+                  />
+                </div>
+                <div>
+                  <Label>評価（A/B/C）</Label>
+                  <div className="flex gap-2">
+                    {(["A", "B", "C"] as const).map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        onClick={() => setEvals((p) => p.map((x, j) => j === i ? { ...x, evaluation: v } : x))}
+                        className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${
+                          e.evaluation === v
+                            ? "bg-white text-blue-900 border-blue-900 border-2"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         <button
           onClick={handleGenerate}
-          disabled={generating || !selectedClient}
-          className={`w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-sm transition-all ${
-            generating || !selectedClient
-              ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-              : `${c.btn} text-white shadow-md hover:shadow-lg active:scale-[0.98]`
+          disabled={generating}
+          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm transition-all ${
+            generating
+              ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+              : "bg-blue-900 text-white shadow-sm hover:bg-blue-950"
           }`}
         >
           {generating ? (
             <>
-              <Loader2 size={18} className="animate-spin" />
-              {docType === "monitoring_report" ? "AIが日報を解析・PDF生成中..." : "PDF生成中..."}
+              <Loader2 size={16} className="animate-spin" />
+              生成中...
             </>
           ) : (
             <>
-              <Download size={18} />
-              {selectedClient ? `${selectedClient}さんの${active.label}を生成` : "利用者を選択してください"}
+              <Download size={16} />
+              Excelをダウンロード
             </>
           )}
         </button>
-        </>
-        )}
       </div>
     </div>
   );
