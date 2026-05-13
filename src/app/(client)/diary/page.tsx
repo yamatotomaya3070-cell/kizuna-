@@ -736,8 +736,8 @@ export default function DiaryPage() {
 
           {/* 材料：ポジティブ */}
           <div>
-            <p className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-              <span aria-label="良好" className="text-lg leading-none">😊</span>
+            <p className="mb-2 flex items-center">
+              <span aria-label="良好" className="text-3xl leading-none">😊</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.positive.map((t) => {
@@ -761,8 +761,8 @@ export default function DiaryPage() {
           </div>
 
           <div>
-            <p className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-              <span aria-label="普通" className="text-lg leading-none">🙂</span>
+            <p className="mb-2 flex items-center">
+              <span aria-label="普通" className="text-3xl leading-none">🙂</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.neutral.map((t) => {
@@ -786,8 +786,8 @@ export default function DiaryPage() {
           </div>
 
           <div>
-            <p className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-              <span aria-label="要注意" className="text-lg leading-none">⚠️</span>
+            <p className="mb-2 flex items-center">
+              <span aria-label="要注意" className="text-3xl leading-none">⚠️</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.concern.map((t) => {
