@@ -132,14 +132,34 @@ export default function DiaryPage() {
       const serviceType = (profile?.facilities as { service_type?: string } | null)?.service_type ?? "b_type";
       setServiceFormat(getServiceFormat(serviceType));
 
-      const { data: clientData } = await supabase
+      // status カラムは 20260502_client_master.sql で追加。未適用環境でもクラッシュしないよう
+      // 1) まず status つきで取得、失敗したら status なしで再取得、2) 'left' のみクライアントで除外
+      let rows: { name: string; status?: string | null }[] = [];
+      const withStatus = await supabase
         .from("clients")
-        .select("name")
+        .select("name, status")
         .eq("facility_id", facilityId)
-        .eq("status", "active")
         .order("name");
 
-      setClients(clientData?.map((c) => c.name) ?? []);
+      if (withStatus.error) {
+        const fallback = await supabase
+          .from("clients")
+          .select("name")
+          .eq("facility_id", facilityId)
+          .order("name");
+        if (fallback.error) {
+          console.error("clients fetch failed:", fallback.error);
+        }
+        rows = (fallback.data ?? []) as { name: string }[];
+      } else {
+        rows = (withStatus.data ?? []) as { name: string; status?: string | null }[];
+      }
+
+      setClients(
+        rows
+          .filter((c) => (c.status ?? "active") !== "left")
+          .map((c) => c.name),
+      );
       setLoadingClients(false);
     };
     fetchData();
