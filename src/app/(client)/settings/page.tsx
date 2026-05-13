@@ -69,14 +69,14 @@ export default function SettingsPage() {
       {/* トースト */}
       {toast && (
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-slate-800 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg">
-          <CheckCircle2 size={16} className="text-emerald-400" />
+          <CheckCircle2 size={16} className="text-blue-400" />
           {toast}
         </div>
       )}
 
       {/* ヘッダー */}
       <div className="flex items-center gap-3">
-        <Settings size={20} className="text-blue-500" />
+        <Settings size={20} className="text-blue-900" />
         <div>
           <h2 className="text-xl font-bold text-slate-800">設定</h2>
           <p className="text-xs text-slate-500 mt-0.5">利用者・指導員を管理します</p>
@@ -141,7 +141,7 @@ function TabBtn({
       onClick={onClick}
       className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
         active
-          ? "bg-blue-600 text-white shadow-sm"
+          ? "bg-blue-900 text-white shadow-sm"
           : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
       }`}
     >
@@ -290,7 +290,7 @@ function StaffTab({ facilityId, showToast }: { facilityId: string; showToast: (m
               onClick={() => setNewRole(r)}
               className={`flex-1 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
                 newRole === r
-                  ? "bg-blue-50 border-blue-500 text-blue-700"
+                  ? "bg-blue-50 border-blue-900 text-blue-900"
                   : "bg-white border-slate-200 text-slate-500"
               }`}
             >
@@ -311,7 +311,7 @@ function StaffTab({ facilityId, showToast }: { facilityId: string; showToast: (m
             onClick={handleAdd}
             disabled={adding || !newName.trim()}
             className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${
-              adding || !newName.trim() ? "bg-slate-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              adding || !newName.trim() ? "bg-slate-300 cursor-not-allowed" : "bg-blue-900 hover:bg-blue-900"
             }`}
           >
             {adding ? <Loader2 size={15} className="animate-spin" /> : <UserPlus size={15} />}
@@ -337,7 +337,7 @@ function StaffTab({ facilityId, showToast }: { facilityId: string; showToast: (m
             {staff.map((s) => (
               <li key={s.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-xs font-bold">
+                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
                     {s.name[0]}
                   </div>
                   <div>
@@ -405,7 +405,7 @@ function ManagedList({
             onClick={onAdd}
             disabled={adding || !newName.trim()}
             className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${
-              adding || !newName.trim() ? "bg-slate-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              adding || !newName.trim() ? "bg-slate-300 cursor-not-allowed" : "bg-blue-900 hover:bg-blue-900"
             }`}
           >
             {adding ? <Loader2 size={15} className="animate-spin" /> : <UserPlus size={15} />}
@@ -430,7 +430,7 @@ function ManagedList({
             {items.map((item) => (
               <li key={item.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-xs font-bold">
+                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
                     {item.name[0]}
                   </div>
                   <div className="flex items-center gap-2">
@@ -536,11 +536,11 @@ function LineTab({
   return (
     <div className="space-y-4">
       {/* 説明 */}
-      <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 flex items-start gap-3">
-        <MessageCircle size={18} className="text-green-600 shrink-0 mt-0.5" />
+      <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3">
+        <MessageCircle size={18} className="text-blue-900 shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-bold text-green-800">LINE で日報入力</p>
-          <p className="text-xs text-green-700 mt-0.5 leading-relaxed">
+          <p className="text-sm font-bold text-blue-800">LINE で日報入力</p>
+          <p className="text-xs text-blue-900 mt-0.5 leading-relaxed">
             スタッフに QR コードをスキャンしてもらうと、LINE から直接日報を入力できるようになります。
             QR コードの有効期限は 30 分です。
           </p>
@@ -570,7 +570,7 @@ function LineTab({
                 className="flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-xs font-bold shrink-0">
+                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold shrink-0">
                     {s.name[0]}
                   </div>
                   <div>
@@ -580,7 +580,7 @@ function LineTab({
                         {s.role === "work" ? "職業指導員" : "生活支援員"}
                       </span>
                       {s.connected ? (
-                        <span className="flex items-center gap-1 text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                        <span className="flex items-center gap-1 text-xs font-semibold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
                           <Link2 size={10} />
                           連携済み
                         </span>
@@ -612,7 +612,7 @@ function LineTab({
                     <button
                       onClick={() => handleIssue(s)}
                       disabled={issuingId === s.id}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-blue-900 hover:bg-blue-900 transition-colors"
                     >
                       {issuingId === s.id ? (
                         <Loader2 size={13} className="animate-spin" />
@@ -664,7 +664,7 @@ function LineTab({
             <p className="text-xs text-slate-500 mb-3 leading-relaxed">
               LINE アプリでこの QR コードをスキャンすると連携が完了します。
               <br />
-              <span className="text-amber-600 font-semibold">有効期限：30 分</span>
+              <span className="text-slate-600 font-semibold">有効期限：30 分</span>
             </p>
 
             <button

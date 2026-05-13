@@ -79,7 +79,7 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-slate-800 flex-col justify-between p-12">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 bg-blue-500 rounded-xl flex items-center justify-center">
+            <div className="w-9 h-9 bg-blue-900 rounded-xl flex items-center justify-center">
               <ShieldCheck size={20} className="text-white" />
             </div>
             <span className="text-white font-bold text-lg">福祉運営指導サポート</span>
@@ -116,7 +116,7 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md space-y-8">
           <div className="lg:hidden flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-900 rounded-lg flex items-center justify-center">
               <ShieldCheck size={16} className="text-white" />
             </div>
             <span className="font-bold text-slate-800">福祉運営指導サポート</span>
@@ -198,7 +198,7 @@ export default function LoginPage() {
               className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-bold text-white transition-all ${
                 loading
                   ? "bg-blue-400 cursor-wait"
-                  : "bg-blue-600 hover:bg-blue-700 active:scale-[0.98] shadow-md hover:shadow-lg"
+                  : "bg-blue-900 hover:bg-blue-900 active:scale-[0.98] shadow-md hover:shadow-lg"
               }`}
             >
               {loading ? (
@@ -230,7 +230,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={fillDemo}
-              className="mt-3 w-full text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg py-2 transition-colors"
+              className="mt-3 w-full text-xs font-semibold text-blue-900 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg py-2 transition-colors"
             >
               上記を自動入力
             </button>

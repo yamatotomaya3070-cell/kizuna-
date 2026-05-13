@@ -48,7 +48,7 @@ function CircularProgress({ percent }: { percent: number }) {
 function DaysBadge({ days }: { days: number | null }) {
   if (days === null) return <span className="text-xs text-slate-300">期限なし</span>;
   if (days < 0) return <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700">{Math.abs(days)}日超過</span>;
-  if (days <= 7) return <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">残{days}日</span>;
+  if (days <= 7) return <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">残{days}日</span>;
   return <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">残{days}日</span>;
 }
 
@@ -134,11 +134,11 @@ export default function ClientDashboardPage() {
   const upcomingTasks = tasks.filter((t) => !t.completed);
   const completeAll = totalCount > 0 && upcomingTasks.length === 0;
   const progressColor = completeAll
-    ? "bg-emerald-600"
+    ? "bg-blue-900"
     : completionRate >= 70
-    ? "bg-blue-600"
+    ? "bg-blue-900"
     : completionRate >= 40
-    ? "bg-amber-500"
+    ? "bg-slate-500"
     : "bg-red-500";
 
   return (
@@ -150,12 +150,12 @@ export default function ClientDashboardPage() {
 
       {/* 完了率 */}
       <section className={`rounded-xl border p-6 shadow-sm ${
-        completeAll ? "border-emerald-200 bg-emerald-50" : "border-transparent bg-white"
+        completeAll ? "border-blue-200 bg-blue-50" : "border-transparent bg-white"
       }`}>
         <div className="mb-6 flex items-center justify-between gap-4">
           <h3 className="font-semibold text-slate-700">タスク完了率</h3>
           {completeAll && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-900 px-3 py-1 text-xs font-bold text-white">
               <PartyPopper size={13} />
               全タスク完了！
             </span>
@@ -165,19 +165,19 @@ export default function ClientDashboardPage() {
           <div className="relative flex-shrink-0">
             <CircularProgress percent={completionRate} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {completeAll && <CheckCircle2 size={18} className="mb-1 text-emerald-600" />}
-              <span className={`text-3xl font-bold ${completeAll ? "text-emerald-700" : "text-slate-800"}`}>{completionRate}%</span>
+              {completeAll && <CheckCircle2 size={18} className="mb-1 text-blue-900" />}
+              <span className={`text-3xl font-bold ${completeAll ? "text-blue-900" : "text-slate-800"}`}>{completionRate}%</span>
               <span className="text-xs text-slate-500 mt-0.5">{completeAll ? "達成" : "完了"}</span>
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full">
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-600">完了タスク</span>
-              <span className="font-bold text-green-600">{completedCount} 件</span>
+              <span className="font-bold text-blue-900">{completedCount} 件</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-600">未完了タスク</span>
-              <span className="font-bold text-orange-500">{totalCount - completedCount} 件</span>
+              <span className="font-bold text-slate-500">{totalCount - completedCount} 件</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-600">総タスク数</span>
@@ -190,7 +190,7 @@ export default function ClientDashboardPage() {
                   style={{ width: `${completionRate}%` }}
                 />
               </div>
-              <p className={`text-xs font-semibold ${completeAll ? "text-emerald-700" : "text-slate-500"}`}>
+              <p className={`text-xs font-semibold ${completeAll ? "text-blue-900" : "text-slate-500"}`}>
                 {completeAll ? "すべての対応が完了しています" : `残り ${totalCount - completedCount} 件です`}
               </p>
             </div>
@@ -204,7 +204,7 @@ export default function ClientDashboardPage() {
           <h3 className="font-semibold text-slate-700">タスク一覧</h3>
           <button
             onClick={() => setShowForm((v) => !v)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-900 text-white hover:bg-blue-900 transition-colors"
           >
             <Plus size={13} />
             タスクを追加
@@ -255,7 +255,7 @@ export default function ClientDashboardPage() {
                 <button
                   onClick={handleAdd}
                   disabled={adding || !newTitle.trim() || (!newDueDate && !noDueDate)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-300 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-blue-900 text-white hover:bg-blue-900 disabled:bg-slate-300 transition-colors"
                 >
                   {adding ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
                   追加
@@ -282,12 +282,12 @@ export default function ClientDashboardPage() {
                   <button
                     onClick={() => handleToggle(task)}
                     disabled={togglingId === task.id}
-                    className="shrink-0 text-slate-400 hover:text-blue-500 transition-colors"
+                    className="shrink-0 text-slate-400 hover:text-blue-900 transition-colors"
                   >
                     {togglingId === task.id
                       ? <Loader2 size={20} className="animate-spin" />
                       : task.completed
-                      ? <CheckCircle2 size={20} className="text-emerald-500" />
+                      ? <CheckCircle2 size={20} className="text-blue-900" />
                       : <Circle size={20} />}
                   </button>
                   <div className="flex-1 min-w-0">
@@ -313,8 +313,8 @@ export default function ClientDashboardPage() {
         )}
 
         {!loading && tasks.length > 0 && upcomingTasks.length === 0 && (
-          <div className="bg-emerald-50 border-t border-emerald-100 p-4 text-center">
-            <p className="inline-flex items-center justify-center gap-2 text-emerald-700 font-bold text-sm">
+          <div className="bg-blue-50 border-t border-blue-100 p-4 text-center">
+            <p className="inline-flex items-center justify-center gap-2 text-blue-900 font-bold text-sm">
               <PartyPopper size={16} />
               全タスク完了！
             </p>

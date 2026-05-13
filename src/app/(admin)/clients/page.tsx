@@ -140,13 +140,13 @@ export default function ClientsPage() {
     <div className="relative space-y-8 p-6 md:p-8">
       {toast && (
         <div className="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-xl bg-slate-800 px-4 py-3 text-sm font-semibold text-white shadow-lg">
-          <CheckCircle2 size={16} className="text-emerald-400" />
+          <CheckCircle2 size={16} className="text-blue-400" />
           {toast}
         </div>
       )}
 
       <div className="flex items-center gap-3">
-        <Users size={22} className="text-blue-500" />
+        <Users size={22} className="text-blue-900" />
         <div>
           <h2 className="text-2xl font-bold text-slate-800">利用者管理</h2>
           <p className="mt-0.5 text-sm text-slate-500">
@@ -199,7 +199,7 @@ export default function ClientsPage() {
           <button
             onClick={handleSave}
             disabled={saving || !form.name.trim()}
-            className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="flex items-center justify-center gap-2 rounded-xl bg-blue-900 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-blue-900 disabled:cursor-not-allowed disabled:bg-slate-300"
           >
             {saving ? <Loader2 size={15} className="animate-spin" /> : <UserPlus size={15} />}
             {editingId ? "更新" : "登録"}
@@ -213,7 +213,7 @@ export default function ClientsPage() {
               onClick={() => setForm((prev) => ({ ...prev, status }))}
               className={`rounded-xl px-3 py-2 text-xs font-bold transition-colors ${
                 form.status === status
-                  ? "bg-blue-600 text-white"
+                  ? "bg-blue-900 text-white"
                   : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
               }`}
             >
@@ -242,7 +242,7 @@ export default function ClientsPage() {
             {clients.map((client) => (
               <li key={client.id} className="grid gap-3 px-5 py-4 transition-colors hover:bg-slate-50 md:grid-cols-[1fr_160px_1fr_auto] md:items-center">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-blue-600">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-blue-900">
                     {client.name[0]}
                   </div>
                   <div>
@@ -252,9 +252,9 @@ export default function ClientsPage() {
                 </div>
                 <span className={`w-fit rounded-full px-2.5 py-1 text-xs font-bold ${
                   client.status === "active"
-                    ? "bg-emerald-100 text-emerald-700"
+                    ? "bg-blue-100 text-blue-900"
                     : client.status === "paused"
-                    ? "bg-amber-100 text-amber-700"
+                    ? "bg-slate-100 text-slate-700"
                     : "bg-slate-100 text-slate-600"
                 }`}>
                   {STATUS_LABEL[client.status ?? "active"]}
@@ -263,7 +263,7 @@ export default function ClientsPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => startEdit(client)}
-                    className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                    className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-900"
                     aria-label="編集"
                   >
                     <Edit3 size={16} />

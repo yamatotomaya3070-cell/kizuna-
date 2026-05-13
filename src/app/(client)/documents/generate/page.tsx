@@ -51,24 +51,24 @@ const DOC_TYPES: {
 const COLOR = {
   blue: {
     card: "border-blue-200 bg-blue-50",
-    active: "border-blue-500 bg-blue-50 ring-2 ring-blue-300",
-    icon: "text-blue-600",
-    btn: "bg-blue-600 hover:bg-blue-700",
-    badge: "bg-blue-100 text-blue-700",
+    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
+    badge: "bg-blue-100 text-blue-900",
   },
   indigo: {
-    card: "border-indigo-200 bg-indigo-50",
-    active: "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-300",
-    icon: "text-indigo-600",
-    btn: "bg-indigo-600 hover:bg-indigo-700",
-    badge: "bg-indigo-100 text-indigo-700",
+    card: "border-blue-200 bg-blue-50",
+    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
+    badge: "bg-blue-100 text-blue-900",
   },
   emerald: {
-    card: "border-emerald-200 bg-emerald-50",
-    active: "border-emerald-500 bg-emerald-50 ring-2 ring-emerald-300",
-    icon: "text-emerald-600",
-    btn: "bg-emerald-600 hover:bg-emerald-700",
-    badge: "bg-emerald-100 text-emerald-700",
+    card: "border-blue-200 bg-blue-50",
+    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
+    badge: "bg-blue-100 text-blue-900",
   },
 };
 
@@ -253,14 +253,14 @@ export default function GenerateDocumentPage() {
       {/* トースト */}
       {toast && (
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-slate-800 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg">
-          <CheckCircle2 size={16} className="text-emerald-400" />
+          <CheckCircle2 size={16} className="text-blue-400" />
           {toast}
         </div>
       )}
 
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center gap-2">
-          <FileText size={20} className="text-blue-500" />
+          <FileText size={20} className="text-blue-900" />
           <div>
             <h1 className="text-2xl font-bold text-slate-800">帳票自動生成</h1>
             <p className="text-sm text-slate-500 mt-0.5">利用者マスタの利用中の利用者から帳票を生成します</p>
@@ -269,7 +269,7 @@ export default function GenerateDocumentPage() {
         {/* 利用者選択 */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-            <User size={15} className="text-blue-500" />
+            <User size={15} className="text-blue-900" />
             <h2 className="text-sm font-bold text-slate-700">利用者を選択</h2>
           </div>
           <div className="p-5">
@@ -278,7 +278,7 @@ export default function GenerateDocumentPage() {
                 <p>利用者が登録されていません</p>
                 <Link
                   href="/clients"
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700"
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-900"
                 >
                   <UserPlus size={14} />
                   利用者管理から利用者を登録してください
@@ -292,7 +292,7 @@ export default function GenerateDocumentPage() {
                     onClick={() => setSelectedClient(name)}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       selectedClient === name
-                        ? "bg-blue-600 text-white shadow-sm"
+                        ? "bg-blue-900 text-white shadow-sm"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                     }`}
                   >
@@ -309,7 +309,7 @@ export default function GenerateDocumentPage() {
         {/* 帳票種類 */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-            <BarChart3 size={15} className="text-blue-500" />
+            <BarChart3 size={15} className="text-blue-900" />
             <h2 className="text-sm font-bold text-slate-700">帳票の種類</h2>
           </div>
           <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -344,8 +344,8 @@ export default function GenerateDocumentPage() {
             docType === "support_plan"
               ? "bg-blue-50 border-blue-100"
               : docType === "monitoring_report"
-              ? "bg-indigo-50 border-indigo-100"
-              : "bg-emerald-50 border-emerald-100"
+              ? "bg-blue-50 border-blue-100"
+              : "bg-blue-50 border-blue-100"
           }`}>
             <active.icon size={15} className={c.icon} />
             <h2 className="text-sm font-bold text-slate-700">{active.label} — 入力項目</h2>
@@ -447,12 +447,12 @@ export default function GenerateDocumentPage() {
             {/* モニタリング報告書 */}
             {docType === "monitoring_report" && (
               <>
-                <div className="rounded-xl bg-indigo-50 border border-indigo-100 p-4 text-sm text-indigo-700">
+                <div className="rounded-xl bg-blue-50 border border-blue-100 p-4 text-sm text-blue-900">
                   <div className="flex items-center gap-2 font-semibold mb-1">
                     <Sparkles size={14} />
                     AI自動生成
                   </div>
-                  <p className="text-xs text-indigo-600">
+                  <p className="text-xs text-blue-900">
                     対象期間内の日報データをもとに、Gemini AIが「達成度・課題・次期目標」を自動生成して帳票に反映します。
                   </p>
                 </div>

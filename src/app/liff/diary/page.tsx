@@ -29,11 +29,11 @@ const TRANSPORT = [
 ];
 
 const colorMap: Record<string, { bg: string; border: string; text: string; pill: string }> = {
-  emerald: { bg: "bg-emerald-50", border: "border-emerald-400", text: "text-emerald-700", pill: "bg-emerald-500" },
-  amber:   { bg: "bg-amber-50",   border: "border-amber-400",   text: "text-amber-700",   pill: "bg-amber-500" },
+  emerald: { bg: "bg-blue-50", border: "border-blue-400", text: "text-blue-900", pill: "bg-blue-900" },
+  amber:   { bg: "bg-slate-50",   border: "border-slate-400",   text: "text-slate-700",   pill: "bg-slate-500" },
   red:     { bg: "bg-red-50",     border: "border-red-400",     text: "text-red-700",      pill: "bg-red-500" },
   slate:   { bg: "bg-slate-50",   border: "border-slate-300",   text: "text-slate-600",    pill: "bg-slate-400" },
-  blue:    { bg: "bg-blue-50",    border: "border-blue-400",    text: "text-blue-700",     pill: "bg-blue-500" },
+  blue:    { bg: "bg-blue-50",    border: "border-blue-400",    text: "text-blue-900",     pill: "bg-blue-900" },
 };
 
 type Step = "client" | "basic" | "eval" | "done";
@@ -72,16 +72,16 @@ function StepBar({ current }: { current: Step }) {
           <div
             className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
               i < idx
-                ? "bg-emerald-500 text-white"
+                ? "bg-blue-900 text-white"
                 : i === idx
-                ? "bg-blue-600 text-white"
+                ? "bg-blue-900 text-white"
                 : "bg-slate-100 text-slate-400"
             }`}
           >
             {i < idx ? <CheckCircle2 size={13} /> : i + 1}
           </div>
           {i < LIFF_STEPS.length - 1 && (
-            <div className={`h-0.5 w-4 rounded ${i < idx ? "bg-emerald-400" : "bg-slate-200"}`} />
+            <div className={`h-0.5 w-4 rounded ${i < idx ? "bg-blue-400" : "bg-slate-200"}`} />
           )}
         </div>
       ))}
@@ -337,7 +337,7 @@ export default function LiffDiaryPage() {
   if (liffState === "loading" || liffState === "registering") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-white">
-        <Loader2 size={32} className="animate-spin text-green-500 mb-4" />
+        <Loader2 size={32} className="animate-spin text-blue-900 mb-4" />
         <p className="text-sm text-slate-600 font-medium">
           {liffState === "registering" ? "LINE連携を設定中..." : "読み込み中..."}
         </p>
@@ -365,21 +365,21 @@ export default function LiffDiaryPage() {
   if (step === "done") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-white">
-        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-5">
-          <CheckCircle2 size={40} className="text-emerald-500" />
+        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-5">
+          <CheckCircle2 size={40} className="text-blue-900" />
         </div>
         <h2 className="text-xl font-bold text-slate-800 mb-1">送信完了</h2>
         <p className="text-sm text-slate-500 mb-1">{clientName}さんの日報を保存しました</p>
         <p className="text-xs text-slate-400 mb-2">
           {today}　記録者: {staffInfo?.staffName}
         </p>
-        <span className="text-xs font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-8">
+        <span className="text-xs font-bold bg-blue-100 text-blue-900 px-3 py-1 rounded-full mb-8">
           本日 {doneCount}名 完了
         </span>
         <div className="w-full max-w-xs space-y-3">
           <button
             onClick={resetForNext}
-            className="w-full py-3.5 bg-blue-600 text-white rounded-2xl font-bold text-sm"
+            className="w-full py-3.5 bg-blue-900 text-white rounded-2xl font-bold text-sm"
           >
             次の利用者を入力
           </button>
@@ -402,7 +402,7 @@ export default function LiffDiaryPage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="text-base font-bold text-slate-800 flex items-center gap-2">
-              <MessageCircle size={16} className="text-green-500" />
+              <MessageCircle size={16} className="text-blue-900" />
               LINE 日報入力
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -410,7 +410,7 @@ export default function LiffDiaryPage() {
             </p>
           </div>
           {doneCount > 0 && (
-            <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-bold bg-blue-100 text-blue-900 px-2.5 py-1 rounded-full">
               {doneCount}名完了
             </span>
           )}
@@ -440,7 +440,7 @@ export default function LiffDiaryPage() {
                   onClick={() => setClientName(name)}
                   className={`py-3.5 px-3 rounded-2xl border-2 text-sm font-bold transition-all active:scale-[0.97] ${
                     clientName === name
-                      ? "bg-blue-50 border-blue-500 text-blue-700"
+                      ? "bg-blue-50 border-blue-900 text-blue-900"
                       : "bg-white border-slate-100 text-slate-700 hover:border-slate-200"
                   }`}
                 >
@@ -466,9 +466,9 @@ export default function LiffDiaryPage() {
             </div>
           ) : adminAttendance ? (
             <div className="space-y-4">
-              <div className="bg-indigo-50 border border-indigo-200 rounded-2xl px-4 py-3 flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-500 shrink-0" />
-                <p className="text-xs font-semibold text-indigo-700">管理者が入力済みです</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl px-4 py-3 flex items-center gap-2">
+                <CheckCircle2 size={15} className="text-blue-900 shrink-0" />
+                <p className="text-xs font-semibold text-blue-900">管理者が入力済みです</p>
               </div>
               {[
                 { label: "出欠", value: adminAttendance.attendance, opts: serviceFormat.attendanceOptions },
@@ -624,10 +624,10 @@ export default function LiffDiaryPage() {
                                   sel ? "bg-blue-50 border-blue-400" : "bg-white border-slate-100"
                                 }`}
                               >
-                                <span className={`text-sm font-semibold ${sel ? "text-blue-700" : "text-slate-600"}`}>
+                                <span className={`text-sm font-semibold ${sel ? "text-blue-900" : "text-slate-600"}`}>
                                   {opt.label}
                                 </span>
-                                {sel && <CheckCircle2 size={16} className="ml-auto text-blue-500" />}
+                                {sel && <CheckCircle2 size={16} className="ml-auto text-blue-900" />}
                               </button>
                             );
                           })}
@@ -659,7 +659,7 @@ export default function LiffDiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-emerald-600 mb-2 flex items-center gap-1">
+            <p className="text-xs font-bold text-blue-900 mb-2 flex items-center gap-1">
               <Sparkles size={12} />
               良好
             </p>
@@ -669,7 +669,7 @@ export default function LiffDiaryPage() {
                   key={t}
                   type="button"
                   onClick={() => addTemplate(t)}
-                  className="w-full text-left px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-sm text-emerald-800 hover:bg-emerald-100 transition-all active:scale-[0.98]"
+                  className="w-full text-left px-4 py-3 rounded-xl bg-blue-50 border border-blue-200 text-sm text-blue-800 hover:bg-blue-100 transition-all active:scale-[0.98]"
                 >
                   {t}
                 </button>
@@ -678,7 +678,7 @@ export default function LiffDiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-blue-600 mb-2 flex items-center gap-1">
+            <p className="text-xs font-bold text-blue-900 mb-2 flex items-center gap-1">
               <Sparkles size={12} />
               普通
             </p>
@@ -697,7 +697,7 @@ export default function LiffDiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-amber-600 mb-2 flex items-center gap-1">
+            <p className="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1">
               <Sparkles size={12} />
               要注意
             </p>
@@ -707,7 +707,7 @@ export default function LiffDiaryPage() {
                   key={t}
                   type="button"
                   onClick={() => addTemplate(t)}
-                  className="w-full text-left px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-800 hover:bg-amber-100 transition-all active:scale-[0.98]"
+                  className="w-full text-left px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 hover:bg-slate-100 transition-all active:scale-[0.98]"
                 >
                   {t}
                 </button>
@@ -771,7 +771,7 @@ export default function LiffDiaryPage() {
               disabled={!canNext[step]}
               className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-sm transition-all ${
                 canNext[step]
-                  ? "bg-blue-600 text-white shadow-md active:scale-[0.98]"
+                  ? "bg-blue-900 text-white shadow-md active:scale-[0.98]"
                   : "bg-slate-100 text-slate-400 cursor-not-allowed"
               }`}
             >
@@ -785,7 +785,7 @@ export default function LiffDiaryPage() {
               disabled={!canNext["eval"] || loading}
               className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-sm transition-all ${
                 canNext["eval"] && !loading
-                  ? "bg-blue-600 text-white shadow-md active:scale-[0.98]"
+                  ? "bg-blue-900 text-white shadow-md active:scale-[0.98]"
                   : "bg-slate-100 text-slate-400 cursor-not-allowed"
               }`}
             >

@@ -78,14 +78,14 @@ export default function FacilitiesPage() {
       {/* トースト */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 flex items-center gap-2 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg ${toastType === "ok" ? "bg-slate-800" : "bg-red-600"}`}>
-          <CheckCircle2 size={16} className={toastType === "ok" ? "text-emerald-400" : "text-white"} />
+          <CheckCircle2 size={16} className={toastType === "ok" ? "text-blue-400" : "text-white"} />
           {toast}
         </div>
       )}
 
       {/* ヘッダー */}
       <div className="flex items-center gap-3">
-        <Building2 size={22} className="text-blue-500" />
+        <Building2 size={22} className="text-blue-900" />
         <div>
           <h2 className="text-2xl font-bold text-slate-800">事業所管理</h2>
           <p className="text-sm text-slate-500 mt-0.5">新規事業所の追加とアカウント発行を行います</p>
@@ -157,7 +157,7 @@ export default function FacilitiesPage() {
             className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${
               adding || !facilityName.trim() || !email.trim() || !password.trim()
                 ? "bg-slate-300 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                : "bg-blue-900 hover:bg-blue-900"
             }`}
           >
             {adding ? <Loader2 size={15} className="animate-spin" /> : <UserPlus size={15} />}
@@ -183,7 +183,7 @@ export default function FacilitiesPage() {
             {facilities.map((f) => (
               <li key={f.id} className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
                 <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                  <Building2 size={16} className="text-blue-500" />
+                  <Building2 size={16} className="text-blue-900" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-800">{f.name}</p>

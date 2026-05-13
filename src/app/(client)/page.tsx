@@ -161,46 +161,46 @@ const COLOR_MAP: Record<
     btn: "bg-red-500 hover:bg-red-600",
   },
   green: {
-    bg: "bg-emerald-50",
-    border: "border-emerald-200",
-    badge: "bg-emerald-100 text-emerald-700",
-    icon: "text-emerald-500",
-    btn: "bg-emerald-500 hover:bg-emerald-600",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-900",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
   },
   blue: {
     bg: "bg-blue-50",
     border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-700",
-    icon: "text-blue-500",
-    btn: "bg-blue-500 hover:bg-blue-600",
+    badge: "bg-blue-100 text-blue-900",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
   },
   amber: {
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    badge: "bg-amber-100 text-amber-700",
-    icon: "text-amber-500",
-    btn: "bg-amber-500 hover:bg-amber-600",
+    bg: "bg-slate-50",
+    border: "border-slate-200",
+    badge: "bg-slate-100 text-slate-700",
+    icon: "text-slate-500",
+    btn: "bg-slate-500 hover:bg-slate-600",
   },
   purple: {
-    bg: "bg-purple-50",
-    border: "border-purple-200",
-    badge: "bg-purple-100 text-purple-700",
-    icon: "text-purple-500",
-    btn: "bg-purple-500 hover:bg-purple-600",
+    bg: "bg-slate-50",
+    border: "border-slate-200",
+    badge: "bg-slate-100 text-slate-700",
+    icon: "text-slate-500",
+    btn: "bg-slate-500 hover:bg-slate-600",
   },
   indigo: {
-    bg: "bg-indigo-50",
-    border: "border-indigo-200",
-    badge: "bg-indigo-100 text-indigo-700",
-    icon: "text-indigo-500",
-    btn: "bg-indigo-500 hover:bg-indigo-600",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-900",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
   },
   teal: {
-    bg: "bg-teal-50",
-    border: "border-teal-200",
-    badge: "bg-teal-100 text-teal-700",
-    icon: "text-teal-500",
-    btn: "bg-teal-500 hover:bg-teal-600",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-900",
+    icon: "text-blue-900",
+    btn: "bg-blue-900 hover:bg-blue-900",
   },
 };
 
@@ -229,13 +229,13 @@ function ChecklistSection({
   const pct = Math.round((done / total) * 100);
 
   const barColor =
-    pct >= 80 ? "bg-emerald-500" : pct >= 50 ? "bg-blue-500" : "bg-amber-500";
+    pct >= 80 ? "bg-blue-900" : pct >= 50 ? "bg-blue-900" : "bg-slate-500";
   const pctColor =
     pct >= 80
-      ? "text-emerald-600"
+      ? "text-blue-900"
       : pct >= 50
-      ? "text-blue-600"
-      : "text-amber-600";
+      ? "text-blue-900"
+      : "text-slate-600";
   const message =
     pct >= 80
       ? "素晴らしい！運営指導の準備が整っています 🎉"
@@ -304,7 +304,7 @@ function ChecklistSection({
                       <span
                         className={`shrink-0 transition-colors ${
                           isChecked
-                            ? "text-emerald-500"
+                            ? "text-blue-900"
                             : "text-slate-300 group-hover:text-blue-400"
                         }`}
                       >
@@ -337,7 +337,7 @@ function ChecklistSection({
                         </span>
                       )}
                       {isChecked && (
-                        <span className="shrink-0 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        <span className="shrink-0 text-xs font-semibold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
                           完了 ✓
                         </span>
                       )}
@@ -351,8 +351,8 @@ function ChecklistSection({
       })}
 
       {done === total && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center">
-          <p className="text-emerald-700 font-bold text-base">
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center">
+          <p className="text-blue-900 font-bold text-base">
             🎉 全書類の準備が完了しました！運営指導は万全です。
           </p>
         </div>
@@ -381,19 +381,19 @@ function ManualsSection() {
       {/* プレビューモーダル風バナー */}
       {previewing && (
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
-          <Eye size={20} className="text-blue-500 shrink-0 mt-0.5" />
+          <Eye size={20} className="text-blue-900 shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold text-blue-800 text-sm">
               PDFプレビュー：
               {MANUALS.find((m) => m.id === previewing)?.title}
             </p>
-            <p className="text-xs text-blue-600 mt-1">
+            <p className="text-xs text-blue-900 mt-1">
               ※ デモ環境のため、実際のPDFは表示されません。本番環境ではPDFビューアが起動します。
             </p>
           </div>
           <button
             onClick={() => setPreviewing(null)}
-            className="text-blue-400 hover:text-blue-600 text-xs underline shrink-0"
+            className="text-blue-400 hover:text-blue-900 text-xs underline shrink-0"
           >
             閉じる
           </button>
@@ -402,20 +402,20 @@ function ManualsSection() {
 
       {/* 編集モーダル風バナー */}
       {editing && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-start gap-4">
-          <PlusCircle size={20} className="text-emerald-500 shrink-0 mt-0.5" />
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
+          <PlusCircle size={20} className="text-blue-900 shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="font-semibold text-emerald-800 text-sm">
+            <p className="font-semibold text-blue-800 text-sm">
               雛形エディタ：
               {MANUALS.find((m) => m.id === editing)?.title}
             </p>
-            <p className="text-xs text-emerald-600 mt-1">
+            <p className="text-xs text-blue-900 mt-1">
               ※ デモ環境のため、編集機能は本番環境で利用可能です。コンサルタント作成の標準雛形をベースに事業所ごとにカスタマイズできます。
             </p>
           </div>
           <button
             onClick={() => setEditing(null)}
-            className="text-emerald-400 hover:text-emerald-600 text-xs underline shrink-0"
+            className="text-blue-400 hover:text-blue-900 text-xs underline shrink-0"
           >
             閉じる
           </button>
@@ -556,7 +556,7 @@ function AIDiarySection() {
       {/* 日報入力 */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-          <ScrollText size={16} className="text-blue-500" />
+          <ScrollText size={16} className="text-blue-900" />
           <h3 className="font-bold text-slate-700 text-sm">今日の日報を記録</h3>
         </div>
         <div className="p-5 space-y-4">
@@ -568,7 +568,7 @@ function AIDiarySection() {
                 onClick={() => setSelectedUser(name)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
                   selectedUser === name
-                    ? "bg-blue-600 text-white shadow-sm"
+                    ? "bg-blue-900 text-white shadow-sm"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
@@ -587,7 +587,7 @@ function AIDiarySection() {
 
           <div className="flex items-center justify-between">
             {submitted && (
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
                 <CheckCircle2 size={14} />
                 日報を保存しました
               </span>
@@ -598,7 +598,7 @@ function AIDiarySection() {
               disabled={!diary.trim()}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all ${
                 diary.trim()
-                  ? "bg-blue-600 hover:bg-blue-700 active:scale-[0.97]"
+                  ? "bg-blue-900 hover:bg-blue-900 active:scale-[0.97]"
                   : "bg-slate-200 text-slate-400 cursor-not-allowed"
               }`}
             >
@@ -612,11 +612,11 @@ function AIDiarySection() {
       {/* モニタリング生成 */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
-          <Brain size={16} className="text-indigo-500" />
+          <Brain size={16} className="text-blue-900" />
           <h3 className="font-bold text-slate-700 text-sm">
             AIモニタリング評価
           </h3>
-          <span className="ml-auto text-xs font-semibold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
+          <span className="ml-auto text-xs font-semibold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-full">
             キラー機能
           </span>
         </div>
@@ -630,7 +630,7 @@ function AIDiarySection() {
                 onClick={() => setSelectedUser(name)}
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                   selectedUser === name
-                    ? "border-indigo-300 bg-indigo-50"
+                    ? "border-blue-300 bg-blue-50"
                     : "border-slate-100 hover:border-slate-200 hover:bg-slate-50"
                 }`}
               >
@@ -641,7 +641,7 @@ function AIDiarySection() {
                   <p className="text-sm font-semibold text-slate-800">{name}</p>
                 </div>
                 {selectedUser === name && (
-                  <ChevronRight size={15} className="text-indigo-400 shrink-0" />
+                  <ChevronRight size={15} className="text-blue-400 shrink-0" />
                 )}
               </div>
             ))}
@@ -653,8 +653,8 @@ function AIDiarySection() {
             disabled={aiLoading}
             className={`w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-sm transition-all ${
               aiLoading
-                ? "bg-indigo-300 text-white cursor-wait"
-                : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md hover:shadow-lg active:scale-[0.98]"
+                ? "bg-blue-300 text-white cursor-wait"
+                : "bg-gradient-to-r from-blue-900 to-blue-900 hover:from-blue-900 hover:to-blue-900 text-white shadow-md hover:shadow-lg active:scale-[0.98]"
             }`}
           >
             {aiLoading ? (
@@ -684,13 +684,13 @@ function AIDiarySection() {
 
           {/* 生成済みレポート */}
           {report && !aiLoading && (
-            <div className="border border-indigo-200 rounded-2xl overflow-hidden mt-2">
-              <div className="px-5 py-3 bg-indigo-50 border-b border-indigo-100 flex items-center gap-2">
-                <Sparkles size={14} className="text-indigo-500" />
-                <span className="text-xs font-bold text-indigo-700">
+            <div className="border border-blue-200 rounded-2xl overflow-hidden mt-2">
+              <div className="px-5 py-3 bg-blue-50 border-b border-blue-100 flex items-center gap-2">
+                <Sparkles size={14} className="text-blue-900" />
+                <span className="text-xs font-bold text-blue-900">
                   AI生成 — {selectedUser}　個別支援計画モニタリング評価案
                 </span>
-                <span className="ml-auto text-xs text-indigo-400">
+                <span className="ml-auto text-xs text-blue-400">
                   ※ 内容を確認の上ご活用ください
                 </span>
               </div>
@@ -756,12 +756,12 @@ function AIDiarySection() {
                     } catch { alert("PDF生成に失敗しました"); }
                     finally { setPdfLoading(false); }
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-900 hover:bg-blue-900 disabled:bg-slate-300 transition-colors"
                 >
                   {pdfLoading ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
                   PDF出力
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-900 hover:bg-blue-900 transition-colors">
                   <CheckCheck size={13} />
                   書類保管庫に保存
                 </button>
@@ -786,9 +786,9 @@ function ReportBlock({
   content: string;
 }) {
   const styles = {
-    emerald: "bg-emerald-50 text-emerald-700",
-    amber: "bg-amber-50 text-amber-700",
-    blue: "bg-blue-50 text-blue-700",
+    emerald: "bg-blue-50 text-blue-900",
+    amber: "bg-slate-50 text-slate-700",
+    blue: "bg-blue-50 text-blue-900",
   };
   return (
     <div>
@@ -855,12 +855,12 @@ export default function ClientDashboard() {
       {/* モバイル固定ヘッダー */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Building2 size={15} className="text-blue-500" />
+          <Building2 size={15} className="text-blue-900" />
           <span className="text-sm font-bold text-slate-800">さくら福祉センター</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="text-xs text-slate-500">準備スコア</span>
-          <span className="text-sm font-bold text-blue-600">
+          <span className="text-sm font-bold text-blue-900">
             {Math.round((checked.size / ALL_ITEMS.length) * 100)}%
           </span>
         </div>
@@ -871,8 +871,8 @@ export default function ClientDashboard() {
         {/* ヘッダー */}
         <div className="px-4 py-5 border-b border-slate-100">
           <div className="flex items-center gap-2 mb-1">
-            <Building2 size={16} className="text-blue-500" />
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-wide">
+            <Building2 size={16} className="text-blue-900" />
+            <span className="text-xs font-bold text-blue-900 uppercase tracking-wide">
               クライアント専用
             </span>
           </div>
@@ -885,14 +885,14 @@ export default function ClientDashboard() {
         <div className="px-3 pt-3 space-y-1.5">
           <Link
             href="/diary"
-            className="flex items-center gap-2 w-full px-3 py-3 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-3 rounded-xl bg-blue-900 text-white text-xs font-bold hover:bg-blue-900 transition-colors"
           >
             <ScrollText size={15} />
             日報を入力する
           </Link>
           <Link
             href="/diary/batch"
-            className="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-blue-50 text-blue-900 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors"
           >
             <Users size={13} />
             一括入力モード
@@ -909,7 +909,7 @@ export default function ClientDashboard() {
                 onClick={() => setMenu(id)}
                 className={`w-full flex items-start gap-3 px-3 py-3 rounded-xl text-left transition-all ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-sm"
+                    ? "bg-blue-900 text-white shadow-sm"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
                 }`}
               >
@@ -933,7 +933,7 @@ export default function ClientDashboard() {
         <div className="px-3 pb-2 space-y-1">
           <Link
             href="/documents/generate"
-            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-100"
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-blue-900 bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-100"
           >
             <FileDown size={14} />
             帳票自動生成
@@ -966,13 +966,13 @@ export default function ClientDashboard() {
           <div className="bg-slate-50 rounded-xl px-3 py-3">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-xs text-slate-500 font-medium">準備スコア</span>
-              <span className="text-xs font-bold text-blue-600">
+              <span className="text-xs font-bold text-blue-900">
                 {Math.round((checked.size / ALL_ITEMS.length) * 100)}%
               </span>
             </div>
             <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                className="h-full bg-blue-900 rounded-full transition-all duration-500"
                 style={{
                   width: `${Math.round((checked.size / ALL_ITEMS.length) * 100)}%`,
                 }}
@@ -987,7 +987,7 @@ export default function ClientDashboard() {
         {/* ページヘッダー */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-0.5">
-            <activeMenu.Icon size={18} className="text-blue-500" />
+            <activeMenu.Icon size={18} className="text-blue-900" />
             <h2 className="text-xl font-bold text-slate-800">
               {activeMenu.label}
             </h2>
@@ -1013,7 +1013,7 @@ export default function ClientDashboard() {
           <button
             onClick={() => setMenu("checklist")}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-colors ${
-              menu === "checklist" ? "text-blue-600" : "text-slate-400"
+              menu === "checklist" ? "text-blue-900" : "text-slate-400"
             }`}
           >
             <ClipboardList size={20} />
@@ -1024,7 +1024,7 @@ export default function ClientDashboard() {
           <button
             onClick={() => setMenu("manuals")}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-colors ${
-              menu === "manuals" ? "text-blue-600" : "text-slate-400"
+              menu === "manuals" ? "text-blue-900" : "text-slate-400"
             }`}
           >
             <BookOpen size={20} />
@@ -1036,25 +1036,25 @@ export default function ClientDashboard() {
             <div className="flex items-end gap-1 -mt-5">
               <Link
                 href="/diary"
-                className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg text-white transition-transform active:scale-95"
+                className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center shadow-lg text-white transition-transform active:scale-95"
               >
                 <ScrollText size={20} />
               </Link>
               <Link
                 href="/diary/batch"
-                className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shadow text-blue-700 transition-transform active:scale-95"
+                className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shadow text-blue-900 transition-transform active:scale-95"
               >
                 <Users size={14} />
               </Link>
             </div>
-            <span className="text-[10px] font-semibold text-blue-600 mt-0.5">日報</span>
+            <span className="text-[10px] font-semibold text-blue-900 mt-0.5">日報</span>
           </div>
 
           {/* AI日報 */}
           <button
             onClick={() => setMenu("ai-diary")}
             className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-colors ${
-              menu === "ai-diary" ? "text-blue-600" : "text-slate-400"
+              menu === "ai-diary" ? "text-blue-900" : "text-slate-400"
             }`}
           >
             <Brain size={20} />
@@ -1064,7 +1064,7 @@ export default function ClientDashboard() {
           {/* 設定 */}
           <Link
             href="/settings"
-            className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-slate-400 transition-colors active:text-blue-600"
+            className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-slate-400 transition-colors active:text-blue-900"
           >
             <Settings size={20} />
             <span className="text-[10px] font-semibold">設定</span>

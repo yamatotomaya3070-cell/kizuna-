@@ -122,7 +122,7 @@ export default function BillingReportPage() {
     <div className="min-h-screen bg-slate-50 pb-12">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center gap-2">
-          <BarChart3 size={20} className="text-emerald-500" />
+          <BarChart3 size={20} className="text-blue-900" />
           <div>
             <h1 className="text-2xl font-bold text-slate-800">加算・請求集計</h1>
             <p className="text-sm text-slate-500 mt-0.5">出欠データを月次で集計します</p>
@@ -153,9 +153,9 @@ export default function BillingReportPage() {
         {/* 加算説明 */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "食事提供加算", key: "lunch" as const, color: "bg-emerald-100 text-emerald-700", desc: "昼食:○の日" },
-            { label: "送迎加算(往復)", key: "transportBoth" as const, color: "bg-blue-100 text-blue-700", desc: "送迎:○の日" },
-            { label: "送迎加算(片道)", key: "transportOne" as const, color: "bg-amber-100 text-amber-700", desc: "送迎:△の日" },
+            { label: "食事提供加算", key: "lunch" as const, color: "bg-blue-100 text-blue-900", desc: "昼食:○の日" },
+            { label: "送迎加算(往復)", key: "transportBoth" as const, color: "bg-blue-100 text-blue-900", desc: "送迎:○の日" },
+            { label: "送迎加算(片道)", key: "transportOne" as const, color: "bg-slate-100 text-slate-700", desc: "送迎:△の日" },
             { label: "出席日数", key: "attendance" as const, color: "bg-slate-100 text-slate-700", desc: "出欠:○/△の日" },
           ].map(({ label, key, color, desc }) => (
             <div key={key} className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 text-center">
@@ -182,7 +182,7 @@ export default function BillingReportPage() {
               <button
                 onClick={handlePDF}
                 disabled={summaries.length === 0}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 disabled:opacity-50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-900 hover:bg-blue-100 disabled:opacity-50 transition-colors"
               >
                 <FileText size={13} />
                 実績記録票PDF
@@ -207,7 +207,7 @@ export default function BillingReportPage() {
                     <th className="px-4 py-3 text-center">出席日数</th>
                     <th className="px-4 py-3 text-center">
                       <span className="inline-flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                        <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
                         食事加算
                       </span>
                     </th>
@@ -219,7 +219,7 @@ export default function BillingReportPage() {
                     </th>
                     <th className="px-4 py-3 text-center">
                       <span className="inline-flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
+                        <span className="w-2 h-2 rounded-full bg-slate-400 inline-block" />
                         送迎片道
                       </span>
                     </th>
@@ -231,13 +231,13 @@ export default function BillingReportPage() {
                       <td className="px-5 py-3.5 font-medium text-slate-800">{s.clientName}</td>
                       <td className="px-4 py-3.5 text-center font-semibold text-slate-700">{s.attendance}</td>
                       <td className="px-4 py-3.5 text-center">
-                        <span className="font-semibold text-emerald-700">{s.lunch}</span>
+                        <span className="font-semibold text-blue-900">{s.lunch}</span>
                       </td>
                       <td className="px-4 py-3.5 text-center">
-                        <span className="font-semibold text-blue-700">{s.transportBoth}</span>
+                        <span className="font-semibold text-blue-900">{s.transportBoth}</span>
                       </td>
                       <td className="px-4 py-3.5 text-center">
-                        <span className="font-semibold text-amber-700">{s.transportOne}</span>
+                        <span className="font-semibold text-slate-700">{s.transportOne}</span>
                       </td>
                     </tr>
                   ))}
@@ -245,9 +245,9 @@ export default function BillingReportPage() {
                   <tr className="bg-slate-50 font-bold">
                     <td className="px-5 py-3.5 text-slate-700">合計</td>
                     <td className="px-4 py-3.5 text-center text-slate-800">{totals.attendance}</td>
-                    <td className="px-4 py-3.5 text-center text-emerald-700">{totals.lunch}</td>
-                    <td className="px-4 py-3.5 text-center text-blue-700">{totals.transportBoth}</td>
-                    <td className="px-4 py-3.5 text-center text-amber-700">{totals.transportOne}</td>
+                    <td className="px-4 py-3.5 text-center text-blue-900">{totals.lunch}</td>
+                    <td className="px-4 py-3.5 text-center text-blue-900">{totals.transportBoth}</td>
+                    <td className="px-4 py-3.5 text-center text-slate-700">{totals.transportOne}</td>
                   </tr>
                 </tbody>
               </table>
@@ -256,7 +256,7 @@ export default function BillingReportPage() {
         </div>
 
         {/* CSV形式の説明 */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-700">
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-700">
           <p className="font-semibold mb-1">CSV出力について</p>
           <p>出力されるCSVは国保連請求の補助集計データです。正式な請求書は各請求ソフト（恵 / けあシス等）にてご作成ください。</p>
         </div>

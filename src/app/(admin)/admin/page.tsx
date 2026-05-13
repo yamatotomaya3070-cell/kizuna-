@@ -80,9 +80,9 @@ export default function AdminPage() {
           {/* サマリー */}
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
             <SummaryCard label="契約事業所数" value={total} sub="登録済み" color="border-blue-400" />
-            <SummaryCard label="今月稼働中" value={activeThisMonth} sub="日報入力あり" color="border-emerald-400" />
-            <SummaryCard label="未稼働" value={inactiveCount} sub="今月入力なし" color="border-amber-400" />
-            <SummaryCard label="今月の日報合計" value={facilities.reduce((n, f) => n + f.diary_count, 0)} sub="全施設合計" color="border-violet-400" />
+            <SummaryCard label="今月稼働中" value={activeThisMonth} sub="日報入力あり" color="border-blue-400" />
+            <SummaryCard label="未稼働" value={inactiveCount} sub="今月入力なし" color="border-slate-400" />
+            <SummaryCard label="今月の日報合計" value={facilities.reduce((n, f) => n + f.diary_count, 0)} sub="全施設合計" color="border-blue-400" />
           </div>
 
           {/* 施設一覧 */}
@@ -112,7 +112,7 @@ export default function AdminPage() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                              <Building2 size={14} className="text-blue-500" />
+                              <Building2 size={14} className="text-blue-900" />
                             </div>
                             <span className="font-medium text-slate-800">{f.name}</span>
                           </div>
@@ -127,14 +127,14 @@ export default function AdminPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-center">
-                          <span className={`text-sm font-bold ${f.diary_count > 0 ? "text-emerald-600" : "text-slate-300"}`}>
+                          <span className={`text-sm font-bold ${f.diary_count > 0 ? "text-blue-900" : "text-slate-300"}`}>
                             {f.diary_count}件
                           </span>
                         </td>
                         <td className="px-6 py-4 text-center">
                           <span className={`inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full ${
                             active
-                              ? "bg-emerald-100 text-emerald-700"
+                              ? "bg-blue-100 text-blue-900"
                               : "bg-slate-100 text-slate-500"
                           }`}>
                             {active ? "稼働中" : "未稼働"}

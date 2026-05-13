@@ -109,13 +109,13 @@ function StepCard({ step, index }: { step: (typeof learningSteps)[number]; index
                     <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
                       <CheckCircle2
                         size={16}
-                        className="flex-shrink-0 mt-0.5 text-emerald-400"
+                        className="flex-shrink-0 mt-0.5 text-blue-400"
                       />
                       {line}
                     </li>
                   ))}
                 </ul>
-                <button className="mt-5 w-full py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-sky-500 text-white text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow">
+                <button className="mt-5 w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-900 to-blue-900 text-white text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow">
                   このステップを開始する →
                 </button>
               </div>
@@ -141,7 +141,7 @@ export default function ELearningSteps() {
         variants={heroVariants}
         initial="hidden"
         animate="show"
-        className="rounded-3xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-sky-500 p-8 text-white shadow-lg mb-8 relative overflow-hidden"
+        className="rounded-3xl bg-gradient-to-br from-blue-900 via-blue-900 to-blue-900 p-8 text-white shadow-lg mb-8 relative overflow-hidden"
       >
         {/* 背景装飾 */}
         <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-white/10" />

@@ -71,7 +71,7 @@ export default function BillingPage() {
       </div>
 
       {message && (
-        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800">
           <AlertCircle size={18} className="mt-0.5 shrink-0" />
           <span>{message}</span>
         </div>
@@ -85,23 +85,23 @@ export default function BillingPage() {
               key={plan.id}
               className={`relative bg-white rounded-3xl border-2 p-6 flex flex-col ${
                 plan.recommended
-                  ? "border-blue-500 shadow-lg shadow-blue-100"
+                  ? "border-blue-900 shadow-lg shadow-blue-100"
                   : "border-slate-200"
               }`}
             >
               {plan.recommended && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1 rounded-full">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-900 text-white text-xs font-bold px-4 py-1 rounded-full">
                   おすすめ
                 </span>
               )}
 
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${
                 plan.color === "blue" ? "bg-blue-100" :
-                plan.color === "indigo" ? "bg-indigo-100" : "bg-slate-100"
+                plan.color === "indigo" ? "bg-blue-100" : "bg-slate-100"
               }`}>
                 <Icon size={22} className={
-                  plan.color === "blue" ? "text-blue-600" :
-                  plan.color === "indigo" ? "text-indigo-600" : "text-slate-600"
+                  plan.color === "blue" ? "text-blue-900" :
+                  plan.color === "indigo" ? "text-blue-900" : "text-slate-600"
                 } />
               </div>
 
@@ -112,7 +112,7 @@ export default function BillingPage() {
               <ul className="space-y-2.5 flex-1 mb-6">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm text-slate-700">
-                    <CheckCircle2 size={15} className="text-emerald-500 shrink-0" />
+                    <CheckCircle2 size={15} className="text-blue-900 shrink-0" />
                     {f}
                   </li>
                 ))}
@@ -123,7 +123,7 @@ export default function BillingPage() {
                 disabled={loading === plan.id}
                 className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
                   plan.recommended
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    ? "bg-blue-900 text-white hover:bg-blue-900"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 } ${loading === plan.id ? "opacity-50 cursor-wait" : ""}`}
               >

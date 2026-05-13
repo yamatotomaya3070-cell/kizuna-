@@ -17,7 +17,7 @@ export default function ELearningPage() {
             <div className="flex items-center gap-3">
               <span className="text-3xl">{course.thumbnail}</span>
               <div>
-                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-medium text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
                   {course.category}
                 </span>
                 <p className="text-sm text-slate-500 mt-0.5">{course.duration}</p>
@@ -33,7 +33,7 @@ export default function ELearningPage() {
               </div>
               <div className="w-full bg-slate-100 rounded-full h-2">
                 <div
-                  className="bg-blue-500 h-2 rounded-full transition-all"
+                  className="bg-blue-900 h-2 rounded-full transition-all"
                   style={{ width: `${course.progress}%` }}
                 />
               </div>
@@ -41,8 +41,8 @@ export default function ELearningPage() {
             <button
               className={`mt-auto text-sm font-medium py-2 px-4 rounded-lg transition-colors ${
                 course.progress === 100
-                  ? "bg-green-50 text-green-700 cursor-default"
-                  : "bg-blue-600 text-white hover:bg-blue-700"
+                  ? "bg-blue-50 text-blue-900 cursor-default"
+                  : "bg-blue-900 text-white hover:bg-blue-900"
               }`}
             >
               {course.progress === 100

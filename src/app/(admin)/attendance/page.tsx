@@ -24,8 +24,8 @@ const TRANSPORT_OPTS = [
 ];
 
 const COLOR = {
-  emerald: { bg: "bg-emerald-500", ring: "ring-emerald-400", text: "text-white" },
-  amber:   { bg: "bg-amber-400",   ring: "ring-amber-300",   text: "text-white" },
+  emerald: { bg: "bg-blue-900", ring: "ring-blue-400", text: "text-white" },
+  amber:   { bg: "bg-slate-400",   ring: "ring-slate-300",   text: "text-white" },
   red:     { bg: "bg-red-500",     ring: "ring-red-400",     text: "text-white" },
   slate:   { bg: "bg-slate-400",   ring: "ring-slate-300",   text: "text-white" },
 };
@@ -167,7 +167,7 @@ export default function AttendancePage() {
       {/* ヘッダー */}
       <div className="mb-6">
         <h1 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
-          <CalendarCheck size={18} className="text-indigo-500" />
+          <CalendarCheck size={18} className="text-blue-900" />
           出欠入力
         </h1>
 
@@ -202,8 +202,8 @@ export default function AttendancePage() {
       {/* 凡例 */}
       <div className="flex gap-4 mb-4 text-xs text-slate-500 flex-wrap">
         <span className="font-semibold text-slate-600">出欠 / 昼食 / 送迎</span>
-        <span><span className="font-bold text-emerald-600">○</span> 出席・あり</span>
-        <span><span className="font-bold text-amber-500">△</span> 遅刻・早退 / 片道</span>
+        <span><span className="font-bold text-blue-900">○</span> 出席・あり</span>
+        <span><span className="font-bold text-slate-500">△</span> 遅刻・早退 / 片道</span>
         <span><span className="font-bold text-red-500">●</span> 欠席・なし</span>
       </div>
 
@@ -217,7 +217,7 @@ export default function AttendancePage() {
           <p>利用者が登録されていません。</p>
           <Link
             href="/clients"
-            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-700"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-900"
           >
             <UserPlus size={14} />
             利用者管理から利用者を登録してください
@@ -281,10 +281,10 @@ export default function AttendancePage() {
               disabled={saving}
               className={`w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-sm transition-all ${
                 saved
-                  ? "bg-emerald-500 text-white"
+                  ? "bg-blue-900 text-white"
                   : saving
                   ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                  : "bg-indigo-600 text-white shadow-md active:scale-[0.98]"
+                  : "bg-blue-900 text-white shadow-md active:scale-[0.98]"
               }`}
             >
               {saving ? (

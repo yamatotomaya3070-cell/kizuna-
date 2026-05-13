@@ -56,7 +56,7 @@ export default function DocumentsPage() {
       {/* トースト */}
       {toast && (
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-slate-800 text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-lg">
-          <CheckCircle2 size={16} className="text-emerald-400" />
+          <CheckCircle2 size={16} className="text-blue-400" />
           {toast}
         </div>
       )}
@@ -77,7 +77,7 @@ export default function DocumentsPage() {
           />
           <label
             htmlFor="file-upload"
-            className={`flex items-center gap-2 bg-blue-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-blue-700 transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 bg-blue-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-blue-900 transition-colors cursor-pointer ${
               uploading ? "opacity-50 cursor-wait" : ""
             }`}
           >
@@ -94,9 +94,9 @@ export default function DocumentsPage() {
       {uploadedFiles.length > 0 && (
         <div>
           <h3 className="text-sm font-bold text-slate-600 mb-3">アップロード済み</h3>
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-emerald-200">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-blue-200">
             <table className="w-full text-sm">
-              <thead className="bg-emerald-50 text-emerald-700 text-xs uppercase tracking-wide">
+              <thead className="bg-blue-50 text-blue-900 text-xs uppercase tracking-wide">
                 <tr>
                   <th className="px-6 py-3 text-left">ファイル名</th>
                   <th className="px-6 py-3 text-left">サイズ</th>
@@ -107,7 +107,7 @@ export default function DocumentsPage() {
                 {uploadedFiles.map((f, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="px-6 py-4 flex items-center gap-2">
-                      <FileText size={16} className="text-emerald-500" />
+                      <FileText size={16} className="text-blue-900" />
                       {f.name}
                     </td>
                     <td className="px-6 py-4 text-slate-500">{f.size}</td>
@@ -116,7 +116,7 @@ export default function DocumentsPage() {
                         href={f.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline flex items-center gap-1 text-xs"
+                        className="text-blue-900 hover:underline flex items-center gap-1 text-xs"
                       >
                         <Download size={13} /> ダウンロード
                       </a>

@@ -245,7 +245,7 @@ export default function MonitoringPage() {
   return (
     <div className="p-8 space-y-6">
       <div className="flex items-center gap-3">
-        <Brain size={22} className="text-indigo-500" />
+        <Brain size={22} className="text-blue-900" />
         <div>
           <h2 className="text-2xl font-bold text-slate-800">AIモニタリング評価</h2>
           <p className="text-sm text-slate-500 mt-0.5">
@@ -265,7 +265,7 @@ export default function MonitoringPage() {
               <p>利用者が登録されていません</p>
               <Link
                 href="/clients"
-                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-700"
+                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-900"
               >
                 <UserPlus size={14} />
                 利用者管理から利用者を登録してください
@@ -280,18 +280,18 @@ export default function MonitoringPage() {
                     <button
                       onClick={() => selectClient(name)}
                       className={`w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors ${
-                        active ? "bg-indigo-50" : "hover:bg-slate-50"
+                        active ? "bg-blue-50" : "hover:bg-slate-50"
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                        active ? "bg-indigo-500 text-white" : "bg-slate-100 text-slate-500"
+                        active ? "bg-blue-900 text-white" : "bg-slate-100 text-slate-500"
                       }`}>
                         {name[0]}
                       </div>
-                      <span className={`text-sm font-medium flex-1 ${active ? "text-indigo-700" : "text-slate-700"}`}>
+                      <span className={`text-sm font-medium flex-1 ${active ? "text-blue-900" : "text-slate-700"}`}>
                         {name}
                       </span>
-                      {active && <ChevronRight size={15} className="text-indigo-400 shrink-0" />}
+                      {active && <ChevronRight size={15} className="text-blue-400 shrink-0" />}
                     </button>
                   </li>
                 );
@@ -312,7 +312,7 @@ export default function MonitoringPage() {
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ClipboardList size={16} className="text-blue-500" />
+                    <ClipboardList size={16} className="text-blue-900" />
                     <h3 className="text-sm font-bold text-slate-700">
                       {selectedClient}さんの日報記録
                     </h3>
@@ -341,11 +341,11 @@ export default function MonitoringPage() {
                   <div className="max-h-64 overflow-y-auto">
                     {/* ロール凡例 */}
                     <div className="flex gap-4 px-5 py-2 bg-slate-50 border-b border-slate-100">
-                      <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
                         <Briefcase size={11} />
                         職業指導員
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs font-semibold text-indigo-700">
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
                         <Heart size={11} />
                         生活支援員
                       </span>
@@ -365,7 +365,7 @@ export default function MonitoringPage() {
                                 <span className="text-xs text-slate-300">欠席</span>
                               ) : (
                                 <>
-                                  <p className="text-xs text-blue-700 font-semibold mb-0.5 flex items-center gap-1">
+                                  <p className="text-xs text-blue-900 font-semibold mb-0.5 flex items-center gap-1">
                                     <Briefcase size={10} />
                                     {g.work.staff_name}
                                   </p>
@@ -385,7 +385,7 @@ export default function MonitoringPage() {
                                 <span className="text-xs text-slate-300">欠席</span>
                               ) : (
                                 <>
-                                  <p className="text-xs text-indigo-700 font-semibold mb-0.5 flex items-center gap-1">
+                                  <p className="text-xs text-blue-900 font-semibold mb-0.5 flex items-center gap-1">
                                     <Heart size={10} />
                                     {g.life.staff_name}
                                   </p>
@@ -408,17 +408,17 @@ export default function MonitoringPage() {
               {/* 生成ボタン */}
               {warning && (
                 <div className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
-                  allowPartial ? "border-amber-200 bg-amber-50 text-amber-700" : "border-red-200 bg-red-50 text-red-700"
+                  allowPartial ? "border-slate-200 bg-slate-50 text-slate-700" : "border-red-200 bg-red-50 text-red-700"
                 }`}>
                   {warning}
                 </div>
               )}
               {diaries.length > 0 && (
                 <div className="flex flex-wrap gap-2 text-xs font-semibold">
-                  <span className={`rounded-full px-2.5 py-1 ${counts.work > 0 ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500"}`}>
+                  <span className={`rounded-full px-2.5 py-1 ${counts.work > 0 ? "bg-blue-100 text-blue-900" : "bg-slate-100 text-slate-500"}`}>
                     職業指導員: {counts.work > 0 ? "記録あり" : "未記録"}
                   </span>
-                  <span className={`rounded-full px-2.5 py-1 ${counts.life > 0 ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 text-slate-500"}`}>
+                  <span className={`rounded-full px-2.5 py-1 ${counts.life > 0 ? "bg-blue-100 text-blue-900" : "bg-slate-100 text-slate-500"}`}>
                     生活支援員: {counts.life > 0 ? "記録あり" : "未記録"}
                   </span>
                 </div>
@@ -429,7 +429,7 @@ export default function MonitoringPage() {
                 className={`w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-sm transition-all ${
                   generating || counts.total === 0
                     ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md"
+                    : "bg-gradient-to-r from-blue-900 to-blue-900 hover:from-blue-900 hover:to-blue-900 text-white shadow-md"
                 }`}
               >
                 {generating ? (
@@ -441,13 +441,13 @@ export default function MonitoringPage() {
 
               {/* 生成結果 */}
               {report && (
-                <div className="bg-white rounded-2xl border border-indigo-200 shadow-sm overflow-hidden">
-                  <div className="px-5 py-3.5 bg-indigo-50 border-b border-indigo-100 flex items-center gap-2">
-                    <Sparkles size={14} className="text-indigo-500" />
-                    <span className="text-xs font-bold text-indigo-700">
+                <div className="bg-white rounded-2xl border border-blue-200 shadow-sm overflow-hidden">
+                  <div className="px-5 py-3.5 bg-blue-50 border-b border-blue-100 flex items-center gap-2">
+                    <Sparkles size={14} className="text-blue-900" />
+                    <span className="text-xs font-bold text-blue-900">
                       AI生成 — {selectedClient}さん　個別支援計画モニタリング評価案
                     </span>
-                    <span className="ml-auto text-xs text-indigo-400">内容を確認の上ご活用ください</span>
+                    <span className="ml-auto text-xs text-blue-400">内容を確認の上ご活用ください</span>
                   </div>
                   <div className="p-5 space-y-5">
                     <ReportBlock icon={TrendingUp} label="達成度・成長" color="emerald" content={report.achievement} />
@@ -458,7 +458,7 @@ export default function MonitoringPage() {
                     <button
                       onClick={handleExportPDF}
                       disabled={pdfGenerating}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-900 hover:bg-blue-900 disabled:bg-slate-300 transition-colors"
                     >
                       {pdfGenerating ? (
                         <Loader2 size={13} className="animate-spin" />
@@ -490,9 +490,9 @@ function ReportBlock({
   content: string;
 }) {
   const styles = {
-    emerald: "bg-emerald-50 text-emerald-700",
-    amber: "bg-amber-50 text-amber-700",
-    blue: "bg-blue-50 text-blue-700",
+    emerald: "bg-blue-50 text-blue-900",
+    amber: "bg-slate-50 text-slate-700",
+    blue: "bg-blue-50 text-blue-900",
   };
   return (
     <div>

@@ -32,8 +32,8 @@ function statusLevel(daysAgo: number | null): "ok" | "warn" | "danger" | "none" 
 }
 
 const STATUS_STYLE = {
-  ok:     { badge: "bg-emerald-100 text-emerald-700", icon: <CheckCircle2 size={11} /> },
-  warn:   { badge: "bg-yellow-100 text-yellow-700",   icon: <AlertTriangle size={11} /> },
+  ok:     { badge: "bg-blue-100 text-blue-900", icon: <CheckCircle2 size={11} /> },
+  warn:   { badge: "bg-slate-100 text-slate-700",   icon: <AlertTriangle size={11} /> },
   danger: { badge: "bg-red-100 text-red-700",          icon: <AlertCircle size={11} /> },
   none:   { badge: "bg-slate-100 text-slate-500",      icon: <AlertCircle size={11} /> },
 };
@@ -43,7 +43,7 @@ function RoleBadge({ role, status }: { role: "work" | "life"; status: RoleStatus
   const s = STATUS_STYLE[level];
   const label = role === "work" ? "職業" : "生活";
   const Icon = role === "work" ? Briefcase : Heart;
-  const colorClass = role === "work" ? "text-blue-600" : "text-indigo-600";
+  const colorClass = role === "work" ? "text-blue-900" : "text-blue-900";
 
   return (
     <div className="flex flex-col items-center gap-1 min-w-[72px]">
@@ -225,12 +225,12 @@ export default function StatusPage() {
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
           <p className="text-xs text-slate-500 mb-1">両名記録済み</p>
-          <p className="text-3xl font-bold text-emerald-600">{okCount}</p>
+          <p className="text-3xl font-bold text-blue-900">{okCount}</p>
           <p className="text-xs text-slate-400 mt-0.5">名</p>
         </div>
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
           <p className="text-xs text-slate-500 mb-1">要確認（2〜3日）</p>
-          <p className="text-3xl font-bold text-yellow-500">{warnCount}</p>
+          <p className="text-3xl font-bold text-slate-500">{warnCount}</p>
           <p className="text-xs text-slate-400 mt-0.5">名</p>
         </div>
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
@@ -252,7 +252,7 @@ export default function StatusPage() {
           </div>
           <div className="flex items-center gap-3 shrink-0">
             {notified && (
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
                 <CheckCircle2 size={14} />
                 メール送信済み
               </span>
@@ -274,8 +274,8 @@ export default function StatusPage() {
         <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-6">
           <h3 className="text-sm font-bold text-slate-700 flex-1">利用者別 記録状況</h3>
           <div className="flex gap-4 text-xs font-semibold text-slate-500">
-            <span className="flex items-center gap-1"><Briefcase size={11} className="text-blue-500" />職業指導員</span>
-            <span className="flex items-center gap-1"><Heart size={11} className="text-indigo-500" />生活支援員</span>
+            <span className="flex items-center gap-1"><Briefcase size={11} className="text-blue-900" />職業指導員</span>
+            <span className="flex items-center gap-1"><Heart size={11} className="text-blue-900" />生活支援員</span>
           </div>
         </div>
 
@@ -295,7 +295,7 @@ export default function StatusPage() {
                 : null;
               return (
                 <li key={s.name} className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
-                  <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-sm font-bold shrink-0">
+                  <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-sm font-bold shrink-0">
                     {s.name[0]}
                   </div>
                   <div className="flex-1 min-w-0">
