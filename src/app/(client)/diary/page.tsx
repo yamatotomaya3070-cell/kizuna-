@@ -7,7 +7,6 @@ import {
   Send,
   ChevronRight,
   ChevronLeft,
-  Sparkles,
   User,
   Users,
   ClipboardList,
@@ -736,9 +735,8 @@ export default function DiaryPage() {
 
           {/* 材料：ポジティブ */}
           <div>
-            <p className="text-xs font-bold text-emerald-600 mb-2 flex items-center gap-1">
-              <Sparkles size={12} />
-              良好
+            <p className="text-sm font-bold text-emerald-600 mb-2 flex items-center gap-1.5">
+              <span aria-label="良好" className="text-lg leading-none">😊</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.positive.map((t) => {
@@ -762,9 +760,8 @@ export default function DiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-blue-600 mb-2 flex items-center gap-1">
-              <Sparkles size={12} />
-              普通
+            <p className="text-sm font-bold text-blue-600 mb-2 flex items-center gap-1.5">
+              <span aria-label="普通" className="text-lg leading-none">🙂</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.neutral.map((t) => {
@@ -788,9 +785,8 @@ export default function DiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-amber-600 mb-2 flex items-center gap-1">
-              <Sparkles size={12} />
-              要注意
+            <p className="text-sm font-bold text-amber-600 mb-2 flex items-center gap-1.5">
+              <span aria-label="要注意" className="text-lg leading-none">⚠️</span>
             </p>
             <div className="flex flex-wrap gap-1.5">
               {allTemplates.concern.map((t) => {
