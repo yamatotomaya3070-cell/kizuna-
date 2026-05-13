@@ -50,25 +50,25 @@ const DOC_TYPES: {
 
 const COLOR = {
   blue: {
-    card: "border-blue-200 bg-blue-50",
-    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    card: "border-blue-200 bg-white",
+    active: "border-blue-900 bg-white ring-2 ring-blue-300",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
   },
   indigo: {
-    card: "border-blue-200 bg-blue-50",
-    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    card: "border-blue-200 bg-white",
+    active: "border-blue-900 bg-white ring-2 ring-blue-300",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
   },
   emerald: {
-    card: "border-blue-200 bg-blue-50",
-    active: "border-blue-900 bg-blue-50 ring-2 ring-blue-300",
+    card: "border-blue-200 bg-white",
+    active: "border-blue-900 bg-white ring-2 ring-blue-300",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
   },
 };
 
@@ -292,7 +292,7 @@ export default function GenerateDocumentPage() {
                     onClick={() => setSelectedClient(name)}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       selectedClient === name
-                        ? "bg-blue-900 text-white shadow-sm"
+                        ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                     }`}
                   >
@@ -342,10 +342,10 @@ export default function GenerateDocumentPage() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className={`px-5 py-4 border-b flex items-center gap-2 ${
             docType === "support_plan"
-              ? "bg-blue-50 border-blue-100"
+              ? "bg-white border-blue-100"
               : docType === "monitoring_report"
-              ? "bg-blue-50 border-blue-100"
-              : "bg-blue-50 border-blue-100"
+              ? "bg-white border-blue-100"
+              : "bg-white border-blue-100"
           }`}>
             <active.icon size={15} className={c.icon} />
             <h2 className="text-sm font-bold text-slate-700">{active.label} — 入力項目</h2>
@@ -447,7 +447,7 @@ export default function GenerateDocumentPage() {
             {/* モニタリング報告書 */}
             {docType === "monitoring_report" && (
               <>
-                <div className="rounded-xl bg-blue-50 border border-blue-100 p-4 text-sm text-blue-900">
+                <div className="rounded-xl bg-white border border-blue-100 p-4 text-sm text-blue-900">
                   <div className="flex items-center gap-2 font-semibold mb-1">
                     <Sparkles size={14} />
                     AI自動生成

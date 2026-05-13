@@ -161,16 +161,16 @@ const COLOR_MAP: Record<
     btn: "bg-red-500 hover:bg-red-600",
   },
   green: {
-    bg: "bg-blue-50",
+    bg: "bg-white",
     border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
   },
   blue: {
-    bg: "bg-blue-50",
+    bg: "bg-white",
     border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
   },
@@ -189,16 +189,16 @@ const COLOR_MAP: Record<
     btn: "bg-slate-500 hover:bg-slate-600",
   },
   indigo: {
-    bg: "bg-blue-50",
+    bg: "bg-white",
     border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
   },
   teal: {
-    bg: "bg-blue-50",
+    bg: "bg-white",
     border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-900",
+    badge: "bg-slate-100 text-blue-900",
     icon: "text-blue-900",
     btn: "bg-blue-900 hover:bg-blue-900",
   },
@@ -337,7 +337,7 @@ function ChecklistSection({
                         </span>
                       )}
                       {isChecked && (
-                        <span className="shrink-0 text-xs font-semibold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
+                        <span className="shrink-0 text-xs font-semibold text-blue-900 bg-white px-2 py-0.5 rounded-full">
                           完了 ✓
                         </span>
                       )}
@@ -351,7 +351,7 @@ function ChecklistSection({
       })}
 
       {done === total && (
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center">
+        <div className="bg-white border border-blue-200 rounded-2xl p-5 text-center">
           <p className="text-blue-900 font-bold text-base">
             🎉 全書類の準備が完了しました！運営指導は万全です。
           </p>
@@ -380,7 +380,7 @@ function ManualsSection() {
 
       {/* プレビューモーダル風バナー */}
       {previewing && (
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
+        <div className="bg-white border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
           <Eye size={20} className="text-blue-900 shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold text-blue-800 text-sm">
@@ -402,7 +402,7 @@ function ManualsSection() {
 
       {/* 編集モーダル風バナー */}
       {editing && (
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
+        <div className="bg-white border border-blue-200 rounded-2xl p-5 flex items-start gap-4">
           <PlusCircle size={20} className="text-blue-900 shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold text-blue-800 text-sm">
@@ -568,7 +568,7 @@ function AIDiarySection() {
                 onClick={() => setSelectedUser(name)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
                   selectedUser === name
-                    ? "bg-blue-900 text-white shadow-sm"
+                    ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
@@ -616,7 +616,7 @@ function AIDiarySection() {
           <h3 className="font-bold text-slate-700 text-sm">
             AIモニタリング評価
           </h3>
-          <span className="ml-auto text-xs font-semibold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-full">
+          <span className="ml-auto text-xs font-semibold bg-slate-100 text-blue-900 px-2 py-0.5 rounded-full">
             キラー機能
           </span>
         </div>
@@ -630,7 +630,7 @@ function AIDiarySection() {
                 onClick={() => setSelectedUser(name)}
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                   selectedUser === name
-                    ? "border-blue-300 bg-blue-50"
+                    ? "border-blue-300 bg-white"
                     : "border-slate-100 hover:border-slate-200 hover:bg-slate-50"
                 }`}
               >
@@ -685,7 +685,7 @@ function AIDiarySection() {
           {/* 生成済みレポート */}
           {report && !aiLoading && (
             <div className="border border-blue-200 rounded-2xl overflow-hidden mt-2">
-              <div className="px-5 py-3 bg-blue-50 border-b border-blue-100 flex items-center gap-2">
+              <div className="px-5 py-3 bg-white border-b border-blue-100 flex items-center gap-2">
                 <Sparkles size={14} className="text-blue-900" />
                 <span className="text-xs font-bold text-blue-900">
                   AI生成 — {selectedUser}　個別支援計画モニタリング評価案
@@ -786,9 +786,9 @@ function ReportBlock({
   content: string;
 }) {
   const styles = {
-    emerald: "bg-blue-50 text-blue-900",
+    emerald: "bg-white text-blue-900",
     amber: "bg-slate-50 text-slate-700",
-    blue: "bg-blue-50 text-blue-900",
+    blue: "bg-white text-blue-900",
   };
   return (
     <div>
@@ -892,7 +892,7 @@ export default function ClientDashboard() {
           </Link>
           <Link
             href="/diary/batch"
-            className="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-blue-50 text-blue-900 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-xl bg-white text-blue-900 text-xs font-semibold border border-blue-200 hover:bg-slate-100 transition-colors"
           >
             <Users size={13} />
             一括入力モード
@@ -909,7 +909,7 @@ export default function ClientDashboard() {
                 onClick={() => setMenu(id)}
                 className={`w-full flex items-start gap-3 px-3 py-3 rounded-xl text-left transition-all ${
                   isActive
-                    ? "bg-blue-900 text-white shadow-sm"
+                    ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
                     : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
                 }`}
               >
@@ -933,7 +933,7 @@ export default function ClientDashboard() {
         <div className="px-3 pb-2 space-y-1">
           <Link
             href="/documents/generate"
-            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-blue-900 bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-100"
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold text-blue-900 bg-white hover:bg-slate-100 transition-colors border border-blue-100"
           >
             <FileDown size={14} />
             帳票自動生成
@@ -1042,7 +1042,7 @@ export default function ClientDashboard() {
               </Link>
               <Link
                 href="/diary/batch"
-                className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shadow text-blue-900 transition-transform active:scale-95"
+                className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center shadow text-blue-900 transition-transform active:scale-95"
               >
                 <Users size={14} />
               </Link>

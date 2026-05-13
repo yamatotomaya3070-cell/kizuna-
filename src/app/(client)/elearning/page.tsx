@@ -17,7 +17,7 @@ export default function ELearningPage() {
             <div className="flex items-center gap-3">
               <span className="text-3xl">{course.thumbnail}</span>
               <div>
-                <span className="text-xs font-medium text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-medium text-blue-900 bg-white px-2 py-0.5 rounded-full">
                   {course.category}
                 </span>
                 <p className="text-sm text-slate-500 mt-0.5">{course.duration}</p>
@@ -41,7 +41,7 @@ export default function ELearningPage() {
             <button
               className={`mt-auto text-sm font-medium py-2 px-4 rounded-lg transition-colors ${
                 course.progress === 100
-                  ? "bg-blue-50 text-blue-900 cursor-default"
+                  ? "bg-white text-blue-900 cursor-default"
                   : "bg-blue-900 text-white hover:bg-blue-900"
               }`}
             >

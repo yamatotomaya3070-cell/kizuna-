@@ -96,7 +96,7 @@ export default function DocumentsPage() {
           <h3 className="text-sm font-bold text-slate-600 mb-3">アップロード済み</h3>
           <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-blue-200">
             <table className="w-full text-sm">
-              <thead className="bg-blue-50 text-blue-900 text-xs uppercase tracking-wide">
+              <thead className="bg-white text-blue-900 text-xs uppercase tracking-wide">
                 <tr>
                   <th className="px-6 py-3 text-left">ファイル名</th>
                   <th className="px-6 py-3 text-left">サイズ</th>

@@ -35,11 +35,11 @@ type Step = "date" | "client" | "basic" | "eval" | "done";
 
 // 業務システム向けに白・黒・紺で統一。色キーは service-formats からの参照互換のため残す
 const colorMap: Record<string, { bg: string; border: string; text: string; pill: string }> = {
-  emerald: { bg: "bg-blue-50",  border: "border-blue-900",  text: "text-blue-900",  pill: "bg-blue-900" },
+  emerald: { bg: "bg-white",  border: "border-blue-900",  text: "text-blue-900",  pill: "bg-blue-900" },
   amber:   { bg: "bg-slate-100", border: "border-slate-500", text: "text-slate-700", pill: "bg-slate-500" },
   red:     { bg: "bg-red-50",    border: "border-red-700",   text: "text-red-700",    pill: "bg-red-700" },
   slate:   { bg: "bg-slate-50",  border: "border-slate-300", text: "text-slate-600",  pill: "bg-slate-400" },
-  blue:    { bg: "bg-blue-50",   border: "border-blue-900",  text: "text-blue-900",   pill: "bg-blue-900" },
+  blue:    { bg: "bg-white",   border: "border-blue-900",  text: "text-blue-900",   pill: "bg-blue-900" },
 };
 
 const STEPS: { key: Step; label: string }[] = [
@@ -352,7 +352,7 @@ export default function DiaryPage() {
   if (step === "done") {
     return (
       <div className="min-h-full flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-5">
+        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-5">
           <CheckCircle2 size={40} className="text-blue-900" />
         </div>
         <h2 className="text-xl font-bold text-slate-900 mb-1">送信完了</h2>
@@ -360,7 +360,7 @@ export default function DiaryPage() {
         <p className="text-xs text-slate-500 mb-2">
           {formatDateJa(recordedDate)}　担当: {shiftStaffNames || "—"}
         </p>
-        <span className="text-xs font-bold bg-blue-50 text-blue-900 px-3 py-1 rounded-full mb-8 border border-blue-200">
+        <span className="text-xs font-bold bg-white text-blue-900 px-3 py-1 rounded-full mb-8 border border-blue-200">
           本日 {doneCount}名 完了
         </span>
         <div className="w-full max-w-xs space-y-3">
@@ -397,7 +397,7 @@ export default function DiaryPage() {
           </div>
           <div className="flex items-center gap-2">
             {doneCount > 0 && (
-              <span className="text-xs font-bold bg-blue-50 text-blue-900 px-2.5 py-1 rounded-full border border-blue-200">
+              <span className="text-xs font-bold bg-white text-blue-900 px-2.5 py-1 rounded-full border border-blue-200">
                 {doneCount}名完了
               </span>
             )}
@@ -472,7 +472,7 @@ export default function DiaryPage() {
                 読み込み中...
               </div>
             ) : shiftHasData ? (
-              <div className="bg-blue-50 border border-blue-900 rounded-2xl px-4 py-3">
+              <div className="bg-white border border-blue-900 rounded-2xl px-4 py-3">
                 <p className="text-sm font-bold text-slate-900">{autoStaffNames}</p>
                 <p className="text-[11px] text-blue-900 mt-0.5">シフトより自動取得</p>
               </div>
@@ -522,7 +522,7 @@ export default function DiaryPage() {
                   onClick={() => setClientName(name)}
                   className={`py-3.5 px-3 rounded-2xl border text-sm font-bold transition-all active:scale-[0.97] ${
                     clientName === name
-                      ? "bg-blue-50 border-blue-900 text-blue-900"
+                      ? "bg-white border-blue-900 text-blue-900"
                       : "bg-white border-slate-200 text-slate-800 hover:border-slate-300 hover:bg-slate-50"
                   }`}
                 >
@@ -548,7 +548,7 @@ export default function DiaryPage() {
             </div>
           ) : adminAttendance ? (
             <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-2xl px-4 py-3 flex items-center gap-2">
+              <div className="bg-white border border-blue-200 rounded-2xl px-4 py-3 flex items-center gap-2">
                 <CheckCircle2 size={15} className="text-blue-900 shrink-0" />
                 <p className="text-xs font-semibold text-blue-900">管理者が入力済みです</p>
               </div>
@@ -697,7 +697,7 @@ export default function DiaryPage() {
                                 type="button"
                                 onClick={() => setAdditionalValues((prev) => ({ ...prev, [field.id]: opt.value }))}
                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl border-2 transition-all ${
-                                  sel ? "bg-blue-50 border-blue-900" : "bg-white border-slate-200"
+                                  sel ? "bg-white border-blue-900" : "bg-white border-slate-200"
                                 }`}
                               >
                                 <span className={`text-sm font-semibold ${sel ? "text-blue-900" : "text-slate-600"}`}>
@@ -749,7 +749,7 @@ export default function DiaryPage() {
                     onClick={() => toggleItem(t)}
                     className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
                       sel
-                        ? "bg-blue-900 text-white border-blue-900"
+                        ? "bg-white text-blue-900 border-blue-900 border-2"
                         : "bg-white text-slate-800 border-slate-200 hover:bg-slate-50"
                     }`}
                   >
@@ -774,7 +774,7 @@ export default function DiaryPage() {
                     onClick={() => toggleItem(t)}
                     className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
                       sel
-                        ? "bg-blue-900 text-white border-blue-900"
+                        ? "bg-white text-blue-900 border-blue-900 border-2"
                         : "bg-white text-slate-800 border-slate-200 hover:bg-slate-50"
                     }`}
                   >
@@ -799,7 +799,7 @@ export default function DiaryPage() {
                     onClick={() => toggleItem(t)}
                     className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
                       sel
-                        ? "bg-blue-900 text-white border-blue-900"
+                        ? "bg-white text-blue-900 border-blue-900 border-2"
                         : "bg-white text-slate-800 border-slate-200 hover:bg-slate-50"
                     }`}
                   >

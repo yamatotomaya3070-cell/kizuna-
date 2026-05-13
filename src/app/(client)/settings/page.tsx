@@ -141,7 +141,7 @@ function TabBtn({
       onClick={onClick}
       className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
         active
-          ? "bg-blue-900 text-white shadow-sm"
+          ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
           : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
       }`}
     >
@@ -290,7 +290,7 @@ function StaffTab({ facilityId, showToast }: { facilityId: string; showToast: (m
               onClick={() => setNewRole(r)}
               className={`flex-1 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
                 newRole === r
-                  ? "bg-blue-50 border-blue-900 text-blue-900"
+                  ? "bg-white border-blue-900 text-blue-900"
                   : "bg-white border-slate-200 text-slate-500"
               }`}
             >
@@ -337,7 +337,7 @@ function StaffTab({ facilityId, showToast }: { facilityId: string; showToast: (m
             {staff.map((s) => (
               <li key={s.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
                     {s.name[0]}
                   </div>
                   <div>
@@ -430,7 +430,7 @@ function ManagedList({
             {items.map((item) => (
               <li key={item.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-900 text-xs font-bold">
                     {item.name[0]}
                   </div>
                   <div className="flex items-center gap-2">
@@ -536,7 +536,7 @@ function LineTab({
   return (
     <div className="space-y-4">
       {/* 説明 */}
-      <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3">
+      <div className="bg-white border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3">
         <MessageCircle size={18} className="text-blue-900 shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-bold text-blue-800">LINE で日報入力</p>
@@ -570,7 +570,7 @@ function LineTab({
                 className="flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-900 text-xs font-bold shrink-0">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-900 text-xs font-bold shrink-0">
                     {s.name[0]}
                   </div>
                   <div>
@@ -580,7 +580,7 @@ function LineTab({
                         {s.role === "work" ? "職業指導員" : "生活支援員"}
                       </span>
                       {s.connected ? (
-                        <span className="flex items-center gap-1 text-xs font-semibold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full">
+                        <span className="flex items-center gap-1 text-xs font-semibold text-blue-900 bg-white px-2 py-0.5 rounded-full">
                           <Link2 size={10} />
                           連携済み
                         </span>

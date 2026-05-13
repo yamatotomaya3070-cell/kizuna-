@@ -157,14 +157,14 @@ export default function BatchDiaryPage() {
   if (savedCount !== null) {
     return (
       <div className="min-h-full flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-5">
+        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-5">
           <CheckCircle2 size={40} className="text-blue-900" />
         </div>
         <h2 className="text-xl font-bold text-slate-800 mb-1">一括保存完了</h2>
         <p className="text-sm text-slate-500 mb-1">
           {staffName}（{activeRole?.label}）として保存しました
         </p>
-        <span className="text-xs font-bold bg-blue-100 text-blue-900 px-3 py-1 rounded-full mb-8">
+        <span className="text-xs font-bold bg-slate-100 text-blue-900 px-3 py-1 rounded-full mb-8">
           {savedCount}名分の日報を保存しました
         </span>
         <div className="w-full max-w-xs space-y-3">
@@ -208,8 +208,8 @@ export default function BatchDiaryPage() {
           {serviceFormat.roles.map((r, i) => {
             const isSelected = role === r.id;
             const colors = i === 0
-              ? { bg: "bg-blue-50", border: "border-blue-900", text: "text-blue-900" }
-              : { bg: "bg-blue-50", border: "border-blue-900", text: "text-blue-900" };
+              ? { bg: "bg-white", border: "border-blue-900", text: "text-blue-900" }
+              : { bg: "bg-white", border: "border-blue-900", text: "text-blue-900" };
             return (
               <button
                 key={r.id}
@@ -248,7 +248,7 @@ export default function BatchDiaryPage() {
                   onClick={() => setStaffName(name)}
                   className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] ${
                     staffName === name
-                      ? "bg-blue-900 text-white shadow-sm"
+                      ? "bg-white text-blue-900 border-2 border-blue-900 shadow-sm"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >
@@ -290,14 +290,14 @@ export default function BatchDiaryPage() {
                           <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                             isAbsent ? "bg-red-100 text-red-600" :
                             entry.attendance === "△" ? "bg-slate-100 text-slate-600" :
-                            "bg-blue-100 text-blue-900"
+                            "bg-slate-100 text-blue-900"
                           }`}>
                             {isAbsent ? "● 欠席" : entry.attendance === "△" ? "△ 遅刻" : "○ 出席"}
                             <span className="text-[10px] ml-1 opacity-70">管理者入力済み</span>
                           </span>
                         )}
                         {entry.alreadyEntered && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-900">
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-blue-900">
                             入力済み
                           </span>
                         )}
@@ -315,7 +315,7 @@ export default function BatchDiaryPage() {
                                 key={t}
                                 type="button"
                                 onClick={() => addTemplate(entry.name, t)}
-                                className="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-blue-900 whitespace-nowrap active:scale-95"
+                                className="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-white border border-blue-200 text-blue-900 whitespace-nowrap active:scale-95"
                               >
                                 {t}
                               </button>
@@ -325,7 +325,7 @@ export default function BatchDiaryPage() {
                                 key={t}
                                 type="button"
                                 onClick={() => addTemplate(entry.name, t)}
-                                className="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-blue-900 whitespace-nowrap active:scale-95"
+                                className="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-white border border-blue-200 text-blue-900 whitespace-nowrap active:scale-95"
                               >
                                 {t}
                               </button>
