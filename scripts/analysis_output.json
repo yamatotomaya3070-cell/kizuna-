@@ -1,0 +1,2710 @@
+[
+  {
+    "file": "diary_template.xlsx",
+    "sheets": [
+      {
+        "name": "8月3日",
+        "max_row": 19,
+        "max_col": 17,
+        "print_area": "",
+        "merged_cells": [
+          "O5:Q5",
+          "J6:L6",
+          "C4:C5",
+          "B3:C3",
+          "H10:I10",
+          "E4:E5",
+          "M9:N9",
+          "M5:N5",
+          "H4:L4",
+          "O16:Q16",
+          "H9:I9",
+          "J11:L11",
+          "J7:L7",
+          "J16:L16",
+          "H6:I6",
+          "M11:N11",
+          "D4:D5",
+          "M10:N10",
+          "O12:Q12",
+          "O17:Q17",
+          "J12:L12",
+          "O8:Q8",
+          "O2:Q2",
+          "M16:N16",
+          "H17:I17",
+          "M13:N13",
+          "H11:I11",
+          "O14:Q14",
+          "O11:Q11",
+          "M15:N15",
+          "M7:N7",
+          "H16:I16",
+          "M12:N12",
+          "J18:L18",
+          "M6:N6",
+          "H7:I7",
+          "O13:Q13",
+          "M18:N18",
+          "H19:I19",
+          "J8:L8",
+          "O7:Q7",
+          "J17:L17",
+          "M3:Q3",
+          "B2:N2",
+          "H13:I13",
+          "M8:N8",
+          "O10:Q10",
+          "H14:I14",
+          "M17:N17",
+          "J5:L5",
+          "D3:K3",
+          "O19:Q19",
+          "O15:Q15",
+          "J14:L14",
+          "B4:B5",
+          "H12:I12",
+          "J10:L10",
+          "O6:Q6",
+          "O18:Q18",
+          "J19:L19",
+          "J13:L13",
+          "H18:I18",
+          "M14:N14",
+          "H15:I15",
+          "O9:Q9",
+          "J15:L15",
+          "H5:I5",
+          "M19:N19",
+          "H8:I8",
+          "J9:L9",
+          "M4:Q4"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "B2",
+            "value": "サービス提供記録　兼　日誌"
+          },
+          {
+            "addr": "O2",
+            "value": "令和8年　5月13日"
+          },
+          {
+            "addr": "B3",
+            "value": "午前"
+          },
+          {
+            "addr": "D3",
+            "value": "作業内容"
+          },
+          {
+            "addr": "L3",
+            "value": "午後"
+          },
+          {
+            "addr": "M3",
+            "value": "作業内容"
+          },
+          {
+            "addr": "B4",
+            "value": "No."
+          },
+          {
+            "addr": "C4",
+            "value": "名前"
+          },
+          {
+            "addr": "D4",
+            "value": "出欠"
+          },
+          {
+            "addr": "E4",
+            "value": "昼食"
+          },
+          {
+            "addr": "F4",
+            "value": "送迎"
+          },
+          {
+            "addr": "G4",
+            "value": "送迎"
+          },
+          {
+            "addr": "H4",
+            "value": "職業指導員（A）"
+          },
+          {
+            "addr": "M4",
+            "value": "生活支援員（B）"
+          },
+          {
+            "addr": "F5",
+            "value": "行"
+          },
+          {
+            "addr": "G5",
+            "value": "帰"
+          },
+          {
+            "addr": "H5",
+            "value": "様子"
+          },
+          {
+            "addr": "J5",
+            "value": "コメント"
+          },
+          {
+            "addr": "M5",
+            "value": "様子"
+          },
+          {
+            "addr": "O5",
+            "value": "コメント"
+          },
+          {
+            "addr": "B6",
+            "value": "1"
+          },
+          {
+            "addr": "C6",
+            "value": "土橋　剛道"
+          },
+          {
+            "addr": "B7",
+            "value": "2"
+          },
+          {
+            "addr": "C7",
+            "value": "湊　理華"
+          },
+          {
+            "addr": "B8",
+            "value": "3"
+          },
+          {
+            "addr": "C8",
+            "value": "村岡　圭子"
+          },
+          {
+            "addr": "B9",
+            "value": "4"
+          },
+          {
+            "addr": "C9",
+            "value": "逢坂　正樹"
+          },
+          {
+            "addr": "B10",
+            "value": "5"
+          },
+          {
+            "addr": "C10",
+            "value": "石橋　幸子"
+          },
+          {
+            "addr": "B11",
+            "value": "6"
+          },
+          {
+            "addr": "C11",
+            "value": "石橋　幸奈美"
+          },
+          {
+            "addr": "B12",
+            "value": "7"
+          },
+          {
+            "addr": "C12",
+            "value": "和氣　新太"
+          },
+          {
+            "addr": "B13",
+            "value": "8"
+          },
+          {
+            "addr": "C13",
+            "value": "大谷　恭正"
+          },
+          {
+            "addr": "B14",
+            "value": "9"
+          },
+          {
+            "addr": "C14",
+            "value": "溝端　理恵"
+          },
+          {
+            "addr": "B15",
+            "value": "10"
+          },
+          {
+            "addr": "C15",
+            "value": "瀧本　美恵子"
+          },
+          {
+            "addr": "B16",
+            "value": "11"
+          },
+          {
+            "addr": "C16",
+            "value": "山本　学"
+          },
+          {
+            "addr": "B17",
+            "value": "12"
+          },
+          {
+            "addr": "C17",
+            "value": "斉藤　確"
+          },
+          {
+            "addr": "B18",
+            "value": "13"
+          },
+          {
+            "addr": "C18",
+            "value": "清水　瑛梨樺"
+          },
+          {
+            "addr": "B19",
+            "value": "14"
+          },
+          {
+            "addr": "C19",
+            "value": "田崎　一成"
+          }
+        ]
+      },
+      {
+        "name": "8月4日",
+        "max_row": 23,
+        "max_col": 13,
+        "print_area": "",
+        "merged_cells": [
+          "C2:E2",
+          "A23:D23",
+          "F2:M2",
+          "A2:B2",
+          "J23:M23",
+          "C20:M20",
+          "A1:M1",
+          "C21:M21",
+          "F4:I4",
+          "J4:M4",
+          "B22:M22",
+          "A3:M3",
+          "E23:I23"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "A1",
+            "value": "サービス提供記録　兼　日誌"
+          },
+          {
+            "addr": "A2",
+            "value": "8月4日"
+          },
+          {
+            "addr": "C2",
+            "value": "（火）"
+          },
+          {
+            "addr": "F2",
+            "value": "就労継続支援Ｂ型"
+          },
+          {
+            "addr": "A3",
+            "value": "送迎：○＝送り・迎え両方　△＝送り・迎えどちらか　昼食：○＝食事提供加算対象　　出欠：○＝出席　●＝欠席　△＝遅刻・早退"
+          },
+          {
+            "addr": "A4",
+            "value": "No."
+          },
+          {
+            "addr": "B4",
+            "value": "名前"
+          },
+          {
+            "addr": "C4",
+            "value": "出欠"
+          },
+          {
+            "addr": "D4",
+            "value": "昼食"
+          },
+          {
+            "addr": "E4",
+            "value": "送迎"
+          },
+          {
+            "addr": "F4",
+            "value": "職業指導員"
+          },
+          {
+            "addr": "J4",
+            "value": "生活支援員"
+          },
+          {
+            "addr": "F5",
+            "value": "積極的に取り組んでおられていた"
+          },
+          {
+            "addr": "G5",
+            "value": "安定して取り組まれていた"
+          },
+          {
+            "addr": "H5",
+            "value": "作業に集中しておられなかった"
+          },
+          {
+            "addr": "I5",
+            "value": "作業意欲を感じなかった"
+          },
+          {
+            "addr": "J5",
+            "value": "安定してすごされていた"
+          },
+          {
+            "addr": "K5",
+            "value": "落ち着いてすごされていた"
+          },
+          {
+            "addr": "L5",
+            "value": "情緒的に不安定なご様子です"
+          },
+          {
+            "addr": "M5",
+            "value": "いらいらとされていた"
+          },
+          {
+            "addr": "A6",
+            "value": "1"
+          },
+          {
+            "addr": "B6",
+            "value": "土橋　剛道"
+          },
+          {
+            "addr": "F6",
+            "value": "□"
+          },
+          {
+            "addr": "G6",
+            "value": "□"
+          },
+          {
+            "addr": "H6",
+            "value": "□"
+          },
+          {
+            "addr": "I6",
+            "value": "□"
+          },
+          {
+            "addr": "J6",
+            "value": "□"
+          },
+          {
+            "addr": "K6",
+            "value": "□"
+          },
+          {
+            "addr": "L6",
+            "value": "□"
+          },
+          {
+            "addr": "M6",
+            "value": "□"
+          },
+          {
+            "addr": "A7",
+            "value": "2"
+          },
+          {
+            "addr": "B7",
+            "value": "湊　理華"
+          },
+          {
+            "addr": "F7",
+            "value": "□"
+          },
+          {
+            "addr": "G7",
+            "value": "□"
+          },
+          {
+            "addr": "H7",
+            "value": "□"
+          },
+          {
+            "addr": "I7",
+            "value": "□"
+          },
+          {
+            "addr": "J7",
+            "value": "□"
+          },
+          {
+            "addr": "K7",
+            "value": "□"
+          },
+          {
+            "addr": "L7",
+            "value": "□"
+          },
+          {
+            "addr": "M7",
+            "value": "□"
+          },
+          {
+            "addr": "A8",
+            "value": "3"
+          },
+          {
+            "addr": "B8",
+            "value": "村岡　圭子"
+          },
+          {
+            "addr": "F8",
+            "value": "□"
+          },
+          {
+            "addr": "G8",
+            "value": "□"
+          },
+          {
+            "addr": "H8",
+            "value": "□"
+          },
+          {
+            "addr": "I8",
+            "value": "□"
+          },
+          {
+            "addr": "J8",
+            "value": "□"
+          },
+          {
+            "addr": "K8",
+            "value": "□"
+          },
+          {
+            "addr": "L8",
+            "value": "□"
+          },
+          {
+            "addr": "M8",
+            "value": "□"
+          },
+          {
+            "addr": "A9",
+            "value": "4"
+          },
+          {
+            "addr": "B9",
+            "value": "逢坂　正樹"
+          },
+          {
+            "addr": "F9",
+            "value": "□"
+          },
+          {
+            "addr": "G9",
+            "value": "□"
+          },
+          {
+            "addr": "H9",
+            "value": "□"
+          },
+          {
+            "addr": "I9",
+            "value": "□"
+          },
+          {
+            "addr": "J9",
+            "value": "□"
+          },
+          {
+            "addr": "K9",
+            "value": "□"
+          },
+          {
+            "addr": "L9",
+            "value": "□"
+          },
+          {
+            "addr": "M9",
+            "value": "□"
+          },
+          {
+            "addr": "A10",
+            "value": "5"
+          },
+          {
+            "addr": "B10",
+            "value": "石橋　幸子"
+          },
+          {
+            "addr": "F10",
+            "value": "□"
+          },
+          {
+            "addr": "G10",
+            "value": "□"
+          },
+          {
+            "addr": "H10",
+            "value": "□"
+          },
+          {
+            "addr": "I10",
+            "value": "□"
+          },
+          {
+            "addr": "J10",
+            "value": "□"
+          },
+          {
+            "addr": "K10",
+            "value": "□"
+          },
+          {
+            "addr": "L10",
+            "value": "□"
+          },
+          {
+            "addr": "M10",
+            "value": "□"
+          },
+          {
+            "addr": "A11",
+            "value": "6"
+          },
+          {
+            "addr": "B11",
+            "value": "石橋　幸奈美"
+          },
+          {
+            "addr": "F11",
+            "value": "□"
+          },
+          {
+            "addr": "G11",
+            "value": "□"
+          },
+          {
+            "addr": "H11",
+            "value": "□"
+          },
+          {
+            "addr": "I11",
+            "value": "□"
+          },
+          {
+            "addr": "J11",
+            "value": "□"
+          },
+          {
+            "addr": "K11",
+            "value": "□"
+          },
+          {
+            "addr": "L11",
+            "value": "□"
+          },
+          {
+            "addr": "M11",
+            "value": "□"
+          },
+          {
+            "addr": "A12",
+            "value": "7"
+          },
+          {
+            "addr": "B12",
+            "value": "和氣　新太"
+          },
+          {
+            "addr": "F12",
+            "value": "□"
+          },
+          {
+            "addr": "G12",
+            "value": "□"
+          },
+          {
+            "addr": "H12",
+            "value": "□"
+          },
+          {
+            "addr": "I12",
+            "value": "□"
+          },
+          {
+            "addr": "J12",
+            "value": "□"
+          },
+          {
+            "addr": "K12",
+            "value": "□"
+          },
+          {
+            "addr": "L12",
+            "value": "□"
+          },
+          {
+            "addr": "M12",
+            "value": "□"
+          },
+          {
+            "addr": "A13",
+            "value": "8"
+          },
+          {
+            "addr": "B13",
+            "value": "大谷　恭正"
+          },
+          {
+            "addr": "F13",
+            "value": "□"
+          },
+          {
+            "addr": "G13",
+            "value": "□"
+          },
+          {
+            "addr": "H13",
+            "value": "□"
+          },
+          {
+            "addr": "I13",
+            "value": "□"
+          },
+          {
+            "addr": "J13",
+            "value": "□"
+          },
+          {
+            "addr": "K13",
+            "value": "□"
+          },
+          {
+            "addr": "L13",
+            "value": "□"
+          },
+          {
+            "addr": "M13",
+            "value": "□"
+          },
+          {
+            "addr": "A14",
+            "value": "9"
+          },
+          {
+            "addr": "B14",
+            "value": "溝端　理恵"
+          },
+          {
+            "addr": "F14",
+            "value": "□"
+          },
+          {
+            "addr": "G14",
+            "value": "□"
+          },
+          {
+            "addr": "H14",
+            "value": "□"
+          },
+          {
+            "addr": "I14",
+            "value": "□"
+          },
+          {
+            "addr": "J14",
+            "value": "□"
+          },
+          {
+            "addr": "K14",
+            "value": "□"
+          },
+          {
+            "addr": "L14",
+            "value": "□"
+          },
+          {
+            "addr": "M14",
+            "value": "□"
+          },
+          {
+            "addr": "A15",
+            "value": "10"
+          },
+          {
+            "addr": "B15",
+            "value": "瀧本　美恵子"
+          },
+          {
+            "addr": "F15",
+            "value": "□"
+          },
+          {
+            "addr": "G15",
+            "value": "□"
+          },
+          {
+            "addr": "H15",
+            "value": "□"
+          },
+          {
+            "addr": "I15",
+            "value": "□"
+          },
+          {
+            "addr": "J15",
+            "value": "□"
+          },
+          {
+            "addr": "K15",
+            "value": "□"
+          },
+          {
+            "addr": "L15",
+            "value": "□"
+          },
+          {
+            "addr": "M15",
+            "value": "□"
+          },
+          {
+            "addr": "A16",
+            "value": "11"
+          },
+          {
+            "addr": "B16",
+            "value": "山本　学"
+          },
+          {
+            "addr": "F16",
+            "value": "□"
+          },
+          {
+            "addr": "G16",
+            "value": "□"
+          },
+          {
+            "addr": "H16",
+            "value": "□"
+          },
+          {
+            "addr": "I16",
+            "value": "□"
+          },
+          {
+            "addr": "J16",
+            "value": "□"
+          },
+          {
+            "addr": "K16",
+            "value": "□"
+          },
+          {
+            "addr": "L16",
+            "value": "□"
+          },
+          {
+            "addr": "M16",
+            "value": "□"
+          },
+          {
+            "addr": "A17",
+            "value": "12"
+          },
+          {
+            "addr": "B17",
+            "value": "斉藤　確"
+          },
+          {
+            "addr": "F17",
+            "value": "□"
+          },
+          {
+            "addr": "G17",
+            "value": "□"
+          },
+          {
+            "addr": "H17",
+            "value": "□"
+          },
+          {
+            "addr": "I17",
+            "value": "□"
+          },
+          {
+            "addr": "J17",
+            "value": "□"
+          },
+          {
+            "addr": "K17",
+            "value": "□"
+          },
+          {
+            "addr": "L17",
+            "value": "□"
+          },
+          {
+            "addr": "M17",
+            "value": "□"
+          },
+          {
+            "addr": "A18",
+            "value": "13"
+          },
+          {
+            "addr": "B18",
+            "value": "清水　瑛梨樺"
+          },
+          {
+            "addr": "F18",
+            "value": "□"
+          },
+          {
+            "addr": "G18",
+            "value": "□"
+          },
+          {
+            "addr": "H18",
+            "value": "□"
+          },
+          {
+            "addr": "I18",
+            "value": "□"
+          },
+          {
+            "addr": "J18",
+            "value": "□"
+          },
+          {
+            "addr": "K18",
+            "value": "□"
+          },
+          {
+            "addr": "L18",
+            "value": "□"
+          },
+          {
+            "addr": "M18",
+            "value": "□"
+          },
+          {
+            "addr": "A19",
+            "value": "14"
+          },
+          {
+            "addr": "B19",
+            "value": "田崎　一成"
+          },
+          {
+            "addr": "F19",
+            "value": "□"
+          },
+          {
+            "addr": "G19",
+            "value": "□"
+          },
+          {
+            "addr": "H19",
+            "value": "□"
+          },
+          {
+            "addr": "I19",
+            "value": "□"
+          },
+          {
+            "addr": "J19",
+            "value": "□"
+          },
+          {
+            "addr": "K19",
+            "value": "□"
+          },
+          {
+            "addr": "L19",
+            "value": "□"
+          },
+          {
+            "addr": "M19",
+            "value": "□"
+          },
+          {
+            "addr": "A20",
+            "value": "午前"
+          },
+          {
+            "addr": "B20",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A21",
+            "value": "午後"
+          },
+          {
+            "addr": "B21",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A22",
+            "value": "備考"
+          },
+          {
+            "addr": "A23",
+            "value": "担当者："
+          },
+          {
+            "addr": "E23",
+            "value": "サービス管理責任者確認："
+          },
+          {
+            "addr": "J23",
+            "value": "確認日：　　　年　　月　　日"
+          }
+        ]
+      },
+      {
+        "name": "8月5日",
+        "max_row": 23,
+        "max_col": 13,
+        "print_area": "",
+        "merged_cells": [
+          "C2:E2",
+          "A23:D23",
+          "F2:M2",
+          "A2:B2",
+          "J23:M23",
+          "C20:M20",
+          "A1:M1",
+          "C21:M21",
+          "F4:I4",
+          "J4:M4",
+          "B22:M22",
+          "A3:M3",
+          "E23:I23"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "A1",
+            "value": "サービス提供記録　兼　日誌"
+          },
+          {
+            "addr": "A2",
+            "value": "8月5日"
+          },
+          {
+            "addr": "C2",
+            "value": "（水）"
+          },
+          {
+            "addr": "F2",
+            "value": "就労継続支援Ｂ型"
+          },
+          {
+            "addr": "A3",
+            "value": "送迎：○＝送り・迎え両方　△＝送り・迎えどちらか　昼食：○＝食事提供加算対象　　出欠：○＝出席　●＝欠席　△＝遅刻・早退"
+          },
+          {
+            "addr": "A4",
+            "value": "No."
+          },
+          {
+            "addr": "B4",
+            "value": "名前"
+          },
+          {
+            "addr": "C4",
+            "value": "出欠"
+          },
+          {
+            "addr": "D4",
+            "value": "昼食"
+          },
+          {
+            "addr": "E4",
+            "value": "送迎"
+          },
+          {
+            "addr": "F4",
+            "value": "職業指導員"
+          },
+          {
+            "addr": "J4",
+            "value": "生活支援員"
+          },
+          {
+            "addr": "F5",
+            "value": "積極的に取り組んでおられていた"
+          },
+          {
+            "addr": "G5",
+            "value": "安定して取り組まれていた"
+          },
+          {
+            "addr": "H5",
+            "value": "作業に集中しておられなかった"
+          },
+          {
+            "addr": "I5",
+            "value": "作業意欲を感じなかった"
+          },
+          {
+            "addr": "J5",
+            "value": "安定してすごされていた"
+          },
+          {
+            "addr": "K5",
+            "value": "落ち着いてすごされていた"
+          },
+          {
+            "addr": "L5",
+            "value": "情緒的に不安定なご様子です"
+          },
+          {
+            "addr": "M5",
+            "value": "いらいらとされていた"
+          },
+          {
+            "addr": "A6",
+            "value": "1"
+          },
+          {
+            "addr": "B6",
+            "value": "土橋　剛道"
+          },
+          {
+            "addr": "F6",
+            "value": "□"
+          },
+          {
+            "addr": "G6",
+            "value": "□"
+          },
+          {
+            "addr": "H6",
+            "value": "□"
+          },
+          {
+            "addr": "I6",
+            "value": "□"
+          },
+          {
+            "addr": "J6",
+            "value": "□"
+          },
+          {
+            "addr": "K6",
+            "value": "□"
+          },
+          {
+            "addr": "L6",
+            "value": "□"
+          },
+          {
+            "addr": "M6",
+            "value": "□"
+          },
+          {
+            "addr": "A7",
+            "value": "2"
+          },
+          {
+            "addr": "B7",
+            "value": "湊　理華"
+          },
+          {
+            "addr": "F7",
+            "value": "□"
+          },
+          {
+            "addr": "G7",
+            "value": "□"
+          },
+          {
+            "addr": "H7",
+            "value": "□"
+          },
+          {
+            "addr": "I7",
+            "value": "□"
+          },
+          {
+            "addr": "J7",
+            "value": "□"
+          },
+          {
+            "addr": "K7",
+            "value": "□"
+          },
+          {
+            "addr": "L7",
+            "value": "□"
+          },
+          {
+            "addr": "M7",
+            "value": "□"
+          },
+          {
+            "addr": "A8",
+            "value": "3"
+          },
+          {
+            "addr": "B8",
+            "value": "村岡　圭子"
+          },
+          {
+            "addr": "F8",
+            "value": "□"
+          },
+          {
+            "addr": "G8",
+            "value": "□"
+          },
+          {
+            "addr": "H8",
+            "value": "□"
+          },
+          {
+            "addr": "I8",
+            "value": "□"
+          },
+          {
+            "addr": "J8",
+            "value": "□"
+          },
+          {
+            "addr": "K8",
+            "value": "□"
+          },
+          {
+            "addr": "L8",
+            "value": "□"
+          },
+          {
+            "addr": "M8",
+            "value": "□"
+          },
+          {
+            "addr": "A9",
+            "value": "4"
+          },
+          {
+            "addr": "B9",
+            "value": "逢坂　正樹"
+          },
+          {
+            "addr": "F9",
+            "value": "□"
+          },
+          {
+            "addr": "G9",
+            "value": "□"
+          },
+          {
+            "addr": "H9",
+            "value": "□"
+          },
+          {
+            "addr": "I9",
+            "value": "□"
+          },
+          {
+            "addr": "J9",
+            "value": "□"
+          },
+          {
+            "addr": "K9",
+            "value": "□"
+          },
+          {
+            "addr": "L9",
+            "value": "□"
+          },
+          {
+            "addr": "M9",
+            "value": "□"
+          },
+          {
+            "addr": "A10",
+            "value": "5"
+          },
+          {
+            "addr": "B10",
+            "value": "石橋　幸子"
+          },
+          {
+            "addr": "F10",
+            "value": "□"
+          },
+          {
+            "addr": "G10",
+            "value": "□"
+          },
+          {
+            "addr": "H10",
+            "value": "□"
+          },
+          {
+            "addr": "I10",
+            "value": "□"
+          },
+          {
+            "addr": "J10",
+            "value": "□"
+          },
+          {
+            "addr": "K10",
+            "value": "□"
+          },
+          {
+            "addr": "L10",
+            "value": "□"
+          },
+          {
+            "addr": "M10",
+            "value": "□"
+          },
+          {
+            "addr": "A11",
+            "value": "6"
+          },
+          {
+            "addr": "B11",
+            "value": "石橋　幸奈美"
+          },
+          {
+            "addr": "F11",
+            "value": "□"
+          },
+          {
+            "addr": "G11",
+            "value": "□"
+          },
+          {
+            "addr": "H11",
+            "value": "□"
+          },
+          {
+            "addr": "I11",
+            "value": "□"
+          },
+          {
+            "addr": "J11",
+            "value": "□"
+          },
+          {
+            "addr": "K11",
+            "value": "□"
+          },
+          {
+            "addr": "L11",
+            "value": "□"
+          },
+          {
+            "addr": "M11",
+            "value": "□"
+          },
+          {
+            "addr": "A12",
+            "value": "7"
+          },
+          {
+            "addr": "B12",
+            "value": "和氣　新太"
+          },
+          {
+            "addr": "F12",
+            "value": "□"
+          },
+          {
+            "addr": "G12",
+            "value": "□"
+          },
+          {
+            "addr": "H12",
+            "value": "□"
+          },
+          {
+            "addr": "I12",
+            "value": "□"
+          },
+          {
+            "addr": "J12",
+            "value": "□"
+          },
+          {
+            "addr": "K12",
+            "value": "□"
+          },
+          {
+            "addr": "L12",
+            "value": "□"
+          },
+          {
+            "addr": "M12",
+            "value": "□"
+          },
+          {
+            "addr": "A13",
+            "value": "8"
+          },
+          {
+            "addr": "B13",
+            "value": "大谷　恭正"
+          },
+          {
+            "addr": "F13",
+            "value": "□"
+          },
+          {
+            "addr": "G13",
+            "value": "□"
+          },
+          {
+            "addr": "H13",
+            "value": "□"
+          },
+          {
+            "addr": "I13",
+            "value": "□"
+          },
+          {
+            "addr": "J13",
+            "value": "□"
+          },
+          {
+            "addr": "K13",
+            "value": "□"
+          },
+          {
+            "addr": "L13",
+            "value": "□"
+          },
+          {
+            "addr": "M13",
+            "value": "□"
+          },
+          {
+            "addr": "A14",
+            "value": "9"
+          },
+          {
+            "addr": "B14",
+            "value": "溝端　理恵"
+          },
+          {
+            "addr": "F14",
+            "value": "□"
+          },
+          {
+            "addr": "G14",
+            "value": "□"
+          },
+          {
+            "addr": "H14",
+            "value": "□"
+          },
+          {
+            "addr": "I14",
+            "value": "□"
+          },
+          {
+            "addr": "J14",
+            "value": "□"
+          },
+          {
+            "addr": "K14",
+            "value": "□"
+          },
+          {
+            "addr": "L14",
+            "value": "□"
+          },
+          {
+            "addr": "M14",
+            "value": "□"
+          },
+          {
+            "addr": "A15",
+            "value": "10"
+          },
+          {
+            "addr": "B15",
+            "value": "瀧本　美恵子"
+          },
+          {
+            "addr": "F15",
+            "value": "□"
+          },
+          {
+            "addr": "G15",
+            "value": "□"
+          },
+          {
+            "addr": "H15",
+            "value": "□"
+          },
+          {
+            "addr": "I15",
+            "value": "□"
+          },
+          {
+            "addr": "J15",
+            "value": "□"
+          },
+          {
+            "addr": "K15",
+            "value": "□"
+          },
+          {
+            "addr": "L15",
+            "value": "□"
+          },
+          {
+            "addr": "M15",
+            "value": "□"
+          },
+          {
+            "addr": "A16",
+            "value": "11"
+          },
+          {
+            "addr": "B16",
+            "value": "山本　学"
+          },
+          {
+            "addr": "F16",
+            "value": "□"
+          },
+          {
+            "addr": "G16",
+            "value": "□"
+          },
+          {
+            "addr": "H16",
+            "value": "□"
+          },
+          {
+            "addr": "I16",
+            "value": "□"
+          },
+          {
+            "addr": "J16",
+            "value": "□"
+          },
+          {
+            "addr": "K16",
+            "value": "□"
+          },
+          {
+            "addr": "L16",
+            "value": "□"
+          },
+          {
+            "addr": "M16",
+            "value": "□"
+          },
+          {
+            "addr": "A17",
+            "value": "12"
+          },
+          {
+            "addr": "B17",
+            "value": "斉藤　確"
+          },
+          {
+            "addr": "F17",
+            "value": "□"
+          },
+          {
+            "addr": "G17",
+            "value": "□"
+          },
+          {
+            "addr": "H17",
+            "value": "□"
+          },
+          {
+            "addr": "I17",
+            "value": "□"
+          },
+          {
+            "addr": "J17",
+            "value": "□"
+          },
+          {
+            "addr": "K17",
+            "value": "□"
+          },
+          {
+            "addr": "L17",
+            "value": "□"
+          },
+          {
+            "addr": "M17",
+            "value": "□"
+          },
+          {
+            "addr": "A18",
+            "value": "13"
+          },
+          {
+            "addr": "B18",
+            "value": "清水　瑛梨樺"
+          },
+          {
+            "addr": "F18",
+            "value": "□"
+          },
+          {
+            "addr": "G18",
+            "value": "□"
+          },
+          {
+            "addr": "H18",
+            "value": "□"
+          },
+          {
+            "addr": "I18",
+            "value": "□"
+          },
+          {
+            "addr": "J18",
+            "value": "□"
+          },
+          {
+            "addr": "K18",
+            "value": "□"
+          },
+          {
+            "addr": "L18",
+            "value": "□"
+          },
+          {
+            "addr": "M18",
+            "value": "□"
+          },
+          {
+            "addr": "A19",
+            "value": "14"
+          },
+          {
+            "addr": "B19",
+            "value": "田崎　一成"
+          },
+          {
+            "addr": "F19",
+            "value": "□"
+          },
+          {
+            "addr": "G19",
+            "value": "□"
+          },
+          {
+            "addr": "H19",
+            "value": "□"
+          },
+          {
+            "addr": "I19",
+            "value": "□"
+          },
+          {
+            "addr": "J19",
+            "value": "□"
+          },
+          {
+            "addr": "K19",
+            "value": "□"
+          },
+          {
+            "addr": "L19",
+            "value": "□"
+          },
+          {
+            "addr": "M19",
+            "value": "□"
+          },
+          {
+            "addr": "A20",
+            "value": "午前"
+          },
+          {
+            "addr": "B20",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A21",
+            "value": "午後"
+          },
+          {
+            "addr": "B21",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A22",
+            "value": "備考"
+          },
+          {
+            "addr": "A23",
+            "value": "担当者："
+          },
+          {
+            "addr": "E23",
+            "value": "サービス管理責任者確認："
+          },
+          {
+            "addr": "J23",
+            "value": "確認日：　　　年　　月　　日"
+          }
+        ]
+      },
+      {
+        "name": "【テンプレート】",
+        "max_row": 23,
+        "max_col": 13,
+        "print_area": "",
+        "merged_cells": [
+          "C2:E2",
+          "A23:D23",
+          "F2:M2",
+          "A2:B2",
+          "J23:M23",
+          "C20:M20",
+          "A1:M1",
+          "C21:M21",
+          "F4:I4",
+          "J4:M4",
+          "B22:M22",
+          "A3:M3",
+          "E23:I23"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "A1",
+            "value": "サービス提供記録　兼　日誌"
+          },
+          {
+            "addr": "A2",
+            "value": "【テンプレート】"
+          },
+          {
+            "addr": "C2",
+            "value": "（　）"
+          },
+          {
+            "addr": "F2",
+            "value": "就労継続支援Ｂ型"
+          },
+          {
+            "addr": "A3",
+            "value": "送迎：○＝送り・迎え両方　△＝送り・迎えどちらか　昼食：○＝食事提供加算対象　　出欠：○＝出席　●＝欠席　△＝遅刻・早退"
+          },
+          {
+            "addr": "A4",
+            "value": "No."
+          },
+          {
+            "addr": "B4",
+            "value": "名前"
+          },
+          {
+            "addr": "C4",
+            "value": "出欠"
+          },
+          {
+            "addr": "D4",
+            "value": "昼食"
+          },
+          {
+            "addr": "E4",
+            "value": "送迎"
+          },
+          {
+            "addr": "F4",
+            "value": "職業指導員"
+          },
+          {
+            "addr": "J4",
+            "value": "生活支援員"
+          },
+          {
+            "addr": "F5",
+            "value": "積極的に取り組んでおられていた"
+          },
+          {
+            "addr": "G5",
+            "value": "安定して取り組まれていた"
+          },
+          {
+            "addr": "H5",
+            "value": "作業に集中しておられなかった"
+          },
+          {
+            "addr": "I5",
+            "value": "作業意欲を感じなかった"
+          },
+          {
+            "addr": "J5",
+            "value": "安定してすごされていた"
+          },
+          {
+            "addr": "K5",
+            "value": "落ち着いてすごされていた"
+          },
+          {
+            "addr": "L5",
+            "value": "情緒的に不安定なご様子です"
+          },
+          {
+            "addr": "M5",
+            "value": "いらいらとされていた"
+          },
+          {
+            "addr": "A6",
+            "value": "1"
+          },
+          {
+            "addr": "B6",
+            "value": "土橋　剛道"
+          },
+          {
+            "addr": "F6",
+            "value": "□"
+          },
+          {
+            "addr": "G6",
+            "value": "□"
+          },
+          {
+            "addr": "H6",
+            "value": "□"
+          },
+          {
+            "addr": "I6",
+            "value": "□"
+          },
+          {
+            "addr": "J6",
+            "value": "□"
+          },
+          {
+            "addr": "K6",
+            "value": "□"
+          },
+          {
+            "addr": "L6",
+            "value": "□"
+          },
+          {
+            "addr": "M6",
+            "value": "□"
+          },
+          {
+            "addr": "A7",
+            "value": "2"
+          },
+          {
+            "addr": "B7",
+            "value": "湊　理華"
+          },
+          {
+            "addr": "F7",
+            "value": "□"
+          },
+          {
+            "addr": "G7",
+            "value": "□"
+          },
+          {
+            "addr": "H7",
+            "value": "□"
+          },
+          {
+            "addr": "I7",
+            "value": "□"
+          },
+          {
+            "addr": "J7",
+            "value": "□"
+          },
+          {
+            "addr": "K7",
+            "value": "□"
+          },
+          {
+            "addr": "L7",
+            "value": "□"
+          },
+          {
+            "addr": "M7",
+            "value": "□"
+          },
+          {
+            "addr": "A8",
+            "value": "3"
+          },
+          {
+            "addr": "B8",
+            "value": "村岡　圭子"
+          },
+          {
+            "addr": "F8",
+            "value": "□"
+          },
+          {
+            "addr": "G8",
+            "value": "□"
+          },
+          {
+            "addr": "H8",
+            "value": "□"
+          },
+          {
+            "addr": "I8",
+            "value": "□"
+          },
+          {
+            "addr": "J8",
+            "value": "□"
+          },
+          {
+            "addr": "K8",
+            "value": "□"
+          },
+          {
+            "addr": "L8",
+            "value": "□"
+          },
+          {
+            "addr": "M8",
+            "value": "□"
+          },
+          {
+            "addr": "A9",
+            "value": "4"
+          },
+          {
+            "addr": "B9",
+            "value": "逢坂　正樹"
+          },
+          {
+            "addr": "F9",
+            "value": "□"
+          },
+          {
+            "addr": "G9",
+            "value": "□"
+          },
+          {
+            "addr": "H9",
+            "value": "□"
+          },
+          {
+            "addr": "I9",
+            "value": "□"
+          },
+          {
+            "addr": "J9",
+            "value": "□"
+          },
+          {
+            "addr": "K9",
+            "value": "□"
+          },
+          {
+            "addr": "L9",
+            "value": "□"
+          },
+          {
+            "addr": "M9",
+            "value": "□"
+          },
+          {
+            "addr": "A10",
+            "value": "5"
+          },
+          {
+            "addr": "B10",
+            "value": "石橋　幸子"
+          },
+          {
+            "addr": "F10",
+            "value": "□"
+          },
+          {
+            "addr": "G10",
+            "value": "□"
+          },
+          {
+            "addr": "H10",
+            "value": "□"
+          },
+          {
+            "addr": "I10",
+            "value": "□"
+          },
+          {
+            "addr": "J10",
+            "value": "□"
+          },
+          {
+            "addr": "K10",
+            "value": "□"
+          },
+          {
+            "addr": "L10",
+            "value": "□"
+          },
+          {
+            "addr": "M10",
+            "value": "□"
+          },
+          {
+            "addr": "A11",
+            "value": "6"
+          },
+          {
+            "addr": "B11",
+            "value": "石橋　幸奈美"
+          },
+          {
+            "addr": "F11",
+            "value": "□"
+          },
+          {
+            "addr": "G11",
+            "value": "□"
+          },
+          {
+            "addr": "H11",
+            "value": "□"
+          },
+          {
+            "addr": "I11",
+            "value": "□"
+          },
+          {
+            "addr": "J11",
+            "value": "□"
+          },
+          {
+            "addr": "K11",
+            "value": "□"
+          },
+          {
+            "addr": "L11",
+            "value": "□"
+          },
+          {
+            "addr": "M11",
+            "value": "□"
+          },
+          {
+            "addr": "A12",
+            "value": "7"
+          },
+          {
+            "addr": "B12",
+            "value": "和氣　新太"
+          },
+          {
+            "addr": "F12",
+            "value": "□"
+          },
+          {
+            "addr": "G12",
+            "value": "□"
+          },
+          {
+            "addr": "H12",
+            "value": "□"
+          },
+          {
+            "addr": "I12",
+            "value": "□"
+          },
+          {
+            "addr": "J12",
+            "value": "□"
+          },
+          {
+            "addr": "K12",
+            "value": "□"
+          },
+          {
+            "addr": "L12",
+            "value": "□"
+          },
+          {
+            "addr": "M12",
+            "value": "□"
+          },
+          {
+            "addr": "A13",
+            "value": "8"
+          },
+          {
+            "addr": "B13",
+            "value": "大谷　恭正"
+          },
+          {
+            "addr": "F13",
+            "value": "□"
+          },
+          {
+            "addr": "G13",
+            "value": "□"
+          },
+          {
+            "addr": "H13",
+            "value": "□"
+          },
+          {
+            "addr": "I13",
+            "value": "□"
+          },
+          {
+            "addr": "J13",
+            "value": "□"
+          },
+          {
+            "addr": "K13",
+            "value": "□"
+          },
+          {
+            "addr": "L13",
+            "value": "□"
+          },
+          {
+            "addr": "M13",
+            "value": "□"
+          },
+          {
+            "addr": "A14",
+            "value": "9"
+          },
+          {
+            "addr": "B14",
+            "value": "溝端　理恵"
+          },
+          {
+            "addr": "F14",
+            "value": "□"
+          },
+          {
+            "addr": "G14",
+            "value": "□"
+          },
+          {
+            "addr": "H14",
+            "value": "□"
+          },
+          {
+            "addr": "I14",
+            "value": "□"
+          },
+          {
+            "addr": "J14",
+            "value": "□"
+          },
+          {
+            "addr": "K14",
+            "value": "□"
+          },
+          {
+            "addr": "L14",
+            "value": "□"
+          },
+          {
+            "addr": "M14",
+            "value": "□"
+          },
+          {
+            "addr": "A15",
+            "value": "10"
+          },
+          {
+            "addr": "B15",
+            "value": "瀧本　美恵子"
+          },
+          {
+            "addr": "F15",
+            "value": "□"
+          },
+          {
+            "addr": "G15",
+            "value": "□"
+          },
+          {
+            "addr": "H15",
+            "value": "□"
+          },
+          {
+            "addr": "I15",
+            "value": "□"
+          },
+          {
+            "addr": "J15",
+            "value": "□"
+          },
+          {
+            "addr": "K15",
+            "value": "□"
+          },
+          {
+            "addr": "L15",
+            "value": "□"
+          },
+          {
+            "addr": "M15",
+            "value": "□"
+          },
+          {
+            "addr": "A16",
+            "value": "11"
+          },
+          {
+            "addr": "B16",
+            "value": "山本　学"
+          },
+          {
+            "addr": "F16",
+            "value": "□"
+          },
+          {
+            "addr": "G16",
+            "value": "□"
+          },
+          {
+            "addr": "H16",
+            "value": "□"
+          },
+          {
+            "addr": "I16",
+            "value": "□"
+          },
+          {
+            "addr": "J16",
+            "value": "□"
+          },
+          {
+            "addr": "K16",
+            "value": "□"
+          },
+          {
+            "addr": "L16",
+            "value": "□"
+          },
+          {
+            "addr": "M16",
+            "value": "□"
+          },
+          {
+            "addr": "A17",
+            "value": "12"
+          },
+          {
+            "addr": "B17",
+            "value": "斉藤　確"
+          },
+          {
+            "addr": "F17",
+            "value": "□"
+          },
+          {
+            "addr": "G17",
+            "value": "□"
+          },
+          {
+            "addr": "H17",
+            "value": "□"
+          },
+          {
+            "addr": "I17",
+            "value": "□"
+          },
+          {
+            "addr": "J17",
+            "value": "□"
+          },
+          {
+            "addr": "K17",
+            "value": "□"
+          },
+          {
+            "addr": "L17",
+            "value": "□"
+          },
+          {
+            "addr": "M17",
+            "value": "□"
+          },
+          {
+            "addr": "A18",
+            "value": "13"
+          },
+          {
+            "addr": "B18",
+            "value": "清水　瑛梨樺"
+          },
+          {
+            "addr": "F18",
+            "value": "□"
+          },
+          {
+            "addr": "G18",
+            "value": "□"
+          },
+          {
+            "addr": "H18",
+            "value": "□"
+          },
+          {
+            "addr": "I18",
+            "value": "□"
+          },
+          {
+            "addr": "J18",
+            "value": "□"
+          },
+          {
+            "addr": "K18",
+            "value": "□"
+          },
+          {
+            "addr": "L18",
+            "value": "□"
+          },
+          {
+            "addr": "M18",
+            "value": "□"
+          },
+          {
+            "addr": "A19",
+            "value": "14"
+          },
+          {
+            "addr": "B19",
+            "value": "田崎　一成"
+          },
+          {
+            "addr": "F19",
+            "value": "□"
+          },
+          {
+            "addr": "G19",
+            "value": "□"
+          },
+          {
+            "addr": "H19",
+            "value": "□"
+          },
+          {
+            "addr": "I19",
+            "value": "□"
+          },
+          {
+            "addr": "J19",
+            "value": "□"
+          },
+          {
+            "addr": "K19",
+            "value": "□"
+          },
+          {
+            "addr": "L19",
+            "value": "□"
+          },
+          {
+            "addr": "M19",
+            "value": "□"
+          },
+          {
+            "addr": "A20",
+            "value": "午前"
+          },
+          {
+            "addr": "B20",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A21",
+            "value": "午後"
+          },
+          {
+            "addr": "B21",
+            "value": "作業内容："
+          },
+          {
+            "addr": "A22",
+            "value": "備考"
+          },
+          {
+            "addr": "A23",
+            "value": "担当者："
+          },
+          {
+            "addr": "E23",
+            "value": "サービス管理責任者確認："
+          },
+          {
+            "addr": "J23",
+            "value": "確認日：　　　年　　月　　日"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "support_plan_monitoring_template.xlsx",
+    "sheets": [
+      {
+        "name": "支援計画",
+        "max_row": 35,
+        "max_col": 18,
+        "print_area": "'支援計画'!$A$1:$R$35",
+        "merged_cells": [
+          "B28:D33",
+          "H28:M33",
+          "E15:G15",
+          "A8:H9",
+          "E16:G21",
+          "A34:R35",
+          "E22:G27",
+          "A7:H7",
+          "I5:K5",
+          "A1:L2",
+          "B22:D27",
+          "A16:A21",
+          "N28:R33",
+          "L5:M5",
+          "B15:D15",
+          "N5:R5",
+          "B16:D21",
+          "A4:R4",
+          "M2:R3",
+          "H15:M15",
+          "I8:R9",
+          "A14:H14",
+          "I7:R7",
+          "A11:H12",
+          "E28:G33",
+          "A22:A27",
+          "E5:G5",
+          "B5:C5",
+          "N15:R15",
+          "N16:R21",
+          "A28:A33",
+          "N22:R27",
+          "H22:M27",
+          "H16:M21",
+          "I11:R12"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "A1",
+            "value": "　　　　　　　　　　　　　　　　　　　個別支援計画書"
+          },
+          {
+            "addr": "M2",
+            "value": "ミラル"
+          },
+          {
+            "addr": "A4",
+            "value": "  　 　　　　　　　 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　支援計画書実施期間：　　 2025年 　 12月 　 27日　～　 2026年 　 6月 　 26日分"
+          },
+          {
+            "addr": "A5",
+            "value": "利用者名"
+          },
+          {
+            "addr": "B5",
+            "value": "九十九　知佳"
+          },
+          {
+            "addr": "D5",
+            "value": "作成者名"
+          },
+          {
+            "addr": "E5",
+            "value": "山崎　真一"
+          },
+          {
+            "addr": "H5",
+            "value": "作成日"
+          },
+          {
+            "addr": "I5",
+            "value": "　 2025年　 12月 　 23日"
+          },
+          {
+            "addr": "L5",
+            "value": "サービス\n管理責任者"
+          },
+          {
+            "addr": "N5",
+            "value": "室崎　真悟"
+          },
+          {
+            "addr": "A7",
+            "value": "到達目標"
+          },
+          {
+            "addr": "I7",
+            "value": "総合的な支援の方針"
+          },
+          {
+            "addr": "A8",
+            "value": "作業所を通して、幅広い交友関係の構築や継続して働く力を付ける。コミュニケーションのより良い取り方を学び思いやりを持った言動や行動を身に着けることが出来る。"
+          },
+          {
+            "addr": "I8",
+            "value": "本人の意見を尊重しながら、無理なく通所できるよう関係機関との連携を図り環境を整え、\n継続性・対人関係を養えるよう支援を心がける。"
+          },
+          {
+            "addr": "A11",
+            "value": "長期目標：一人暮らしをする。"
+          },
+          {
+            "addr": "I11",
+            "value": "短期目標：朝決めた時間に起きる事が出来る。"
+          },
+          {
+            "addr": "A14",
+            "value": "具体的な到達目標及び支援計画等"
+          },
+          {
+            "addr": "A15",
+            "value": "優先順位"
+          },
+          {
+            "addr": "B15",
+            "value": "具体的到達目標"
+          },
+          {
+            "addr": "E15",
+            "value": "本人の役割"
+          },
+          {
+            "addr": "H15",
+            "value": "支援内容（内容・留意点等）"
+          },
+          {
+            "addr": "N15",
+            "value": "支援期間（頻度・時間・期間等）"
+          },
+          {
+            "addr": "A16",
+            "value": "1"
+          },
+          {
+            "addr": "B16",
+            "value": "人とトラブルなどになったり問題があった際しっかりと自分から謝る事が出来る。"
+          },
+          {
+            "addr": "E16",
+            "value": "不快な思いをさせてしまったりした時は直ぐに自分で気が付き謝罪する事が出来る。"
+          },
+          {
+            "addr": "H16",
+            "value": "トラブルや自分の発言で問題が起きた際謝罪が無い事が多々ある為、その場で声掛けし御本人に気が付いていただき迅速なトラブル解決に務める。"
+          },
+          {
+            "addr": "N16",
+            "value": "6か月間\n開所日"
+          },
+          {
+            "addr": "A22",
+            "value": "2"
+          },
+          {
+            "addr": "B22",
+            "value": "作業開始時間を守る。"
+          },
+          {
+            "addr": "E22",
+            "value": "作業開始時間の5分前には席につき準備をする事が出来る。"
+          },
+          {
+            "addr": "H22",
+            "value": "以前より作業開始ギリギリまで飲食などをていて注意される場面が増えた為声掛けをその都度し、時間を守る事を再度意識していただく。"
+          },
+          {
+            "addr": "N22",
+            "value": "6か月間\n開所日"
+          },
+          {
+            "addr": "A28",
+            "value": "3"
+          },
+          {
+            "addr": "B28",
+            "value": "相手の話しをしっかりと聞く事が出来る。"
+          },
+          {
+            "addr": "E28",
+            "value": "相手が話している時はしっかりと耳を傾け聞く事が出来る。"
+          },
+          {
+            "addr": "H28",
+            "value": "返事はされるが、内容は聞いていない事が多いのでしっかり理解されているかその都度確認して、その場で気になった事は御本人にお伝えする。"
+          },
+          {
+            "addr": "N28",
+            "value": "6か月間\n通所日"
+          }
+        ]
+      },
+      {
+        "name": "モニタリング",
+        "max_row": 42,
+        "max_col": 8,
+        "print_area": "'モニタリング'!$A$1:$H$28",
+        "merged_cells": [
+          "A16:B21",
+          "C9:E9",
+          "C7:F7",
+          "B6:H6",
+          "F2:H2",
+          "F10:F15",
+          "A1:H1",
+          "H10:H15",
+          "F16:F21",
+          "B5:H5",
+          "B4:H4",
+          "A8:C8",
+          "G10:G15",
+          "A22:B27",
+          "A3:H3",
+          "F22:F27",
+          "H22:H27",
+          "A10:B15",
+          "H16:H21",
+          "C10:E15",
+          "C16:E21",
+          "C22:E27",
+          "G16:G21",
+          "A9:B9",
+          "G22:G27"
+        ],
+        "cells_with_text": [
+          {
+            "addr": "A1",
+            "value": "モニタリング・評価記録表"
+          },
+          {
+            "addr": "A2",
+            "value": "ご利用者名"
+          },
+          {
+            "addr": "B2",
+            "value": "九十九　知佳"
+          },
+          {
+            "addr": "C2",
+            "value": "様"
+          },
+          {
+            "addr": "A3",
+            "value": "サービス等利用計画の総合的な方針"
+          },
+          {
+            "addr": "A4",
+            "value": "本人の希望　："
+          },
+          {
+            "addr": "B4",
+            "value": "作業所を通して、幅広い交友関係の構築や継続して働く力を付ける。コミュニケーションのより良い取り方を学び思いやりを持った言動や行動を身に着けることが出来る。"
+          },
+          {
+            "addr": "A5",
+            "value": "長期目標　 　："
+          },
+          {
+            "addr": "B5",
+            "value": "一人暮らしをする。"
+          },
+          {
+            "addr": "A6",
+            "value": "短期目標 　　："
+          },
+          {
+            "addr": "B6",
+            "value": "朝決めた時間に起きる事が出来る。"
+          },
+          {
+            "addr": "C7",
+            "value": "3段階で評価しています。　A/達成　B/やや達成　C/未達成"
+          },
+          {
+            "addr": "A8",
+            "value": "本人のニーズ及び支援計画等"
+          },
+          {
+            "addr": "A9",
+            "value": "本人の希望"
+          },
+          {
+            "addr": "C9",
+            "value": "本人の役割"
+          },
+          {
+            "addr": "F9",
+            "value": "支援内容（内容・留意点等）"
+          },
+          {
+            "addr": "G9",
+            "value": "今後の課題"
+          },
+          {
+            "addr": "H9",
+            "value": "評価(A/B/C)"
+          },
+          {
+            "addr": "A10",
+            "value": "人とトラブルなどになったり問題があった際しっかりと自分から謝る事が出来る。"
+          },
+          {
+            "addr": "C10",
+            "value": "不快な思いをさせてしまったりした時は直ぐに自分で気が付き謝罪する事が出来る。"
+          },
+          {
+            "addr": "F10",
+            "value": "トラブルや自分の発言で問題が起きた際謝罪が無い事が多々ある為、その場で声掛けし御本人に気が付いていただき迅速なトラブル解決に務める。"
+          },
+          {
+            "addr": "A16",
+            "value": "作業開始時間を守る。"
+          },
+          {
+            "addr": "C16",
+            "value": "作業開始時間の5分前には席につき準備をする事が出来る。"
+          },
+          {
+            "addr": "F16",
+            "value": "以前より作業開始ギリギリまで飲食などをていて注意される場面が増えた為声掛けをその都度し、時間を守る事を再度意識していただく。"
+          },
+          {
+            "addr": "A22",
+            "value": "相手の話しをしっかりと聞く事が出来る。"
+          },
+          {
+            "addr": "C22",
+            "value": "相手が話している時はしっかりと耳を傾け聞く事が出来る。"
+          },
+          {
+            "addr": "F22",
+            "value": "返事はされるが、内容は聞いていない事が多いのでしっかり理解されているかその都度確認して、その場で気になった事は御本人にお伝えする。"
+          }
+        ]
+      }
+    ]
+  }
+]

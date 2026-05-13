@@ -1,0 +1,90 @@
+{
+  "$schema": "https://example.com/support-plan-cell-mapping.schema.json",
+  "template_file": "support_plan_monitoring_template.xlsx",
+  "source_sheet": "支援計画",
+  "description": "個別支援計画書。1利用者1シート。3つの目標（優先順位1〜3）が縦に並ぶ。各目標は6行をまたぐセル結合（rows 16-21 / 22-27 / 28-33）。",
+  "static": {
+    "title_cell": "A1",
+    "title_text": "個別支援計画書",
+    "brand_cell": "M2",
+    "implementation_period_label_cell": "A4",
+    "header_attainment_goal_label": "A7",
+    "header_overall_support_policy_label": "I7",
+    "header_long_term_label": "A11",
+    "header_short_term_label": "I11",
+    "section_detailed_goals_label": "A14",
+    "table_header_row": 15,
+    "table_columns": {
+      "priority": "A15",
+      "specific_goal": "B15",
+      "user_role": "E15",
+      "support_content": "H15",
+      "support_duration": "N15"
+    }
+  },
+  "header_fields": {
+    "client_name_label": "A5",
+    "client_name_value": "B5",
+    "author_label": "D5",
+    "author_value": "E5",
+    "created_date_label": "H5",
+    "created_date_value": "I5",
+    "service_manager_label": "L5",
+    "service_manager_value": "N5",
+    "implementation_period_value_cell": "A4",
+    "implementation_period_format": "支援計画書実施期間：　 {start_y}年 　{start_m}月 　{start_d}日　～　 {end_y}年 　{end_m}月 　{end_d}日分"
+  },
+  "policy_fields": {
+    "attainment_goal_value": "A8",
+    "overall_support_policy_value": "I8",
+    "long_term_goal_value": "A11",
+    "long_term_goal_value_note": "ラベルとセル位置が同一の事例あり。'長期目標：' プレフィックス付きで A11、'短期目標：' プレフィックスで I11 に格納される運用。",
+    "short_term_goal_value": "I11"
+  },
+  "goals_table": {
+    "row_height_per_goal": 6,
+    "goals": [
+      {
+        "index": 1,
+        "row_start": 16,
+        "row_end": 21,
+        "cells": {
+          "priority": "A16",
+          "specific_goal": "B16",
+          "user_role": "E16",
+          "support_content": "H16",
+          "support_duration": "N16"
+        }
+      },
+      {
+        "index": 2,
+        "row_start": 22,
+        "row_end": 27,
+        "cells": {
+          "priority": "A22",
+          "specific_goal": "B22",
+          "user_role": "E22",
+          "support_content": "H22",
+          "support_duration": "N22"
+        }
+      },
+      {
+        "index": 3,
+        "row_start": 28,
+        "row_end": 33,
+        "cells": {
+          "priority": "A28",
+          "specific_goal": "B28",
+          "user_role": "E28",
+          "support_content": "H28",
+          "support_duration": "N28"
+        }
+      }
+    ]
+  },
+  "print_area": "'支援計画'!$A$1:$R$35",
+  "todo": [
+    "4つ目以降の目標が出る運用かを要確認（現Excelは3行固定）。",
+    "考慮点（留意点）が独立列で必要か、'支援内容' に含めるか要確認。"
+  ]
+}

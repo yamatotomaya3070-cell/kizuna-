@@ -214,13 +214,14 @@ export default function DiaryPage() {
     };
   })();
 
+  const COMMENT_MIN_LENGTH = 30;
   const canNext: Record<Step, boolean> = {
     date:   recordedDate !== "" && shiftStaffNames !== "",
     client: clientName !== "",
     basic:  adminAttendance != null
               ? true
               : attendance !== "" && (isAbsent || (lunch !== "" && transport !== "")),
-    eval:   isAbsent || finalComment.trim() !== "",
+    eval:   isAbsent || finalComment.trim().length >= COMMENT_MIN_LENGTH,
     done:   true,
   };
 
@@ -859,8 +860,17 @@ export default function DiaryPage() {
               className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-blue-900"
             />
             <div className="flex items-center justify-between mt-1">
-              <p className="text-[11px] text-slate-400">
-                {finalComment.length} 文字（目安 100 文字）
+              <p
+                className={`text-[11px] ${
+                  finalComment.trim().length >= COMMENT_MIN_LENGTH
+                    ? "text-slate-500"
+                    : "text-red-700 font-semibold"
+                }`}
+              >
+                {finalComment.trim().length} 文字
+                {finalComment.trim().length < COMMENT_MIN_LENGTH
+                  ? `（最低 ${COMMENT_MIN_LENGTH} 文字以上 / 目安 100 文字）`
+                  : `（目安 100 文字）`}
               </p>
               {finalComment && (
                 <button

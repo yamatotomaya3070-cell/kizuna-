@@ -1,0 +1,93 @@
+{
+  "$schema": "https://example.com/monitoring-cell-mapping.schema.json",
+  "template_file": "support_plan_monitoring_template.xlsx",
+  "source_sheet": "モニタリング",
+  "description": "モニタリング・評価記録表。個別支援計画と1対1対応。3つの目標について A/B/C 評価と今後の課題を記載。各目標は6行をまたぐセル結合（rows 10-15 / 16-21 / 22-27）。",
+  "static": {
+    "title_cell": "A1",
+    "title_text": "モニタリング・評価記録表",
+    "evaluation_legend_cell": "C7",
+    "evaluation_legend_text": "3段階で評価しています。　A/達成　B/やや達成　C/未達成",
+    "section_needs_label": "A8",
+    "table_header_row": 9,
+    "table_columns": {
+      "user_hope": "A9",
+      "user_role": "C9",
+      "support_content": "F9",
+      "remaining_issue": "G9",
+      "evaluation": "H9"
+    }
+  },
+  "header_fields": {
+    "client_name_label": "A2",
+    "client_name_value": "B2",
+    "client_name_suffix": "C2",
+    "policy_section_label": "A3",
+    "user_hope_label": "A4",
+    "user_hope_value": "B4",
+    "long_term_goal_label": "A5",
+    "long_term_goal_value": "B5",
+    "short_term_goal_label": "A6",
+    "short_term_goal_value": "B6"
+  },
+  "goals_table": {
+    "row_height_per_goal": 6,
+    "evaluation_values": ["A", "B", "C"],
+    "evaluation_meaning": {
+      "A": "達成",
+      "B": "やや達成",
+      "C": "未達成"
+    },
+    "goals": [
+      {
+        "index": 1,
+        "row_start": 10,
+        "row_end": 15,
+        "cells": {
+          "user_hope": "A10",
+          "user_role": "C10",
+          "support_content": "F10",
+          "remaining_issue": "G10",
+          "evaluation": "H10"
+        }
+      },
+      {
+        "index": 2,
+        "row_start": 16,
+        "row_end": 21,
+        "cells": {
+          "user_hope": "A16",
+          "user_role": "C16",
+          "support_content": "F16",
+          "remaining_issue": "G16",
+          "evaluation": "H16"
+        }
+      },
+      {
+        "index": 3,
+        "row_start": 22,
+        "row_end": 27,
+        "cells": {
+          "user_hope": "A22",
+          "user_role": "C22",
+          "support_content": "F22",
+          "remaining_issue": "G22",
+          "evaluation": "H22"
+        }
+      }
+    ]
+  },
+  "support_plan_field_mapping": {
+    "description": "個別支援計画→モニタリングのセル対応関係。同一利用者・同一期間で値を引き継ぐ列。",
+    "mapping": [
+      { "support_plan": "specific_goal (B列)", "monitoring": "user_hope (A列)" },
+      { "support_plan": "user_role (E列)", "monitoring": "user_role (C列)" },
+      { "support_plan": "support_content (H列)", "monitoring": "support_content (F列)" }
+    ]
+  },
+  "print_area": "'モニタリング'!$A$1:$H$28",
+  "todo": [
+    "達成度サマリー / 次期目標案 / 次期支援方針 を別出力するか、本シートに章を追加するかを要確認。",
+    "評価日・評価者の記載場所が現テンプレに無いので追加要否を要確認。"
+  ]
+}
