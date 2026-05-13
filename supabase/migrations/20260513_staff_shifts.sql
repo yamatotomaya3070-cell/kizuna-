@@ -8,12 +8,20 @@ CREATE TABLE IF NOT EXISTS staff_shifts (
   id           UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   facility_id  UUID NOT NULL REFERENCES facilities(id) ON DELETE CASCADE,
   shift_date   DATE NOT NULL,
-  staff_id     UUID REFERENCES staff(id) ON DELETE CASCADE,
+  staff_id     UUID REFERENCES staff(id) ON DELETE SET NULL,
   staff_name   TEXT NOT NULL,
   role         TEXT NOT NULL DEFAULT 'work',
+  shift_type   TEXT,
+  start_time   TIME,
+  end_time     TIME,
   created_at   TIMESTAMPTZ DEFAULT now(),
-  UNIQUE(facility_id, shift_date, staff_id)
+  UNIQUE(facility_id, shift_date, staff_name)
 );
+
+-- 既存環境のための後方互換（カラムが無ければ追加）
+ALTER TABLE staff_shifts ADD COLUMN IF NOT EXISTS shift_type TEXT;
+ALTER TABLE staff_shifts ADD COLUMN IF NOT EXISTS start_time TIME;
+ALTER TABLE staff_shifts ADD COLUMN IF NOT EXISTS end_time TIME;
 
 ALTER TABLE staff_shifts ENABLE ROW LEVEL SECURITY;
 

@@ -92,6 +92,7 @@ export default function DiaryPage() {
   const [shiftStaff, setShiftStaff] = useState<ShiftStaff[]>([]);
   const [shiftHasData, setShiftHasData] = useState(false);
   const [loadingShift, setLoadingShift] = useState(false);
+  const [manualStaffOverride, setManualStaffOverride] = useState("");
 
   const [clientName, setClientName] = useState("");
   const [attendance, setAttendance] = useState("");
@@ -148,6 +149,7 @@ export default function DiaryPage() {
   useEffect(() => {
     if (!recordedDate) return;
     setLoadingShift(true);
+    setManualStaffOverride("");
     getShiftStaff(recordedDate).then((res) => {
       setShiftStaff(res.staff);
       setShiftHasData(res.hasShift);
@@ -172,7 +174,8 @@ export default function DiaryPage() {
 
   const isAbsent = attendance === "●";
 
-  const shiftStaffNames = shiftStaff.map((s) => s.name).join("、");
+  const autoStaffNames = shiftStaff.map((s) => s.name).join("、");
+  const shiftStaffNames = manualStaffOverride.trim() || autoStaffNames;
 
   // 評価ステップで使うテンプレ集（役職に依存せず両方を「材料」として提示）
   const allTemplates = (() => {
@@ -192,7 +195,7 @@ export default function DiaryPage() {
   })();
 
   const canNext: Record<Step, boolean> = {
-    date:   recordedDate !== "" && shiftStaff.length > 0,
+    date:   recordedDate !== "" && shiftStaffNames !== "",
     client: clientName !== "",
     basic:  adminAttendance != null
               ? true
@@ -278,7 +281,7 @@ export default function DiaryPage() {
           eval: finalComment,
         },
         comments: {
-          staffSource: "shift",
+          staffSource: manualStaffOverride.trim() ? "manual" : shiftHasData ? "shift" : "fallback",
           shiftStaffNames,
           shiftStaffIds: shiftStaff.map((s) => s.staffId).filter(Boolean) as string[],
           shiftHasData,
@@ -392,24 +395,25 @@ export default function DiaryPage() {
 
       {/* 全ステップで上部にシフト担当者を表示 */}
       {step !== "date" && (
-        <div className="mb-4 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3">
-          <p className="text-[11px] text-slate-500 mb-1">本日の担当職員（シフトより自動取得）</p>
+        <div
+          className={`mb-4 border rounded-2xl px-4 py-3 ${
+            shiftHasData
+              ? "bg-slate-50 border-slate-200"
+              : "bg-amber-50 border-amber-200"
+          }`}
+        >
+          <p className={`text-[11px] mb-1 ${shiftHasData ? "text-slate-500" : "text-amber-700"}`}>
+            {shiftHasData
+              ? "担当職員（シフトより自動取得）"
+              : "この日のシフトが登録されていません"}
+          </p>
           {loadingShift ? (
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <Loader2 size={12} className="animate-spin" />
               読み込み中...
             </div>
-          ) : shiftStaff.length === 0 ? (
-            <p className="text-xs text-amber-600">職員が登録されていません</p>
           ) : (
-            <>
-              <p className="text-sm font-bold text-slate-700">{shiftStaffNames}</p>
-              {!shiftHasData && (
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  ※ この日のシフト未登録のため、登録職員全員を表示しています
-                </p>
-              )}
-            </>
+            <p className="text-sm font-bold text-slate-700">{shiftStaffNames || "—"}</p>
           )}
         </div>
       )}
@@ -441,28 +445,35 @@ export default function DiaryPage() {
           </div>
 
           <div>
-            <p className="text-xs font-bold text-slate-600 mb-2">本日の担当職員</p>
-            <div className="bg-white border-2 border-slate-100 rounded-2xl px-4 py-3 min-h-[3rem] flex items-center">
-              {loadingShift ? (
-                <div className="flex items-center gap-2 text-slate-400 text-sm">
-                  <Loader2 size={14} className="animate-spin" />
-                  読み込み中...
-                </div>
-              ) : shiftStaff.length === 0 ? (
-                <p className="text-sm text-amber-600">
-                  職員が登録されていません。管理画面から職員を追加してください。
+            <p className="text-xs font-bold text-slate-600 mb-2">この日の担当職員</p>
+            {loadingShift ? (
+              <div className="bg-white border-2 border-slate-100 rounded-2xl px-4 py-3 flex items-center gap-2 text-slate-400 text-sm">
+                <Loader2 size={14} className="animate-spin" />
+                読み込み中...
+              </div>
+            ) : shiftHasData ? (
+              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl px-4 py-3">
+                <p className="text-sm font-bold text-emerald-800">{autoStaffNames}</p>
+                <p className="text-[11px] text-emerald-600 mt-0.5">シフトより自動取得</p>
+              </div>
+            ) : (
+              <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl px-4 py-3 space-y-2">
+                <p className="text-xs font-bold text-amber-700">
+                  この日のシフトが登録されていません
                 </p>
-              ) : (
-                <div>
-                  <p className="text-sm font-bold text-slate-700">{shiftStaffNames}</p>
-                  {!shiftHasData && (
-                    <p className="text-[11px] text-slate-400 mt-1">
-                      ※ この日のシフト未登録のため、登録職員全員を表示しています
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
+                <p className="text-[11px] text-amber-600">
+                  管理者にシフト登録を依頼するか、担当職員を下に入力してください
+                  {autoStaffNames && `（登録職員: ${autoStaffNames}）`}
+                </p>
+                <input
+                  type="text"
+                  value={manualStaffOverride}
+                  onChange={(e) => setManualStaffOverride(e.target.value)}
+                  placeholder="例: 山田 太郎、佐藤 花子"
+                  className="w-full px-3 py-2 rounded-xl border border-amber-300 bg-white text-sm text-slate-700 placeholder:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
