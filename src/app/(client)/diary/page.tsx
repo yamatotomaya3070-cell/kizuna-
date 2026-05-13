@@ -761,6 +761,7 @@ export default function DiaryPage() {
             </div>
           </div>
 
+          {allTemplates.neutral.length > 0 && (
           <div>
             <p className="mb-2 flex items-center">
               <span aria-label="普通" className="text-3xl leading-none">🙂</span>
@@ -785,6 +786,7 @@ export default function DiaryPage() {
               })}
             </div>
           </div>
+          )}
 
           <div>
             <p className="mb-2 flex items-center">

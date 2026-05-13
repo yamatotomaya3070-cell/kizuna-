@@ -22,26 +22,29 @@ type AttendanceRow = {
   transport: string;
 };
 
-const WORK_EVAL_KEYS = ["active_engagement", "stable_engagement", "not_focused", "no_motivation"] as const;
-const LIFE_EVAL_KEYS = ["stable_passing", "calm_passing", "emotionally_unstable", "irritated"] as const;
+// 業務日誌Excelの8チェック項目と「日報入力チップ」の完全一致マップ
+// （service-formats.ts B_TYPE_FORMAT のテンプレ文言と1:1対応）
+const WORK_EVAL_TO_LABEL = {
+  active_engagement: "積極的に取り組んでおられていた",
+  stable_engagement: "安定して取り組まれていた",
+  not_focused: "作業に集中しておられなかった",
+  no_motivation: "作業意欲を感じなかった",
+} as const;
 
-const WORK_EVAL_LABELS: Record<typeof WORK_EVAL_KEYS[number], string[]> = {
-  active_engagement: ["積極的", "意欲的"],
-  stable_engagement: ["安定して取り組ま", "落ち着いて作業", "集中して作業"],
-  not_focused: ["集中しておられなかった", "集中が続か"],
-  no_motivation: ["意欲を感じなかった", "意欲が"],
-};
-const LIFE_EVAL_LABELS: Record<typeof LIFE_EVAL_KEYS[number], string[]> = {
-  stable_passing: ["安定してすごされ", "安定して過ごされ"],
-  calm_passing: ["落ち着いてすごされ", "落ち着いて過ごされ", "穏やか"],
-  emotionally_unstable: ["情緒的に不安定", "不安定な様子"],
-  irritated: ["いらいら"],
-};
+const LIFE_EVAL_TO_LABEL = {
+  stable_passing: "安定してすごされていた",
+  calm_passing: "落ち着いてすごされていた",
+  emotionally_unstable: "情緒的に不安定なご様子です",
+  irritated: "いらいらとされていた",
+} as const;
 
-function inferEvalFromText(text: string, labels: Record<string, string[]>): Record<string, boolean> {
+function evalFromSelectedItems(
+  selected: string[],
+  map: Record<string, string>,
+): Record<string, boolean> {
   const out: Record<string, boolean> = {};
-  for (const [key, needles] of Object.entries(labels)) {
-    out[key] = needles.some((n) => text.includes(n));
+  for (const [key, label] of Object.entries(map)) {
+    out[key] = selected.includes(label);
   }
   return out;
 }
@@ -93,10 +96,10 @@ export async function GET(req: NextRequest) {
     const diary = diaryMap.get(name);
     const ratings = (diary?.ratings ?? {}) as Record<string, unknown>;
     const finalComment = String(ratings.finalComment ?? ratings.eval ?? "");
-    const selectedItems = Array.isArray(ratings.selectedItems) ? (ratings.selectedItems as string[]).join("。") : "";
-    const text = `${selectedItems}\n${finalComment}`;
-    const workEval = inferEvalFromText(text, WORK_EVAL_LABELS as unknown as Record<string, string[]>);
-    const lifeEval = inferEvalFromText(text, LIFE_EVAL_LABELS as unknown as Record<string, string[]>);
+    const selectedItems = Array.isArray(ratings.selectedItems) ? (ratings.selectedItems as string[]) : [];
+    // 完全一致でチェックボックスを判定（service-formats.ts のチップ文言と1:1）
+    const workEval = evalFromSelectedItems(selectedItems, WORK_EVAL_TO_LABEL as unknown as Record<string, string>);
+    const lifeEval = evalFromSelectedItems(selectedItems, LIFE_EVAL_TO_LABEL as unknown as Record<string, string>);
     return {
       no: i + 1,
       clientName: name,
