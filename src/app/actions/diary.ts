@@ -98,7 +98,7 @@ export async function saveDiaryBatch(
     .single();
 
   const facilityId = profile?.facility_id ?? null;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayJa();
 
   const attendanceMap = new Map<string, { attendance: string; lunch: string; transport: string }>();
   if (facilityId) {
@@ -123,8 +123,12 @@ export async function saveDiaryBatch(
       breakfast: da?.lunch ?? (isAbsent ? "●" : "○"),
       sleep: da?.transport ?? (isAbsent ? "●" : "○"),
       role,
-      ratings: { eval: isAbsent ? "" : entry.comment },
+      ratings: {
+        eval: isAbsent ? "" : entry.comment,
+        finalComment: isAbsent ? "" : entry.comment,
+      },
       comments: { role },
+      recorded_date: today,
       recorded_at: now,
     };
   });
