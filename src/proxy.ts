@@ -49,7 +49,7 @@ export async function proxy(request: NextRequest) {
     }
 
     // facility ユーザーが admin 専用ページにアクセスしたら / へ
-    const adminOnlyPaths = ["/admin", "/facilities", "/clients", "/status"];
+    const adminOnlyPaths = ["/admin", "/facilities", "/clients", "/status", "/support-plans", "/shifts"];
     if (role === "facility" && adminOnlyPaths.some((p) => pathname.startsWith(p))) {
       return NextResponse.redirect(new URL("/", request.url));
     }

@@ -5,13 +5,15 @@
  * の項目構造に合わせてフォームを用意し、フォーム送信で .xlsx を直接ダウンロードする。
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import {
   FileText,
   Loader2,
   Download,
+  Save,
   User,
   ClipboardList,
   CalendarDays,
@@ -19,6 +21,7 @@ import {
   CheckCircle2,
   UserPlus,
 } from "lucide-react";
+import { saveSupportPlan, getSupportPlan } from "@/app/actions/support-plans";
 
 type DocType = "diary" | "support_plan" | "monitoring";
 
@@ -94,12 +97,25 @@ type Eval = {
 };
 
 export default function GenerateDocumentPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-sm text-slate-500">読み込み中...</div>}>
+      <GenerateDocumentInner />
+    </Suspense>
+  );
+}
+
+function GenerateDocumentInner() {
   const supabase = createClient();
+  const searchParams = useSearchParams();
+  const initialType = (searchParams.get("type") as DocType | null) ?? "diary";
+  const planIdParam = searchParams.get("planId");
 
   const [clients, setClients] = useState<string[]>([]);
   const [selectedClient, setSelectedClient] = useState<string>("");
-  const [docType, setDocType] = useState<DocType>("diary");
+  const [docType, setDocType] = useState<DocType>(initialType);
+  const [planId, setPlanId] = useState<string | null>(planIdParam);
   const [generating, setGenerating] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState("");
 
   // ── 業務日報用
@@ -150,6 +166,37 @@ export default function GenerateDocumentPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 既存の計画書を読み込み（編集モード）
+  useEffect(() => {
+    if (!planIdParam) return;
+    (async () => {
+      const { data, error } = await getSupportPlan(planIdParam);
+      if (error || !data) return;
+      setDocType("support_plan");
+      setPlanId(data.id);
+      setSelectedClient(data.client_name);
+      setPlanStart(data.plan_start_date);
+      setPlanEnd(data.plan_end_date);
+      setAuthorName(data.author_name ?? "");
+      setServiceManagerName(data.service_manager_name ?? "");
+      setCreatedDate(data.created_date ?? todayISO());
+      setAttainmentGoal(data.attainment_goal ?? "");
+      setOverallPolicy(data.overall_support_policy ?? "");
+      setLongTermGoal(data.long_term_goal ?? "");
+      setShortTermGoal(data.short_term_goals ?? "");
+      const loaded = Array.isArray(data.goals_json) ? data.goals_json : [];
+      const merged: Goal[] = [0, 1, 2].map((i) => loaded[i] ?? {
+        priority: i + 1,
+        specific_goal: "",
+        user_role: "",
+        support_content: "",
+        support_duration: i === 2 ? "6か月間\n通所日" : "6か月間\n開所日",
+      });
+      setGoals(merged);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planIdParam]);
+
   // 計画書の3目標を入力したらモニタリングフォームに自動コピー（編集可）
   useEffect(() => {
     setEvals((prev) =>
@@ -180,6 +227,37 @@ export default function GenerateDocumentPage() {
     a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleSavePlan = async () => {
+    if (!selectedClient) {
+      showToast("利用者を選択してください");
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await saveSupportPlan({
+        id: planId ?? undefined,
+        clientName: selectedClient,
+        planStartDate: planStart,
+        planEndDate: planEnd,
+        authorName,
+        serviceManagerName,
+        createdDate,
+        attainmentGoal,
+        overallSupportPolicy: overallPolicy,
+        longTermGoal,
+        shortTermGoals: shortTermGoal,
+        goals: goals.filter((g) => g.specific_goal.trim() !== ""),
+      });
+      if (res.error) throw new Error(res.error);
+      if (res.id) setPlanId(res.id);
+      showToast(planId ? "計画書を更新しました" : "計画書を保存しました");
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "保存に失敗しました");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleGenerate = async () => {
@@ -474,27 +552,58 @@ export default function GenerateDocumentPage() {
           </div>
         )}
 
-        <button
-          onClick={handleGenerate}
-          disabled={generating}
-          className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm transition-all ${
-            generating
-              ? "bg-slate-200 text-slate-500 cursor-not-allowed"
-              : "bg-blue-900 text-white shadow-sm hover:bg-blue-950"
-          }`}
-        >
-          {generating ? (
-            <>
-              <Loader2 size={16} className="animate-spin" />
-              生成中...
-            </>
-          ) : (
-            <>
-              <Download size={16} />
-              Excelをダウンロード
-            </>
+        <div className="flex flex-col sm:flex-row gap-3">
+          {docType === "support_plan" && (
+            <button
+              onClick={handleSavePlan}
+              disabled={saving || !selectedClient}
+              className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm transition-all ${
+                saving || !selectedClient
+                  ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                  : "bg-white text-blue-900 border-2 border-blue-900 hover:bg-slate-50"
+              }`}
+            >
+              {saving ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  保存中...
+                </>
+              ) : (
+                <>
+                  <Save size={16} />
+                  {planId ? "計画書を更新" : "計画書をDBに保存"}
+                </>
+              )}
+            </button>
           )}
-        </button>
+          <button
+            onClick={handleGenerate}
+            disabled={generating}
+            className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm transition-all ${
+              generating
+                ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                : "bg-blue-900 text-white shadow-sm hover:bg-blue-950"
+            }`}
+          >
+            {generating ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                生成中...
+              </>
+            ) : (
+              <>
+                <Download size={16} />
+                Excelをダウンロード
+              </>
+            )}
+          </button>
+        </div>
+
+        {docType === "support_plan" && planId && (
+          <p className="text-[11px] text-slate-500 text-center">
+            編集モード（planId: {planId.slice(0, 8)}...）。更新ボタンで上書き保存されます。
+          </p>
+        )}
       </div>
     </div>
   );
