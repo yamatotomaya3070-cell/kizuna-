@@ -8,9 +8,17 @@ type DiaryPayload = {
   attendance: string;
   breakfast: string;
   sleep: string;
-  ratings: Record<string, string>;
-  comments: Record<string, string>;
+  ratings: Record<string, unknown>;
+  comments: Record<string, unknown>;
+  recordedDate?: string; // YYYY-MM-DD（日報対象日）。未指定なら今日
+  role?: string;         // 'work' | 'life' | 'shift' など。未指定なら 'work'
 };
+
+function todayJa(): string {
+  // ローカル（Asia/Tokyo 想定）の YYYY-MM-DD
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 export async function saveDiary(payload: DiaryPayload) {
   const supabase = await createClient();
@@ -25,6 +33,7 @@ export async function saveDiary(payload: DiaryPayload) {
     .single();
 
   const facilityId = profile?.facility_id ?? null;
+  const recordedDate = payload.recordedDate ?? todayJa();
 
   // daily_attendance に既入力データがあればそちらを優先
   let attendance = payload.attendance;
@@ -32,13 +41,12 @@ export async function saveDiary(payload: DiaryPayload) {
   let sleep = payload.sleep;
 
   if (facilityId) {
-    const today = new Date().toISOString().slice(0, 10);
     const { data: da } = await supabase
       .from("daily_attendance")
       .select("attendance, lunch, transport")
       .eq("facility_id", facilityId)
       .eq("client_name", payload.clientName)
-      .eq("recorded_date", today)
+      .eq("recorded_date", recordedDate)
       .maybeSingle();
 
     if (da) {
@@ -56,9 +64,10 @@ export async function saveDiary(payload: DiaryPayload) {
     attendance,
     breakfast,
     sleep,
-    role: (payload.comments?.role as string) ?? "work",
+    role: payload.role ?? (payload.comments?.role as string | undefined) ?? "work",
     ratings: payload.ratings,
     comments: payload.comments,
+    recorded_date: recordedDate,
     recorded_at: new Date().toISOString(),
   });
 

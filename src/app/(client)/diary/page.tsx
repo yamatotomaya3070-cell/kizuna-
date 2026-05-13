@@ -12,9 +12,12 @@ import {
   Users,
   ClipboardList,
   Loader2,
+  CalendarDays,
+  Wand2,
 } from "lucide-react";
 import { saveDiary } from "@/app/actions/diary";
 import { getAttendanceForClient, type AttendanceRecord } from "@/app/actions/attendance";
+import { getShiftStaff, type ShiftStaff } from "@/app/actions/shifts";
 import { createClient } from "@/lib/supabase/client";
 import { B_TYPE_FORMAT, getServiceFormat, type ServiceFormat } from "@/data/service-formats";
 
@@ -29,8 +32,7 @@ const TRANSPORT = [
   { value: "●", label: "● なし", color: "slate" },
 ];
 
-type Role = "work" | "life";
-type Step = "role" | "staff" | "client" | "basic" | "eval" | "done";
+type Step = "date" | "client" | "basic" | "eval" | "done";
 
 const colorMap: Record<string, { bg: string; border: string; text: string; pill: string }> = {
   emerald: { bg: "bg-emerald-50", border: "border-emerald-400", text: "text-emerald-700", pill: "bg-emerald-500" },
@@ -40,13 +42,8 @@ const colorMap: Record<string, { bg: string; border: string; text: string; pill:
   blue:    { bg: "bg-blue-50",    border: "border-blue-400",    text: "text-blue-700",     pill: "bg-blue-500" },
 };
 
-// ─────────────────────────────────────────
-// ステップインジケーター
-// ─────────────────────────────────────────
-
 const STEPS: { key: Step; label: string }[] = [
-  { key: "role", label: "役職" },
-  { key: "staff", label: "記録者" },
+  { key: "date", label: "日付" },
   { key: "client", label: "利用者" },
   { key: "basic", label: "基本情報" },
   { key: "eval", label: "評価" },
@@ -78,64 +75,46 @@ function StepBar({ current }: { current: Step }) {
   );
 }
 
-// ─────────────────────────────────────────
-// 選択ボタン
-// ─────────────────────────────────────────
-
-function OptionBtn({
-  selected, onClick, children, color = "blue",
-}: {
-  selected: boolean; onClick: () => void; children: React.ReactNode; color?: string;
-}) {
-  const c = colorMap[color] ?? colorMap.blue;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 text-left transition-all active:scale-[0.98] ${
-        selected ? `${c.bg} ${c.border}` : "bg-white border-slate-100 hover:border-slate-200"
-      }`}
-    >
-      <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-        selected ? `${c.pill} border-transparent` : "border-slate-300"
-      }`}>
-        {selected && <span className="w-2 h-2 rounded-full bg-white" />}
-      </span>
-      <span className={`text-sm font-semibold ${selected ? c.text : "text-slate-700"}`}>
-        {children}
-      </span>
-      {selected && <CheckCircle2 size={16} className={`ml-auto shrink-0 ${c.text}`} />}
-    </button>
-  );
+function toLocalDateStr(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-// ─────────────────────────────────────────
-// メインページ
-// ─────────────────────────────────────────
+function formatDateJa(dateStr: string) {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" });
+}
 
 export default function DiaryPage() {
-  const today = new Date().toLocaleDateString("ja-JP", {
-    year: "numeric", month: "long", day: "numeric", weekday: "short",
-  });
+  const todayStr = toLocalDateStr(new Date());
 
-  const [step, setStep] = useState<Step>("role");
-  const [role, setRole] = useState<Role | "">("");
-  const [staffName, setStaffName] = useState("");
+  const [step, setStep] = useState<Step>("date");
+  const [recordedDate, setRecordedDate] = useState<string>(todayStr);
+  const [shiftStaff, setShiftStaff] = useState<ShiftStaff[]>([]);
+  const [shiftHasData, setShiftHasData] = useState(false);
+  const [loadingShift, setLoadingShift] = useState(false);
+
   const [clientName, setClientName] = useState("");
   const [attendance, setAttendance] = useState("");
   const [lunch, setLunch] = useState("");
   const [transport, setTransport] = useState("");
-  const [comment, setComment] = useState("");
+
+  // 評価ステップ
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [memo, setMemo] = useState("");
+  const [aiComment, setAiComment] = useState("");
+  const [finalComment, setFinalComment] = useState("");
+  const [generating, setGenerating] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [doneCount, setDoneCount] = useState(0);
   const [clients, setClients] = useState<string[]>([]);
   const [loadingClients, setLoadingClients] = useState(true);
-  const [staffByRole, setStaffByRole] = useState<Record<"work" | "life", string[]>>({ work: [], life: [] });
   const [adminAttendance, setAdminAttendance] = useState<AttendanceRecord | null>(null);
   const [loadingAdminAttendance, setLoadingAdminAttendance] = useState(false);
   const [serviceFormat, setServiceFormat] = useState<ServiceFormat>(B_TYPE_FORMAT);
   const [additionalValues, setAdditionalValues] = useState<Record<string, string>>({});
 
+  // 利用者・サービス種別の初期取得
   useEffect(() => {
     const fetchData = async () => {
       const supabase = createClient();
@@ -149,30 +128,38 @@ export default function DiaryPage() {
         .single();
 
       const facilityId = profile?.facility_id;
-      const serviceType = (profile?.facilities as { service_type?: string } | null)?.service_type ?? 'b_type';
+      const serviceType = (profile?.facilities as { service_type?: string } | null)?.service_type ?? "b_type";
       setServiceFormat(getServiceFormat(serviceType));
 
-      const [{ data: clientData }, { data: staffData }] = await Promise.all([
-        supabase.from("clients").select("name").eq("facility_id", facilityId).eq("status", "active").order("name"),
-        supabase.from("staff").select("name, role").eq("facility_id", facilityId).order("name"),
-      ]);
+      const { data: clientData } = await supabase
+        .from("clients")
+        .select("name")
+        .eq("facility_id", facilityId)
+        .eq("status", "active")
+        .order("name");
 
       setClients(clientData?.map((c) => c.name) ?? []);
-      setStaffByRole({
-        work: staffData?.filter((s) => s.role === "work").map((s) => s.name) ?? [],
-        life: staffData?.filter((s) => s.role === "life").map((s) => s.name) ?? [],
-      });
       setLoadingClients(false);
     };
-
     fetchData();
   }, []);
 
+  // 日付が変わったらシフト職員を取得
   useEffect(() => {
-    if (!clientName) { setAdminAttendance(null); return; }
-    const today = new Date().toISOString().slice(0, 10);
+    if (!recordedDate) return;
+    setLoadingShift(true);
+    getShiftStaff(recordedDate).then((res) => {
+      setShiftStaff(res.staff);
+      setShiftHasData(res.hasShift);
+      setLoadingShift(false);
+    });
+  }, [recordedDate]);
+
+  // 利用者と日付が決まったら出欠を取得（選択した日付ベース）
+  useEffect(() => {
+    if (!clientName || !recordedDate) { setAdminAttendance(null); return; }
     setLoadingAdminAttendance(true);
-    getAttendanceForClient(clientName, today).then(({ data }) => {
+    getAttendanceForClient(clientName, recordedDate).then(({ data }) => {
       setAdminAttendance(data);
       if (data) {
         setAttendance(data.attendance);
@@ -181,48 +168,122 @@ export default function DiaryPage() {
       }
       setLoadingAdminAttendance(false);
     });
-  }, [clientName]);
+  }, [clientName, recordedDate]);
 
   const isAbsent = attendance === "●";
 
+  const shiftStaffNames = shiftStaff.map((s) => s.name).join("、");
+
+  // 評価ステップで使うテンプレ集（役職に依存せず両方を「材料」として提示）
+  const allTemplates = (() => {
+    const positives = new Set<string>();
+    const neutrals = new Set<string>();
+    const concerns = new Set<string>();
+    serviceFormat.roles.forEach((r) => {
+      r.templates.positive.forEach((t) => positives.add(t));
+      r.templates.neutral.forEach((t) => neutrals.add(t));
+      r.templates.concern.forEach((t) => concerns.add(t));
+    });
+    return {
+      positive: [...positives],
+      neutral: [...neutrals],
+      concern: [...concerns],
+    };
+  })();
+
   const canNext: Record<Step, boolean> = {
-    role:   role !== "",
-    staff:  staffName !== "",
+    date:   recordedDate !== "" && shiftStaff.length > 0,
     client: clientName !== "",
     basic:  adminAttendance != null
               ? true
               : attendance !== "" && (isAbsent || (lunch !== "" && transport !== "")),
-    eval:   isAbsent || comment !== "",
+    eval:   isAbsent || finalComment.trim() !== "",
     done:   true,
   };
 
   const next = () => {
-    const order: Step[] = ["role", "staff", "client", "basic", "eval", "done"];
+    const order: Step[] = ["date", "client", "basic", "eval", "done"];
     const idx = order.indexOf(step);
     if (idx < order.length - 1) setStep(order[idx + 1]);
   };
 
   const back = () => {
-    const order: Step[] = ["role", "staff", "client", "basic", "eval", "done"];
+    const order: Step[] = ["date", "client", "basic", "eval", "done"];
     const idx = order.indexOf(step);
     if (idx > 0) setStep(order[idx - 1]);
   };
 
-  const addTemplate = (text: string) => {
-    setComment((prev) => prev ? prev + "。" + text : text);
+  const toggleItem = (text: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(text) ? prev.filter((t) => t !== text) : [...prev, text]
+    );
+  };
+
+  const handleGenerate = async () => {
+    if (selectedItems.length === 0 && memo.trim() === "") {
+      alert("選択項目またはメモを少なくとも1つ入れてください");
+      return;
+    }
+    setGenerating(true);
+    try {
+      const res = await fetch("/api/generate-diary-comment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName,
+          selectedItems,
+          memo,
+          recordedDate,
+          attendance,
+          serviceTypeLabel: serviceFormat.name,
+        }),
+      });
+      const data = await res.json();
+      const comment = (data?.comment as string | undefined) ?? "";
+      if (comment) {
+        setAiComment(comment);
+        setFinalComment(comment);
+      } else {
+        const fallback = [...selectedItems, memo].filter(Boolean).join("。") + "。";
+        setAiComment(fallback);
+        setFinalComment(fallback);
+      }
+    } catch {
+      const fallback = [...selectedItems, memo].filter(Boolean).join("。") + "。";
+      setAiComment(fallback);
+      setFinalComment(fallback);
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const staffNameForRecord = shiftStaffNames || "";
       await saveDiary({
         clientName,
-        staffName,
+        staffName: staffNameForRecord,
         attendance,
         breakfast: lunch,
         sleep: transport,
-        ratings: { ...additionalValues, eval: comment },
-        comments: { role: role as string },
+        recordedDate,
+        role: "shift",
+        ratings: {
+          ...additionalValues,
+          selectedItems,
+          memo,
+          aiGeneratedComment: aiComment,
+          finalComment,
+          eval: finalComment,
+        },
+        comments: {
+          staffSource: "shift",
+          shiftStaffNames,
+          shiftStaffIds: shiftStaff.map((s) => s.staffId).filter(Boolean) as string[],
+          shiftHasData,
+          memo,
+        },
       });
       setDoneCount((n) => n + 1);
       setStep("done");
@@ -233,29 +294,35 @@ export default function DiaryPage() {
     }
   };
 
+  const resetEvalFields = () => {
+    setSelectedItems([]);
+    setMemo("");
+    setAiComment("");
+    setFinalComment("");
+  };
+
   const resetForNext = () => {
     setClientName("");
     setAttendance("");
     setLunch("");
     setTransport("");
-    setComment("");
     setAdditionalValues({});
     setAdminAttendance(null);
+    resetEvalFields();
     setStep("client");
   };
 
   const resetAll = () => {
-    setRole("");
-    setStaffName("");
+    setRecordedDate(todayStr);
     setClientName("");
     setAttendance("");
     setLunch("");
     setTransport("");
-    setComment("");
     setAdditionalValues({});
     setAdminAttendance(null);
+    resetEvalFields();
     setDoneCount(0);
-    setStep("role");
+    setStep("date");
   };
 
   // ── 完了画面 ──
@@ -267,7 +334,9 @@ export default function DiaryPage() {
         </div>
         <h2 className="text-xl font-bold text-slate-800 mb-1">送信完了</h2>
         <p className="text-sm text-slate-500 mb-1">{clientName}さんの日報を保存しました</p>
-        <p className="text-xs text-slate-400 mb-2">{today}　記録者: {staffName}</p>
+        <p className="text-xs text-slate-400 mb-2">
+          {formatDateJa(recordedDate)}　担当: {shiftStaffNames || "—"}
+        </p>
         <span className="text-xs font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full mb-8">
           本日 {doneCount}名 完了
         </span>
@@ -289,9 +358,6 @@ export default function DiaryPage() {
     );
   }
 
-  const activeRole = role ? serviceFormat.roles.find((r) => r.id === role) : null;
-  const templates = activeRole?.templates ?? null;
-
   return (
     <div className="w-full px-4 pt-5 pb-32 md:max-w-lg md:mx-auto">
       {/* ヘッダー */}
@@ -302,7 +368,9 @@ export default function DiaryPage() {
               <ClipboardList size={16} className="text-blue-500" />
               日報入力
             </h1>
-            <p className="text-xs text-slate-400 mt-0.5">{today}</p>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {recordedDate ? formatDateJa(recordedDate) : ""}
+            </p>
           </div>
           <div className="flex items-center gap-2">
             {doneCount > 0 && (
@@ -322,68 +390,80 @@ export default function DiaryPage() {
         <StepBar current={step} />
       </div>
 
-      {/* ── Step: 役職選択 ── */}
-      {step === "role" && (
-        <div className="space-y-3">
-          <div className="mb-4">
-            <h2 className="text-lg font-bold text-slate-800">あなたの役職は？</h2>
-            <p className="text-xs text-slate-500 mt-0.5">評価内容が役職に合わせて変わります</p>
-          </div>
-          {serviceFormat.roles.map((r, i) => {
-            const isSelected = role === r.id;
-            const colorClass = i === 0
-              ? { bg: "bg-blue-50", border: "border-blue-500", icon: "bg-blue-500", check: "text-blue-500" }
-              : { bg: "bg-indigo-50", border: "border-indigo-500", icon: "bg-indigo-500", check: "text-indigo-500" };
-            const Icon = i === 0 ? ClipboardList : Users;
-            return (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => { setRole(r.id as Role); setStaffName(""); }}
-                className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${
-                  isSelected ? `${colorClass.bg} ${colorClass.border}` : "bg-white border-slate-100"
-                }`}
-              >
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                  isSelected ? colorClass.icon : "bg-slate-100"
-                }`}>
-                  <Icon size={20} className={isSelected ? "text-white" : "text-slate-500"} />
-                </div>
-                <div className="text-left">
-                  <p className="font-bold text-slate-800">{r.label}</p>
-                  <p className="text-xs text-slate-500">{r.description}</p>
-                </div>
-                {isSelected && <CheckCircle2 size={18} className={`${colorClass.check} ml-auto`} />}
-              </button>
-            );
-          })}
+      {/* 全ステップで上部にシフト担当者を表示 */}
+      {step !== "date" && (
+        <div className="mb-4 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3">
+          <p className="text-[11px] text-slate-500 mb-1">本日の担当職員（シフトより自動取得）</p>
+          {loadingShift ? (
+            <div className="flex items-center gap-2 text-xs text-slate-400">
+              <Loader2 size={12} className="animate-spin" />
+              読み込み中...
+            </div>
+          ) : shiftStaff.length === 0 ? (
+            <p className="text-xs text-amber-600">職員が登録されていません</p>
+          ) : (
+            <>
+              <p className="text-sm font-bold text-slate-700">{shiftStaffNames}</p>
+              {!shiftHasData && (
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  ※ この日のシフト未登録のため、登録職員全員を表示しています
+                </p>
+              )}
+            </>
+          )}
         </div>
       )}
 
-      {/* ── Step: 記録者選択 ── */}
-      {step === "staff" && role && (
-        <div className="space-y-2">
-          <div className="mb-4">
-            <h2 className="text-lg font-bold text-slate-800">あなたの名前は？</h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {activeRole?.label ?? role}として記録します
-            </p>
+      {/* ── Step: 記録日選択 ── */}
+      {step === "date" && (
+        <div className="space-y-5">
+          <div className="mb-2">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <CalendarDays size={18} className="text-blue-500" />
+              記録日を選んでください
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">過去日も選べます。初期値は今日です。</p>
           </div>
-          {loadingClients ? (
-            <div className="flex justify-center py-8">
-              <Loader2 size={22} className="animate-spin text-slate-300" />
+
+          <div>
+            <label htmlFor="recorded-date" className="text-xs font-bold text-slate-600 mb-2 block">
+              記録日
+            </label>
+            <input
+              id="recorded-date"
+              type="date"
+              value={recordedDate}
+              max={todayStr}
+              onChange={(e) => setRecordedDate(e.target.value)}
+              className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
+            />
+            <p className="text-xs text-slate-400 mt-1.5">{formatDateJa(recordedDate)}</p>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold text-slate-600 mb-2">本日の担当職員</p>
+            <div className="bg-white border-2 border-slate-100 rounded-2xl px-4 py-3 min-h-[3rem] flex items-center">
+              {loadingShift ? (
+                <div className="flex items-center gap-2 text-slate-400 text-sm">
+                  <Loader2 size={14} className="animate-spin" />
+                  読み込み中...
+                </div>
+              ) : shiftStaff.length === 0 ? (
+                <p className="text-sm text-amber-600">
+                  職員が登録されていません。管理画面から職員を追加してください。
+                </p>
+              ) : (
+                <div>
+                  <p className="text-sm font-bold text-slate-700">{shiftStaffNames}</p>
+                  {!shiftHasData && (
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      ※ この日のシフト未登録のため、登録職員全員を表示しています
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
-          ) : staffByRole[role as Role].length === 0 ? (
-            <p className="text-center py-8 text-slate-400 text-sm">
-              指導員が登録されていません。設定から追加してください。
-            </p>
-          ) : (
-            staffByRole[role as Role].map((name) => (
-              <OptionBtn key={name} selected={staffName === name} onClick={() => setStaffName(name)}>
-                {name}
-              </OptionBtn>
-            ))
-          )}
+          </div>
         </div>
       )}
 
@@ -428,7 +508,7 @@ export default function DiaryPage() {
         <div className="space-y-5">
           <div className="mb-2">
             <h2 className="text-lg font-bold text-slate-800">{clientName}さん</h2>
-            <p className="text-xs text-slate-500 mt-0.5">本日の基本情報を入力してください</p>
+            <p className="text-xs text-slate-500 mt-0.5">{formatDateJa(recordedDate)}の基本情報</p>
           </div>
 
           {loadingAdminAttendance ? (
@@ -436,7 +516,6 @@ export default function DiaryPage() {
               <Loader2 size={22} className="animate-spin text-slate-300" />
             </div>
           ) : adminAttendance ? (
-            /* 管理者入力済み：読み取り専用表示 */
             <div className="space-y-4">
               <div className="bg-indigo-50 border border-indigo-200 rounded-2xl px-4 py-3 flex items-center gap-2">
                 <CheckCircle2 size={15} className="text-indigo-500 shrink-0" />
@@ -467,9 +546,7 @@ export default function DiaryPage() {
               )}
             </div>
           ) : (
-            /* 未入力：従来通り入力可能 */
             <>
-              {/* 出欠 */}
               <div>
                 <p className="text-sm font-bold text-slate-700 mb-2">出欠</p>
                 <div className="space-y-2">
@@ -501,7 +578,6 @@ export default function DiaryPage() {
                 </div>
               </div>
 
-              {/* 欠席以外のみ表示 */}
               {!isAbsent && (
                 <>
                   {serviceFormat.hasLunch && (
@@ -558,7 +634,6 @@ export default function DiaryPage() {
                     </div>
                   )}
 
-                  {/* 事業種別固有の追加フィールド */}
                   {serviceFormat.additionalFields?.map((field) => (
                     <div key={field.id}>
                       <p className="text-sm font-bold text-slate-700 mb-2">{field.label}</p>
@@ -619,32 +694,39 @@ export default function DiaryPage() {
       )}
 
       {/* ── Step: 評価・コメント ── */}
-      {step === "eval" && !isAbsent && templates && (
+      {step === "eval" && !isAbsent && (
         <div className="space-y-5">
           <div className="mb-2">
-            <h2 className="text-lg font-bold text-slate-800">{clientName}さんの評価</h2>
+            <h2 className="text-lg font-bold text-slate-800">{clientName}さんの様子</h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              {activeRole?.description ?? "評価を入力してください"}
+              該当する項目を選び、AIで自然な文章にまとめます
             </p>
           </div>
 
-          {/* 定型文（ポジティブ） */}
+          {/* 材料：ポジティブ */}
           <div>
             <p className="text-xs font-bold text-emerald-600 mb-2 flex items-center gap-1">
               <Sparkles size={12} />
               良好
             </p>
-            <div className="space-y-1.5">
-              {templates.positive.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => addTemplate(t)}
-                  className="w-full text-left px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-sm text-emerald-800 hover:bg-emerald-100 transition-all active:scale-[0.98]"
-                >
-                  {t}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-1.5">
+              {allTemplates.positive.map((t) => {
+                const sel = selectedItems.includes(t);
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => toggleItem(t)}
+                    className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
+                      sel
+                        ? "bg-emerald-500 text-white border-emerald-500"
+                        : "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -653,17 +735,24 @@ export default function DiaryPage() {
               <Sparkles size={12} />
               普通
             </p>
-            <div className="space-y-1.5">
-              {templates.neutral.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => addTemplate(t)}
-                  className="w-full text-left px-4 py-3 rounded-xl bg-blue-50 border border-blue-200 text-sm text-blue-800 hover:bg-blue-100 transition-all active:scale-[0.98]"
-                >
-                  {t}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-1.5">
+              {allTemplates.neutral.map((t) => {
+                const sel = selectedItems.includes(t);
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => toggleItem(t)}
+                    className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
+                      sel
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -672,39 +761,89 @@ export default function DiaryPage() {
               <Sparkles size={12} />
               要注意
             </p>
-            <div className="space-y-1.5">
-              {templates.concern.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => addTemplate(t)}
-                  className="w-full text-left px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-800 hover:bg-amber-100 transition-all active:scale-[0.98]"
-                >
-                  {t}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-1.5">
+              {allTemplates.concern.map((t) => {
+                const sel = selectedItems.includes(t);
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => toggleItem(t)}
+                    className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
+                      sel
+                        ? "bg-amber-500 text-white border-amber-500"
+                        : "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* 入力欄 */}
+          {/* メモ */}
           <div>
-            <p className="text-xs font-bold text-slate-600 mb-2">コメント（タップで追記・直接編集可）</p>
+            <p className="text-xs font-bold text-slate-600 mb-2">メモ（任意・単語や短文でOK）</p>
+            <input
+              type="text"
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              placeholder="例: 午後に少し疲れた様子"
+              className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+          </div>
+
+          {/* AI 生成ボタン */}
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={generating || (selectedItems.length === 0 && memo.trim() === "")}
+            className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
+              generating || (selectedItems.length === 0 && memo.trim() === "")
+                ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md active:scale-[0.98]"
+            }`}
+          >
+            {generating ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                AIが文章を整えています...
+              </>
+            ) : (
+              <>
+                <Wand2 size={16} />
+                AIで文章を整える
+              </>
+            )}
+          </button>
+
+          {/* コメント */}
+          <div>
+            <p className="text-xs font-bold text-slate-600 mb-2">
+              日報コメント（手動で編集できます）
+            </p>
             <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="上の定型文をタップすると自動入力されます"
-              rows={4}
+              value={finalComment}
+              onChange={(e) => setFinalComment(e.target.value)}
+              placeholder="「AIで文章を整える」を押すか、直接記入してください"
+              rows={5}
               className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
-            {comment && (
-              <button
-                type="button"
-                onClick={() => setComment("")}
-                className="mt-1 text-xs text-slate-400 hover:text-red-400"
-              >
-                クリア
-              </button>
-            )}
+            <div className="flex items-center justify-between mt-1">
+              <p className="text-[11px] text-slate-400">
+                {finalComment.length} 文字（目安 100 文字）
+              </p>
+              {finalComment && (
+                <button
+                  type="button"
+                  onClick={() => setFinalComment("")}
+                  className="text-xs text-slate-400 hover:text-red-400"
+                >
+                  クリア
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -725,7 +864,7 @@ export default function DiaryPage() {
         style={{ paddingBottom: "max(env(safe-area-inset-bottom, 0px), 1rem)" }}
       >
         <div className="w-full md:max-w-lg md:mx-auto flex gap-3">
-          {step !== "role" && (
+          {step !== "date" && (
             <button
               type="button"
               onClick={back}
