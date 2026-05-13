@@ -25,6 +25,7 @@ export async function GET(request: Request) {
       .from("clients")
       .select("name")
       .eq("facility_id", lineUser.facility_id)
+      .eq("status", "active")
       .order("name"),
     supabase
       .from("facilities")

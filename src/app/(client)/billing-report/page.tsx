@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { calcBilling, exportBillingCSV, type ClientBillingSummary } from "@/lib/billing-calc";
 import {
   ChevronLeft,
   ChevronRight,
-  Download,
   FileDown,
   Loader2,
   BarChart3,
@@ -16,7 +14,6 @@ import {
 
 export default function BillingReportPage() {
   const supabase = createClient();
-  const router = useRouter();
 
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
@@ -123,23 +120,14 @@ export default function BillingReportPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
-      {/* ヘッダー */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-slate-500 hover:text-slate-700 text-xs font-semibold transition-colors"
-        >
-          <ChevronLeft size={15} />
-          戻る
-        </button>
-        <div className="h-4 w-px bg-slate-200" />
-        <div className="flex items-center gap-2">
-          <BarChart3 size={16} className="text-emerald-500" />
-          <h1 className="text-base font-bold text-slate-800">加算・請求集計</h1>
-        </div>
-      </header>
-
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+        <div className="flex items-center gap-2">
+          <BarChart3 size={20} className="text-emerald-500" />
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">加算・請求集計</h1>
+            <p className="text-sm text-slate-500 mt-0.5">出欠データを月次で集計します</p>
+          </div>
+        </div>
         {/* 月選択 */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between">
           <button

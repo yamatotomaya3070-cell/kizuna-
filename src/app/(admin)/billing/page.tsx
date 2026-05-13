@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { CheckCircle2, Sparkles, Building2, Crown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AlertCircle, CheckCircle2, Sparkles, Building2, Crown } from "lucide-react";
 
 const PLANS = [
   {
@@ -33,9 +33,17 @@ const PLANS = [
 
 export default function BillingPage() {
   const [loading, setLoading] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("canceled") === "1") {
+      setMessage("決済がキャンセルされました。必要な場合はもう一度プランを選択してください。");
+    }
+  }, []);
 
   const handleCheckout = async (planId: string) => {
     setLoading(planId);
+    setMessage("");
     try {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
@@ -43,10 +51,11 @@ export default function BillingPage() {
         body: JSON.stringify({ plan: planId, facilityName: "テスト施設" }),
       });
       const { url, error } = await res.json();
-      if (error) throw new Error(error);
+      if (!res.ok || error) throw new Error(error ?? "決済セッションの作成に失敗しました");
+      if (!url) throw new Error("Checkout URLを取得できませんでした");
       window.location.href = url;
-    } catch {
-      alert("Stripe環境変数が未設定です。本番環境で利用可能になります。");
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : "現在、課金機能は準備中です。デモ環境のため、実際の決済は行われません。");
     } finally {
       setLoading(null);
     }
@@ -60,6 +69,13 @@ export default function BillingPage() {
           全プラン初月無料・クレジットカード不要でお試しいただけます
         </p>
       </div>
+
+      {message && (
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
+          <AlertCircle size={18} className="mt-0.5 shrink-0" />
+          <span>{message}</span>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-3 gap-6">
         {PLANS.map((plan) => {
@@ -119,7 +135,7 @@ export default function BillingPage() {
       </div>
 
       <p className="text-center text-xs text-slate-400 mt-8">
-        決済はStripeで安全に処理されます。いつでもキャンセル可能です。
+        本番環境では決済はStripeで安全に処理されます。デモ環境では実際の決済は行われません。
       </p>
     </div>
   );

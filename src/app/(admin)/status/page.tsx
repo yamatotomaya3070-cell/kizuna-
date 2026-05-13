@@ -77,7 +77,7 @@ export default function StatusPage() {
     setLoading(true);
 
     const [{ data: clients }, { data: diaries }] = await Promise.all([
-      supabase.from("clients").select("name").eq("facility_id", fid).order("name"),
+      supabase.from("clients").select("name").eq("facility_id", fid).eq("status", "active").order("name"),
       supabase
         .from("diaries")
         .select("client_name, recorded_at, role, comments")

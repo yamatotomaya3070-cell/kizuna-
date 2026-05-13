@@ -504,7 +504,12 @@ function AIDiarySection() {
       if (!user) return;
       const { data: profile } = await supabase.from("profiles").select("facility_id").eq("id", user.id).single();
       setFacilityId(profile?.facility_id ?? "");
-      const { data } = await supabase.from("clients").select("name").eq("facility_id", profile?.facility_id).order("name");
+      const { data } = await supabase
+        .from("clients")
+        .select("name")
+        .eq("facility_id", profile?.facility_id)
+        .eq("status", "active")
+        .order("name");
       const names = data?.map((c) => c.name) ?? [];
       setClients(names);
       if (names.length > 0) setSelectedUser(names[0]);

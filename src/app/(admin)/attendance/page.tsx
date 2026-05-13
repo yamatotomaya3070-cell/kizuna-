@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { CalendarCheck, ChevronLeft, ChevronRight, Save, Loader2, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { CalendarCheck, ChevronLeft, ChevronRight, Save, Loader2, CheckCircle2, UserPlus } from "lucide-react";
 import { getAttendance, saveAttendance, type AttendanceRecord } from "@/app/actions/attendance";
 import { createClient } from "@/lib/supabase/client";
 
@@ -87,8 +88,14 @@ export default function AttendancePage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data: profile } = await supabase.from("profiles").select("facility_id").eq("id", user.id).single();
-    const { data } = await supabase.from("clients").select("name").eq("facility_id", profile?.facility_id).order("name");
+    const { data } = await supabase
+      .from("clients")
+      .select("name")
+      .eq("facility_id", profile?.facility_id)
+      .eq("status", "active")
+      .order("name");
     setClients(data?.map((c: { name: string }) => c.name) ?? []);
+    if (!data || data.length === 0) setLoading(false);
   }, []);
 
   const fetchAttendance = useCallback(async (d: string, clientList: string[]) => {
@@ -109,10 +116,12 @@ export default function AttendancePage() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchClients().then(() => {});
   }, [fetchClients]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (clients.length > 0) fetchAttendance(date, clients);
   }, [date, clients, fetchAttendance]);
 
@@ -205,7 +214,14 @@ export default function AttendancePage() {
         </div>
       ) : clients.length === 0 ? (
         <div className="text-center py-16 text-slate-400 text-sm">
-          利用者が登録されていません。<br />設定から追加してください。
+          <p>利用者が登録されていません。</p>
+          <Link
+            href="/clients"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-700"
+          >
+            <UserPlus size={14} />
+            利用者管理から利用者を登録してください
+          </Link>
         </div>
       ) : (
         <div className="space-y-3">

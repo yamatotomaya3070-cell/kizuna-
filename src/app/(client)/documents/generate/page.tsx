@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 import {
   FileText,
   Loader2,
   Download,
-  ChevronLeft,
   User,
   ClipboardList,
   BarChart3,
   CalendarDays,
   Sparkles,
   CheckCircle2,
+  UserPlus,
 } from "lucide-react";
 
 type DocType = "support_plan" | "monitoring_report" | "service_record";
@@ -109,7 +109,6 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 
 export default function GenerateDocumentPage() {
   const supabase = createClient();
-  const router = useRouter();
 
   const [facilityId, setFacilityId] = useState<string>("");
   const [clients, setClients] = useState<string[]>([]);
@@ -154,6 +153,7 @@ export default function GenerateDocumentPage() {
         .from("clients")
         .select("name")
         .eq("facility_id", fid)
+        .eq("status", "active")
         .order("name");
       const names = data?.map((c) => c.name) ?? [];
       setClients(names);
@@ -258,23 +258,14 @@ export default function GenerateDocumentPage() {
         </div>
       )}
 
-      {/* ヘッダー */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-slate-500 hover:text-slate-700 text-xs font-semibold transition-colors"
-        >
-          <ChevronLeft size={15} />
-          戻る
-        </button>
-        <div className="h-4 w-px bg-slate-200" />
-        <div className="flex items-center gap-2">
-          <FileText size={16} className="text-blue-500" />
-          <h1 className="text-base font-bold text-slate-800">帳票自動生成</h1>
-        </div>
-      </header>
-
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+        <div className="flex items-center gap-2">
+          <FileText size={20} className="text-blue-500" />
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">帳票自動生成</h1>
+            <p className="text-sm text-slate-500 mt-0.5">利用者マスタの利用中の利用者から帳票を生成します</p>
+          </div>
+        </div>
         {/* 利用者選択 */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
@@ -283,7 +274,16 @@ export default function GenerateDocumentPage() {
           </div>
           <div className="p-5">
             {clients.length === 0 ? (
-              <p className="text-sm text-slate-400">利用者が登録されていません</p>
+              <div className="text-sm text-slate-400">
+                <p>利用者が登録されていません</p>
+                <Link
+                  href="/clients"
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700"
+                >
+                  <UserPlus size={14} />
+                  利用者管理から利用者を登録してください
+                </Link>
+              </div>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {clients.map((name) => (
@@ -304,6 +304,8 @@ export default function GenerateDocumentPage() {
           </div>
         </div>
 
+        {clients.length > 0 && (
+        <>
         {/* 帳票種類 */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
@@ -520,6 +522,8 @@ export default function GenerateDocumentPage() {
             </>
           )}
         </button>
+        </>
+        )}
       </div>
     </div>
   );

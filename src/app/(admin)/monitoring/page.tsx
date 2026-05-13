@@ -15,7 +15,9 @@ import {
   FileDown,
   Briefcase,
   Heart,
+  UserPlus,
 } from "lucide-react";
+import Link from "next/link";
 
 type DiaryEntry = {
   id: string;
@@ -67,6 +69,8 @@ export default function MonitoringPage() {
   const [generating, setGenerating] = useState(false);
   const [pdfGenerating, setPdfGenerating] = useState(false);
   const [report, setReport] = useState<MonitoringReport | null>(null);
+  const [warning, setWarning] = useState("");
+  const [allowPartial, setAllowPartial] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -86,6 +90,7 @@ export default function MonitoringPage() {
         .from("clients")
         .select("name")
         .eq("facility_id", fid)
+        .eq("status", "active")
         .order("name");
       setClients(data?.map((c) => c.name) ?? []);
     };
@@ -96,6 +101,8 @@ export default function MonitoringPage() {
   const selectClient = async (name: string) => {
     setSelectedClient(name);
     setReport(null);
+    setWarning("");
+    setAllowPartial(false);
     setLoadingDiaries(true);
 
     const { data } = await supabase
@@ -110,10 +117,31 @@ export default function MonitoringPage() {
     setLoadingDiaries(false);
   };
 
+  const recordedRoleCounts = () => {
+    const attended = diaries.filter((d) => d.attendance !== "●");
+    return {
+      work: attended.filter((d) => (d.role ?? "work") !== "life").length,
+      life: attended.filter((d) => (d.role ?? "work") === "life").length,
+      total: attended.length,
+    };
+  };
+
   const handleGenerate = async () => {
-    if (!selectedClient || diaries.length === 0) return;
+    if (!selectedClient) return;
+    const counts = recordedRoleCounts();
+    if (counts.total === 0) {
+      setWarning("評価記録がありません。職業指導員または生活支援員の日報を記録してから生成してください。");
+      return;
+    }
+    if ((counts.work === 0 || counts.life === 0) && !allowPartial) {
+      setWarning("一部の記録のみで生成されます。内容の精度が下がる可能性があります。生成する場合は確認ボタンを押してください。");
+      setAllowPartial(true);
+      return;
+    }
     setGenerating(true);
     setReport(null);
+    setWarning("");
+    setAllowPartial(false);
 
     const diaryText = diaries
       .filter((d) => d.attendance !== "●")
@@ -212,6 +240,7 @@ export default function MonitoringPage() {
 
   const attendedCount = diaries.filter((d) => d.attendance !== "●").length;
   const dayGroups = groupByDateAndRole(diaries);
+  const counts = recordedRoleCounts();
 
   return (
     <div className="p-8 space-y-6">
@@ -232,7 +261,16 @@ export default function MonitoringPage() {
             <h3 className="text-sm font-bold text-slate-700">利用者を選択</h3>
           </div>
           {clients.length === 0 ? (
-            <p className="text-center py-10 text-slate-400 text-sm">利用者が登録されていません</p>
+            <div className="px-5 py-10 text-center text-sm text-slate-400">
+              <p>利用者が登録されていません</p>
+              <Link
+                href="/clients"
+                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-700"
+              >
+                <UserPlus size={14} />
+                利用者管理から利用者を登録してください
+              </Link>
+            </div>
           ) : (
             <ul className="divide-y divide-slate-100">
               {clients.map((name) => {
@@ -368,11 +406,28 @@ export default function MonitoringPage() {
               </div>
 
               {/* 生成ボタン */}
+              {warning && (
+                <div className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
+                  allowPartial ? "border-amber-200 bg-amber-50 text-amber-700" : "border-red-200 bg-red-50 text-red-700"
+                }`}>
+                  {warning}
+                </div>
+              )}
+              {diaries.length > 0 && (
+                <div className="flex flex-wrap gap-2 text-xs font-semibold">
+                  <span className={`rounded-full px-2.5 py-1 ${counts.work > 0 ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500"}`}>
+                    職業指導員: {counts.work > 0 ? "記録あり" : "未記録"}
+                  </span>
+                  <span className={`rounded-full px-2.5 py-1 ${counts.life > 0 ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 text-slate-500"}`}>
+                    生活支援員: {counts.life > 0 ? "記録あり" : "未記録"}
+                  </span>
+                </div>
+              )}
               <button
                 onClick={handleGenerate}
-                disabled={generating || diaries.filter((d) => d.attendance !== "●").length === 0}
+                disabled={generating || counts.total === 0}
                 className={`w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-sm transition-all ${
-                  generating || diaries.filter((d) => d.attendance !== "●").length === 0
+                  generating || counts.total === 0
                     ? "bg-slate-200 text-slate-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md"
                 }`}
@@ -380,7 +435,7 @@ export default function MonitoringPage() {
                 {generating ? (
                   <><Loader2 size={18} className="animate-spin" />AIが日報を解析中...</>
                 ) : (
-                  <><Sparkles size={18} />{selectedClient}さんのモニタリング評価をAI生成</>
+                  <><Sparkles size={18} />{allowPartial ? "確認してAI生成する" : `${selectedClient}さんのモニタリング評価をAI生成`}</>
                 )}
               </button>
 

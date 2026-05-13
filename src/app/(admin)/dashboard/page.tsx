@@ -9,6 +9,7 @@ import {
   Loader2,
   Trash2,
   X,
+  PartyPopper,
 } from "lucide-react";
 
 type Task = {
@@ -31,10 +32,11 @@ function daysLeft(dueDate: string | null): number | null {
 function CircularProgress({ percent }: { percent: number }) {
   const r = 54, cx = 64, cy = 64;
   const circumference = 2 * Math.PI * r;
+  const stroke = percent === 100 ? "#059669" : percent >= 70 ? "#2563eb" : percent >= 40 ? "#d97706" : "#dc2626";
   return (
     <svg width="128" height="128" className="rotate-[-90deg]">
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e2e8f0" strokeWidth="12" />
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#3b82f6" strokeWidth="12"
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={stroke} strokeWidth="12"
         strokeLinecap="round" strokeDasharray={circumference}
         strokeDashoffset={circumference * (1 - percent / 100)}
         className="transition-all duration-700" />
@@ -65,6 +67,7 @@ export default function ClientDashboardPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("その他");
   const [newDueDate, setNewDueDate] = useState("");
+  const [noDueDate, setNoDueDate] = useState(false);
   const [adding, setAdding] = useState(false);
 
   const fetchTasks = useCallback(async (fid: string) => {
@@ -106,6 +109,7 @@ export default function ClientDashboardPage() {
 
   const handleAdd = async () => {
     if (!newTitle.trim() || !facilityId) return;
+    if (!newDueDate && !noDueDate) return;
     setAdding(true);
     const { data } = await supabase.from("tasks").insert({
       title: newTitle.trim(),
@@ -119,6 +123,7 @@ export default function ClientDashboardPage() {
       return a.due_date.localeCompare(b.due_date);
     }));
     setNewTitle(""); setNewDueDate(""); setNewCategory("その他");
+    setNoDueDate(false);
     setShowForm(false);
     setAdding(false);
   };
@@ -127,6 +132,14 @@ export default function ClientDashboardPage() {
   const totalCount = tasks.length;
   const completionRate = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const upcomingTasks = tasks.filter((t) => !t.completed);
+  const completeAll = totalCount > 0 && upcomingTasks.length === 0;
+  const progressColor = completeAll
+    ? "bg-emerald-600"
+    : completionRate >= 70
+    ? "bg-blue-600"
+    : completionRate >= 40
+    ? "bg-amber-500"
+    : "bg-red-500";
 
   return (
     <div className="p-8 space-y-8">
@@ -136,14 +149,25 @@ export default function ClientDashboardPage() {
       </div>
 
       {/* 完了率 */}
-      <section className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="font-semibold text-slate-700 mb-6">タスク完了率</h3>
+      <section className={`rounded-xl border p-6 shadow-sm ${
+        completeAll ? "border-emerald-200 bg-emerald-50" : "border-transparent bg-white"
+      }`}>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h3 className="font-semibold text-slate-700">タスク完了率</h3>
+          {completeAll && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white">
+              <PartyPopper size={13} />
+              全タスク完了！
+            </span>
+          )}
+        </div>
         <div className="flex flex-col sm:flex-row items-center gap-8">
           <div className="relative flex-shrink-0">
             <CircularProgress percent={completionRate} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-bold text-slate-800">{completionRate}%</span>
-              <span className="text-xs text-slate-500 mt-0.5">完了</span>
+              {completeAll && <CheckCircle2 size={18} className="mb-1 text-emerald-600" />}
+              <span className={`text-3xl font-bold ${completeAll ? "text-emerald-700" : "text-slate-800"}`}>{completionRate}%</span>
+              <span className="text-xs text-slate-500 mt-0.5">{completeAll ? "達成" : "完了"}</span>
             </div>
           </div>
           <div className="flex-1 space-y-4 w-full">
@@ -159,10 +183,16 @@ export default function ClientDashboardPage() {
               <span className="text-slate-600">総タスク数</span>
               <span className="font-bold text-slate-700">{totalCount} 件</span>
             </div>
-            <div className="pt-2">
-              <div className="w-full bg-slate-100 rounded-full h-2.5">
-                <div className="bg-blue-500 h-2.5 rounded-full transition-all duration-700" style={{ width: `${completionRate}%` }} />
+            <div className="pt-2 space-y-2">
+              <div className="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
+                <div
+                  className={`${progressColor} h-4 rounded-full transition-all duration-700`}
+                  style={{ width: `${completionRate}%` }}
+                />
               </div>
+              <p className={`text-xs font-semibold ${completeAll ? "text-emerald-700" : "text-slate-500"}`}>
+                {completeAll ? "すべての対応が完了しています" : `残り ${totalCount - completedCount} 件です`}
+              </p>
             </div>
           </div>
         </div>
@@ -203,15 +233,28 @@ export default function ClientDashboardPage() {
                 type="date"
                 value={newDueDate}
                 onChange={(e) => setNewDueDate(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                disabled={noDueDate}
+                className="px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:bg-slate-100 disabled:text-slate-400"
               />
+              <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={noDueDate}
+                  onChange={(e) => {
+                    setNoDueDate(e.target.checked);
+                    if (e.target.checked) setNewDueDate("");
+                  }}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                期限なし
+              </label>
               <div className="flex gap-2 ml-auto">
                 <button onClick={() => setShowForm(false)} className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-500 hover:bg-slate-100 transition-colors">
                   <X size={14} />
                 </button>
                 <button
                   onClick={handleAdd}
-                  disabled={adding || !newTitle.trim()}
+                  disabled={adding || !newTitle.trim() || (!newDueDate && !noDueDate)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-300 transition-colors"
                 >
                   {adding ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
@@ -271,7 +314,10 @@ export default function ClientDashboardPage() {
 
         {!loading && tasks.length > 0 && upcomingTasks.length === 0 && (
           <div className="bg-emerald-50 border-t border-emerald-100 p-4 text-center">
-            <p className="text-emerald-700 font-bold text-sm">🎉 全タスク完了！</p>
+            <p className="inline-flex items-center justify-center gap-2 text-emerald-700 font-bold text-sm">
+              <PartyPopper size={16} />
+              全タスク完了！
+            </p>
           </div>
         )}
       </section>

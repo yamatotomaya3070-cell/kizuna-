@@ -153,7 +153,7 @@ export default function DiaryPage() {
       setServiceFormat(getServiceFormat(serviceType));
 
       const [{ data: clientData }, { data: staffData }] = await Promise.all([
-        supabase.from("clients").select("name").eq("facility_id", facilityId).order("name"),
+        supabase.from("clients").select("name").eq("facility_id", facilityId).eq("status", "active").order("name"),
         supabase.from("staff").select("name, role").eq("facility_id", facilityId).order("name"),
       ]);
 
