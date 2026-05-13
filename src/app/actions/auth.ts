@@ -19,7 +19,8 @@ export async function login(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   const role = user?.user_metadata?.role ?? "facility";
 
-  redirect(role === "admin" ? "/admin" : "/");
+  const target = role === "admin" ? "/admin" : role === "facility" ? "/diary" : "/";
+  redirect(target);
 }
 
 export async function logout() {
