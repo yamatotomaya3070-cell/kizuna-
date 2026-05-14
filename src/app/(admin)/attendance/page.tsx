@@ -19,7 +19,6 @@ const LUNCH_OPTS = [
 
 const TRANSPORT_OPTS = [
   { value: "○", label: "○", color: "emerald" },
-  { value: "△", label: "△", color: "amber" },
   { value: "●", label: "●", color: "slate" },
 ];
 
@@ -39,7 +38,7 @@ function formatDateJa(dateStr: string) {
   return d.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" });
 }
 
-type RowState = { attendance: string; lunch: string; transport: string };
+type RowState = { attendance: string; lunch: string; transport: string; transport_return: string };
 
 function ToggleGroup({
   options,
@@ -104,12 +103,17 @@ export default function AttendancePage() {
 
     const existing: Record<string, RowState> = {};
     data?.forEach((r: AttendanceRecord) => {
-      existing[r.client_name] = { attendance: r.attendance, lunch: r.lunch, transport: r.transport };
+      existing[r.client_name] = {
+        attendance: r.attendance,
+        lunch: r.lunch,
+        transport: r.transport,
+        transport_return: r.transport_return ?? "○",
+      };
     });
 
     const initialRows: Record<string, RowState> = {};
     clientList.forEach((name) => {
-      initialRows[name] = existing[name] ?? { attendance: "○", lunch: "○", transport: "○" };
+      initialRows[name] = existing[name] ?? { attendance: "○", lunch: "○", transport: "○", transport_return: "○" };
     });
     setRows(initialRows);
     setLoading(false);
@@ -132,6 +136,7 @@ export default function AttendancePage() {
       if (field === "attendance" && value === "●") {
         row.lunch = "●";
         row.transport = "●";
+        row.transport_return = "●";
       }
       return { ...prev, [name]: row };
     });
@@ -144,6 +149,7 @@ export default function AttendancePage() {
       attendance: r.attendance,
       lunch: r.lunch,
       transport: r.transport,
+      transport_return: r.transport_return,
     }));
     const result = await saveAttendance(date, records);
     setSaving(false);
@@ -203,8 +209,9 @@ export default function AttendancePage() {
       <div className="flex gap-4 mb-4 text-xs text-slate-500 flex-wrap">
         <span className="font-semibold text-slate-600">出欠 / 昼食 / 送迎</span>
         <span><span className="font-bold text-blue-900">○</span> 出席・あり</span>
-        <span><span className="font-bold text-slate-500">△</span> 遅刻・早退 / 片道</span>
+        <span><span className="font-bold text-slate-500">△</span> 遅刻・早退</span>
         <span><span className="font-bold text-red-500">●</span> 欠席・なし</span>
+        <span className="text-slate-400">送迎は「行」「帰」を個別に選択</span>
       </div>
 
       {/* カード一覧 */}
@@ -226,7 +233,7 @@ export default function AttendancePage() {
       ) : (
         <div className="space-y-3">
           {clients.map((name) => {
-            const row = rows[name] ?? { attendance: "○", lunch: "○", transport: "○" };
+            const row = rows[name] ?? { attendance: "○", lunch: "○", transport: "○", transport_return: "○" };
             const absent = row.attendance === "●";
             return (
               <div
@@ -254,11 +261,19 @@ export default function AttendancePage() {
                     />
                   </div>
                   <div className={`flex items-center justify-between transition-opacity ${absent ? "opacity-30 pointer-events-none" : ""}`}>
-                    <span className="text-xs text-slate-500 w-10">送迎</span>
+                    <span className="text-xs text-slate-500 w-10">送迎 行</span>
                     <ToggleGroup
                       options={TRANSPORT_OPTS}
                       value={row.transport}
                       onChange={(v) => updateRow(name, "transport", v)}
+                    />
+                  </div>
+                  <div className={`flex items-center justify-between transition-opacity ${absent ? "opacity-30 pointer-events-none" : ""}`}>
+                    <span className="text-xs text-slate-500 w-10">送迎 帰</span>
+                    <ToggleGroup
+                      options={TRANSPORT_OPTS}
+                      value={row.transport_return}
+                      onChange={(v) => updateRow(name, "transport_return", v)}
                     />
                   </div>
                 </div>

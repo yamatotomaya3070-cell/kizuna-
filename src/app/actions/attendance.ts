@@ -6,7 +6,8 @@ export type AttendanceRecord = {
   client_name: string;
   attendance: string;
   lunch: string;
-  transport: string;
+  transport: string;          // 行（○ あり / ● なし）
+  transport_return: string;   // 帰（○ あり / ● なし）
 };
 
 export async function getAttendance(date: string) {
@@ -26,7 +27,7 @@ export async function getAttendance(date: string) {
 
   const { data, error } = await supabase
     .from("daily_attendance")
-    .select("client_name, attendance, lunch, transport")
+    .select("client_name, attendance, lunch, transport, transport_return")
     .eq("facility_id", facilityId)
     .eq("recorded_date", date);
 
@@ -51,7 +52,7 @@ export async function getAttendanceForClient(clientName: string, date: string) {
 
   const { data, error } = await supabase
     .from("daily_attendance")
-    .select("client_name, attendance, lunch, transport")
+    .select("client_name, attendance, lunch, transport, transport_return")
     .eq("facility_id", facilityId)
     .eq("client_name", clientName)
     .eq("recorded_date", date)
@@ -83,6 +84,7 @@ export async function saveAttendance(date: string, records: AttendanceRecord[]) 
     attendance: r.attendance,
     lunch: r.lunch,
     transport: r.transport,
+    transport_return: r.transport_return,
     recorded_by: user.id,
     updated_at: new Date().toISOString(),
   }));

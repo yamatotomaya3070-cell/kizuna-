@@ -59,11 +59,12 @@ export type DiaryCellMapping = {
     client_name: string;
     attendance: string;
     lunch: string;
-    transport: string;
-    work_eval_columns: Record<string, string>;
-    life_eval_columns: Record<string, string>;
-    checkbox_mark_on: string;
-    checkbox_mark_off: string;
+    transport_go: string;
+    transport_return: string;
+    work_status: string;
+    work_comment: string;
+    life_status: string;
+    life_comment: string;
   };
   section_cells: { work_morning_content: string; work_afternoon_content: string; remarks: string };
   signature_cells: { staff_in_charge_value: string; service_manager_value: string; confirm_date_value: string };

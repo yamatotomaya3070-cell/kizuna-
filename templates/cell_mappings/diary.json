@@ -3,18 +3,12 @@
   "template_file": "diary_template.xlsx",
   "source_sheet": "【テンプレート】",
   "output_sheet_naming": "{m}月{d}日",
-  "description": "業務日報。1日1シート、14名分を1ページにまとめる。列ヘッダは行5（記号凡例）／行4（カテゴリ）。クライアントは行6〜19の14行（人数に応じて拡張）。",
+  "description": "業務日報。1日1シート、14名分を1ページにまとめる。10列構成：No/名前/出欠/昼食/行/帰/様子(work)/コメント(work)/様子(life)/コメント(life)。様子はAI要約、コメントは自由コメント。",
   "static": {
     "title_cell": "A1",
     "title_text": "サービス提供記録　兼　日誌",
     "legend_cell": "A3",
-    "service_type_cell": "F2",
-    "section_morning_label": "A20",
-    "section_afternoon_label": "A21",
-    "section_notes_label": "A22",
-    "signature_staff_label": "A23",
-    "signature_service_manager_label": "E23",
-    "signature_confirm_date_label": "J23"
+    "service_type_cell": "E2"
   },
   "header": {
     "date_label_cell": "A2",
@@ -33,31 +27,22 @@
     "client_name": "B",
     "attendance": "C",
     "lunch": "D",
-    "transport": "E",
-    "work_eval_columns": {
-      "active_engagement": "F",
-      "stable_engagement": "G",
-      "not_focused": "H",
-      "no_motivation": "I"
-    },
-    "life_eval_columns": {
-      "stable_passing": "J",
-      "calm_passing": "K",
-      "emotionally_unstable": "L",
-      "irritated": "M"
-    },
-    "checkbox_mark_on": "■",
-    "checkbox_mark_off": "□"
+    "transport_go": "E",
+    "transport_return": "F",
+    "work_status": "G",
+    "work_comment": "H",
+    "life_status": "I",
+    "life_comment": "J"
   },
   "section_cells": {
-    "work_morning_content": "B20",
-    "work_afternoon_content": "B21",
+    "work_morning_content": "C20",
+    "work_afternoon_content": "C21",
     "remarks": "B22"
   },
   "signature_cells": {
-    "staff_in_charge_value": "B23",
-    "service_manager_value": "F23",
-    "confirm_date_value": "K23"
+    "staff_in_charge_value": "A23",
+    "service_manager_value": "E23",
+    "confirm_date_value": "H23"
   },
   "evaluation_labels": {
     "work": [
@@ -72,9 +57,5 @@
       { "key": "emotionally_unstable", "label": "情緒的に不安定なご様子です" },
       { "key": "irritated", "label": "いらいらとされていた" }
     ]
-  },
-  "todo": [
-    "AI生成された日報コメントを記入する単独セル（自由文）の合意が必要。現状は『備考』B22 に集約予定。",
-    "1シートで14名超の場合の運用ルール（複数シートに分割 or 行追加）を要確認。"
-  ]
+  }
 }
