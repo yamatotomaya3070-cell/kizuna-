@@ -12,19 +12,23 @@ type Role = "admin" | "facility_admin" | "facility";
 const SAAS_ADMIN_ONLY = [
   "/admin",
   "/facilities",
-  "/clients",
-  "/status",
-  "/support-plans",
-  "/shifts",
+  "/billing", // プラン・課金（Stripe等）
 ];
 
 // facility_admin と admin が見られる（facility は弾く）
 const FACILITY_ADMIN_OR_ABOVE = [
-  "/documents",          // 帳票一覧
-  "/documents/generate", // 帳票自動生成
+  "/facility",           // 事業所長専用ダッシュボード（サイドバーで遷移）
+  "/dashboard",
+  "/clients",
+  "/attendance",
+  "/shifts",
+  "/status",
+  "/support-plans",
   "/monitoring",
   "/billing-report",
-  "/settings",           // 利用者・職員マスタ等
+  "/documents",
+  "/documents/generate",
+  "/settings",
 ];
 
 export async function proxy(request: NextRequest) {
@@ -67,13 +71,20 @@ export async function proxy(request: NextRequest) {
 
     // ログイン済みでログインページに来たらロール別トップへ
     if (pathname === "/login") {
-      const target = role === "admin" ? "/admin" : role === "facility" ? "/diary" : "/";
+      const target =
+        role === "admin" ? "/admin"
+          : role === "facility_admin" ? "/facility/dashboard"
+            : "/diary";
       return NextResponse.redirect(new URL(target, request.url));
     }
 
     // admin が / にアクセスしたら /admin へ
     if (role === "admin" && pathname === "/") {
       return NextResponse.redirect(new URL("/admin", request.url));
+    }
+    // facility_admin が / にアクセスしたら /facility/dashboard へ
+    if (role === "facility_admin" && pathname === "/") {
+      return NextResponse.redirect(new URL("/facility/dashboard", request.url));
     }
 
     // SaaS管理ページ: admin のみ可
