@@ -22,6 +22,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { saveSupportPlan, getSupportPlan } from "@/app/actions/support-plans";
+import { Wand2 } from "lucide-react";
 
 type DocType = "diary" | "support_plan" | "monitoring";
 
@@ -116,6 +117,8 @@ function GenerateDocumentInner() {
   const [planId, setPlanId] = useState<string | null>(planIdParam);
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [aiDrafting, setAiDrafting] = useState(false);
+  const [aiInfo, setAiInfo] = useState<{ basedOnPrev: boolean; diaryCount: number; prevVersion?: number } | null>(null);
   const [toast, setToast] = useState("");
 
   // ── 業務日報用
@@ -257,6 +260,71 @@ function GenerateDocumentInner() {
       showToast(err instanceof Error ? err.message : "保存に失敗しました");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleAIDraft = async () => {
+    if (!selectedClient) {
+      showToast("利用者を選択してください");
+      return;
+    }
+    // 日報の対象期間: 計画期間と同じ長さで「計画開始日の直前まで」遡る
+    const planStartD = new Date(planStart + "T00:00:00");
+    const planEndD = new Date(planEnd + "T00:00:00");
+    const spanMs = planEndD.getTime() - planStartD.getTime();
+    const periodEnd = new Date(planStartD.getTime() - 24 * 3600 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    const periodStart = new Date(planStartD.getTime() - spanMs)
+      .toISOString()
+      .slice(0, 10);
+
+    setAiDrafting(true);
+    try {
+      const res = await fetch("/api/generate-support-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName: selectedClient,
+          periodStart,
+          periodEnd,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error ?? "生成に失敗しました");
+
+      setAttainmentGoal(data.attainmentGoal ?? "");
+      setOverallPolicy(data.overallSupportPolicy ?? "");
+      setLongTermGoal(data.longTermGoal ?? "");
+      setShortTermGoal(data.shortTermGoal ?? "");
+      if (Array.isArray(data.goals)) {
+        setGoals(
+          [0, 1, 2].map((i) => {
+            const g = data.goals[i];
+            return {
+              priority: i + 1,
+              specific_goal: g?.specific_goal ?? "",
+              user_role: g?.user_role ?? "",
+              support_content: g?.support_content ?? "",
+              support_duration: g?.support_duration ?? (i === 2 ? "6か月\n通所日" : "6か月\n開所日"),
+            };
+          }),
+        );
+      }
+      setAiInfo({
+        basedOnPrev: !!data.previousPlan,
+        diaryCount: data.diaryCount ?? 0,
+        prevVersion: data.previousPlan?.plan_version,
+      });
+      showToast(
+        data.previousPlan
+          ? `前回計画(v${data.previousPlan.plan_version})と日報${data.diaryCount}件から下書きを生成しました`
+          : `初回計画として日報${data.diaryCount}件から下書きを生成しました`,
+      );
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : "AI下書きに失敗しました");
+    } finally {
+      setAiDrafting(false);
     }
   };
 
@@ -417,6 +485,49 @@ function GenerateDocumentInner() {
             <p className="text-[11px] text-slate-500">
               指定日の出欠・日報・シフトをまとめて1ページのExcelに出力します（業務日誌テンプレート準拠）。
             </p>
+          </div>
+        )}
+
+        {docType === "support_plan" && (
+          <div className="bg-gradient-to-r from-blue-50 to-white rounded-2xl border border-blue-200 p-5 space-y-3">
+            <div className="flex items-start gap-2">
+              <Wand2 size={18} className="text-blue-900 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h2 className="text-sm font-bold text-slate-900">AIで下書きを作る</h2>
+                <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  前回の個別支援計画書（あれば）と、計画期間直前の同じ長さの期間の日報をもとに、次期計画書の各項目を自動で埋めます。
+                  初回は前回計画なしで日報のみから生成します。生成後は職員が自由に編集できます。
+                </p>
+                {aiInfo && (
+                  <p className="text-[11px] mt-1.5 text-blue-900 font-semibold">
+                    {aiInfo.basedOnPrev
+                      ? `✓ 前回計画 v${aiInfo.prevVersion} + 日報 ${aiInfo.diaryCount}件 を反映`
+                      : `✓ 初回扱い / 日報 ${aiInfo.diaryCount}件 を反映`}
+                  </p>
+                )}
+              </div>
+              <button
+                onClick={handleAIDraft}
+                disabled={aiDrafting || !selectedClient}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
+                  aiDrafting || !selectedClient
+                    ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                    : "bg-blue-900 text-white hover:bg-blue-950"
+                }`}
+              >
+                {aiDrafting ? (
+                  <>
+                    <Loader2 size={13} className="animate-spin" />
+                    生成中...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={13} />
+                    AI下書き
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         )}
 
