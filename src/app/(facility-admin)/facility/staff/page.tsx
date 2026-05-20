@@ -63,7 +63,10 @@ export default function FacilityStaffPage() {
         body: JSON.stringify({ email, password }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "作成に失敗しました");
+      if (!res.ok) {
+        const dbg = json._debug ? `\n[debug] ${JSON.stringify(json._debug)}` : "";
+        throw new Error((json.error ?? "作成に失敗しました") + dbg);
+      }
       setMessage({ type: "ok", text: `${email} を作成しました。スタッフ本人にメール・パスワードを連絡してください。` });
       setEmail("");
       setPassword("");
