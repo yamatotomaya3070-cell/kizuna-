@@ -44,7 +44,14 @@ export async function POST(request: Request) {
       .eq("id", user.id)
       .single();
     if (error || !profile?.facility_id) {
-      return Response.json({ error: "所属事業所が設定されていません" }, { status: 400 });
+      return Response.json({
+        error: "所属事業所が設定されていません",
+        debug: {
+          userId: user.id,
+          profileError: error?.message ?? null,
+          profileFacilityId: profile?.facility_id ?? null,
+        },
+      }, { status: 400 });
     }
     facilityId = profile.facility_id as string;
   }
