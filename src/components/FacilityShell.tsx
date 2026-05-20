@@ -12,6 +12,7 @@ import {
   FileDown,
   LayoutDashboard,
   LogOut,
+  UserCog,
   Users,
 } from "lucide-react";
 import { logout } from "@/app/actions/auth";
@@ -26,6 +27,7 @@ const FACILITY_NAV = [
   { href: "/facility/monitoring", label: "モニタリング評価", icon: Brain },
   { href: "/facility/billing-report", label: "加算・請求集計", icon: BarChart3 },
   { href: "/facility/documents/generate", label: "帳票自動生成", icon: FileDown },
+  { href: "/facility/staff", label: "スタッフ管理", icon: UserCog },
 ];
 
 export default function FacilityShell({ children }: { children: React.ReactNode }) {

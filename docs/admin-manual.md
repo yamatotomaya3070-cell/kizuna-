@@ -9,7 +9,11 @@
 ## 0. 前提
 
 - **本番URL:** https://welfare-manager-app.vercel.app
-- **ログインURL:** https://welfare-manager-app.vercel.app/login
+- **本部管理者ログインURL（非公開）:** https://welfare-manager-app.vercel.app/admin-login
+  - 利用者向けの `/login` には誘導リンクを置かないでください。URLは本部スタッフのみで共有。
+  - 環境変数 `DISABLE_ADMIN_LOGIN=true` を Vercel に設定すると、この入口を完全に 404 化できます（本部運用が安定してきたら推奨）。
+  - 設定方法: `vercel env add DISABLE_ADMIN_LOGIN production` で `true` を入力 → `vercel --prod` で再デプロイ
+- **利用側ログインURL:** https://welfare-manager-app.vercel.app/login
 - **対象ロール:** `admin`（本部管理者）
   - `facility_admin`（事業所長）・`facility`（施設スタッフ）は別画面（`/facility/*` / `/`）
 - **推奨ブラウザ:** Google Chrome / Microsoft Edge（最新版）

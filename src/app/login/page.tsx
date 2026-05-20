@@ -1,76 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import {
   ShieldCheck,
   Building2,
+  Users,
   Eye,
   EyeOff,
   LogIn,
   AlertCircle,
 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { loginUser } from "@/app/actions/auth";
 
-type Role = "admin" | "facility";
+type FacilityRoleTab = "facility_admin" | "facility";
 
-const DEMO_ACCOUNTS: Record<Role, { email: string; password: string; label: string }> = {
-  admin: {
-    email: "admin@kizuna.co.jp",
-    password: "admin1234",
-    label: "運営会社（管理者）",
+const TAB_LABEL: Record<FacilityRoleTab, { label: string; hint: string }> = {
+  facility_admin: {
+    label: "事業所長",
+    hint: "事業所の管理者（事業所長 / サービス管理責任者）の方はこちら",
   },
   facility: {
-    email: "sakura@example.com",
-    password: "facility1234",
-    label: "事業所（施設スタッフ）",
+    label: "施設スタッフ",
+    hint: "日々の日報入力を行う現場スタッフの方はこちら",
   },
 };
 
 export default function LoginPage() {
-  const router = useRouter();
-  const supabase = createClient();
-
-  const [role, setRole] = useState<Role>("facility");
+  const [tab, setTab] = useState<FacilityRoleTab>("facility_admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const demo = DEMO_ACCOUNTS[role];
-
-  const fillDemo = () => {
-    setEmail(demo.email);
-    setPassword(demo.password);
-    setError("");
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-
     if (!email || !password) {
       setError("メールアドレスとパスワードを入力してください。");
       return;
     }
-
-    setLoading(true);
-
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const formData = new FormData();
+    formData.set("email", email);
+    formData.set("password", password);
+    startTransition(async () => {
+      const result = await loginUser(formData);
+      if (result?.error) setError(result.error);
     });
-
-    if (authError) {
-      setError("メールアドレスまたはパスワードが正しくありません。");
-      setLoading(false);
-      return;
-    }
-
-    const userRole = data.user?.user_metadata?.role ?? "facility";
-    router.push(userRole === "admin" ? "/admin" : "/");
-    router.refresh();
   };
 
   return (
@@ -89,20 +65,20 @@ export default function LoginPage() {
 
         <div>
           <h2 className="text-white text-3xl font-bold leading-snug mb-4">
-            運営指導対策を、<br />もっとかんたんに。
+            毎日の記録を、<br />監査につよい証拠に。
           </h2>
           <p className="text-slate-400 text-sm leading-relaxed">
-            書類管理・チェックリスト・AIモニタリング評価——<br />
-            障がい福祉事業所の実地指導対策をワンストップでサポートします。
+            日報・出欠・支援計画・モニタリング——<br />
+            すべての記録を一元化し、運営指導に備えます。
           </p>
         </div>
 
         <ul className="space-y-3">
           {[
-            "運営指導チェックリスト（別紙1・2）",
-            "必須マニュアル5点の雛形管理",
-            "AI日報→モニタリング評価の自動生成",
-            "LINE通知・期限アラート",
+            "スマホから3分で日報入力",
+            "AIが日報からモニタリング評価を生成",
+            "個別支援計画のExcel自動生成",
+            "監査対応の書類自動出力",
           ].map((f) => (
             <li key={f} className="flex items-center gap-2 text-slate-300 text-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
@@ -114,7 +90,7 @@ export default function LoginPage() {
 
       {/* 右パネル */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-md space-y-6">
           <div className="lg:hidden flex items-center gap-2 mb-2">
             <div className="w-8 h-8 bg-blue-900 rounded-lg flex items-center justify-center">
               <ShieldCheck size={16} className="text-white" />
@@ -127,22 +103,23 @@ export default function LoginPage() {
             <p className="text-sm text-slate-500 mt-1">アカウント種別を選択してサインインしてください</p>
           </div>
 
-          {/* ロール切り替え */}
+          {/* ロール切り替えタブ（事業所長 / 施設スタッフ） */}
           <div className="flex bg-slate-100 rounded-xl p-1 gap-1">
-            {(["facility", "admin"] as Role[]).map((r) => (
+            {(["facility_admin", "facility"] as FacilityRoleTab[]).map((t) => (
               <button
-                key={r}
+                key={t}
                 type="button"
-                onClick={() => { setRole(r); setEmail(""); setPassword(""); setError(""); }}
+                onClick={() => { setTab(t); setError(""); }}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                  role === r ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                  tab === t ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
-                {r === "facility" ? <Building2 size={15} /> : <ShieldCheck size={15} />}
-                {r === "facility" ? "事業所" : "運営管理者"}
+                {t === "facility_admin" ? <Building2 size={15} /> : <Users size={15} />}
+                {TAB_LABEL[t].label}
               </button>
             ))}
           </div>
+          <p className="text-xs text-slate-500 -mt-2">{TAB_LABEL[tab].hint}</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
@@ -155,7 +132,7 @@ export default function LoginPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={demo.email}
+                placeholder="you@example.com"
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
               />
             </div>
@@ -194,14 +171,14 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isPending}
               className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-bold text-white transition-all ${
-                loading
+                isPending
                   ? "bg-blue-400 cursor-wait"
                   : "bg-blue-900 hover:bg-blue-900 active:scale-[0.98] shadow-md hover:shadow-lg"
               }`}
             >
-              {loading ? (
+              {isPending ? (
                 <span className="flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                   ログイン中...
@@ -212,29 +189,9 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* デモ用 */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
-              デモ用アカウント — {demo.label}
-            </p>
-            <div className="space-y-1.5 text-xs text-slate-600">
-              <div className="flex items-center gap-2">
-                <span className="w-20 text-slate-400 shrink-0">メール</span>
-                <code className="bg-white border border-slate-200 px-2 py-0.5 rounded-md font-mono text-slate-700">{demo.email}</code>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-20 text-slate-400 shrink-0">パスワード</span>
-                <code className="bg-white border border-slate-200 px-2 py-0.5 rounded-md font-mono text-slate-700">{demo.password}</code>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={fillDemo}
-              className="mt-3 w-full text-xs font-semibold text-blue-900 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg py-2 transition-colors"
-            >
-              上記を自動入力
-            </button>
-          </div>
+          <p className="text-xs text-slate-400 text-center">
+            アカウントの発行は、契約事業所の管理者または合同会社絆までお問い合わせください。
+          </p>
         </div>
       </div>
     </div>
