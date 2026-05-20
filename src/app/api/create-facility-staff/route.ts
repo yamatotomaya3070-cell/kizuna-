@@ -43,8 +43,12 @@ export async function POST(request: Request) {
       .select("facility_id")
       .eq("id", user.id)
       .single();
+    console.log("[create-facility-staff] user.id:", user.id, "profile:", profile, "error:", error?.message);
     if (error || !profile?.facility_id) {
-      return Response.json({ error: "所属事業所が設定されていません" }, { status: 400 });
+      return Response.json({
+        error: "所属事業所が設定されていません",
+        _debug: { userId: user.id, profileError: error?.message ?? null, profileFacilityId: profile?.facility_id ?? null },
+      }, { status: 400 });
     }
     facilityId = profile.facility_id as string;
   }
